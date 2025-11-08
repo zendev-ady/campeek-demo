@@ -15,15 +15,35 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { Brand } from "./brand"
 import { initializeDemoMode } from "@/lib/mock-data"
+import { useAuth } from "@/lib/auth-context"
+
+const DEMO_CREDENTIALS = {
+  email: "demo@campeek.cz",
+  password: "demo123",
+}
 
 export default function LandingPage() {
   const router = useRouter()
+  const { login } = useAuth()
+  const [isLoadingDemo, setIsLoadingDemo] = useState(false)
 
-  const handleDemoClick = () => {
-    initializeDemoMode()
-    router.push("/dashboard")
+  const handleDemoClick = async () => {
+    if (isLoadingDemo) return
+
+    try {
+      setIsLoadingDemo(true)
+      initializeDemoMode()
+      await login(DEMO_CREDENTIALS.email, DEMO_CREDENTIALS.password)
+      router.push("/dashboard")
+    } catch (error) {
+      console.error("Failed to start demo mode", error)
+      router.push("/login")
+    } finally {
+      setIsLoadingDemo(false)
+    }
   }
 
   return (
@@ -83,9 +103,10 @@ export default function LandingPage() {
                 </Link>
                 <button
                   onClick={handleDemoClick}
-                  className="bg-gray-100 text-emerald-800 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-200 transition-all border-2 border-emerald-200"
+                  className="bg-gray-100 text-emerald-800 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-200 transition-all border-2 border-emerald-200 disabled:opacity-70"
+                  disabled={isLoadingDemo}
                 >
-                  Zobrazit demo
+                  {isLoadingDemo ? "Načítám demo..." : "Zobrazit demo"}
                 </button>
               </div>
 

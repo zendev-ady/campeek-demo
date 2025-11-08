@@ -1,33 +1,63 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEvents } from "@/lib/event-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { ArrowLeft, CheckCircle2, ExternalLink, CopyIcon, Trash2, Locate as Duplicate, EditIcon } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
+import {
+  ArrowLeft,
+  CheckCircle2,
+  ExternalLink,
+  CopyIcon,
+  Trash2,
+  Locate as Duplicate,
+  EditIcon,
+  Users,
+  CreditCard,
+  Sliders,
+} from "lucide-react"
 import Link from "next/link"
 
-type TabType = "overview" | "registrations" | "communication"
+type TabType = "overview" | "registrations" | "payments" | "settings"
+type SecondaryTab = Exclude<TabType, "overview">
 
-export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
+export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const [resolvedId, setResolvedId] = useState<string | null>(null)
 
-  return <EventDetailPageClient eventId={id} />
+  useEffect(() => {
+    let isMounted = true
+    params.then(({ id }) => {
+      if (isMounted) setResolvedId(id)
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [params])
+
+  if (!resolvedId) {
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+        Načítám detail akce...
+      </div>
+    )
+  }
+
+  return <EventDetailPageClient eventId={resolvedId} />
 }
 
 function EventDetailPageClient({ eventId }: { eventId: string }) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { getEventById, updateEvent, deleteEvent, duplicateEvent } = useEvents()
 
   const event = getEventById(eventId)
-  const [activeTab, setActiveTab] = useState<TabType>("overview")
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -42,8 +72,19 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
     price: event?.price.toString() || "",
     ageMin: event?.ageMin?.toString() || "",
     ageMax: event?.ageMax?.toString() || "",
-    status: event?.status || "draft",
   })
+
+  const isTabType = (value: string | null): value is TabType => {
+    return value === "overview" || value === "registrations" || value === "payments" || value === "settings"
+  }
+  const tabParam = searchParams.get("tab")
+  const activeTab: TabType = isTabType(tabParam) ? tabParam : "overview"
+
+  useEffect(() => {
+    if (activeTab !== "overview" && isEditing) {
+      setIsEditing(false)
+    }
+  }, [activeTab, isEditing])
 
   if (!event) {
     return (
@@ -80,7 +121,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
         price: Number.parseFloat(formData.price) || 0,
         ageMin: formData.ageMin ? Number.parseInt(formData.ageMin) : undefined,
         ageMax: formData.ageMax ? Number.parseInt(formData.ageMax) : undefined,
-        status: formData.status as "draft" | "published" | "archived",
       })
 
       setIsEditing(false)
@@ -111,15 +151,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
     }
   }
 
-  const getStatusBadge = (status: string) => {
-    const variants = {
-      draft: { label: "Koncept", variant: "secondary" as const },
-      published: { label: "Publikováno", variant: "default" as const },
-      archived: { label: "Archivováno", variant: "outline" as const },
-    }
-    return variants[status as keyof typeof variants]
-  }
-
   const registrationUrl =
     typeof window !== "undefined" ? `${window.location.origin}/register/${event.id}` : `/register/${event.id}`
 
@@ -129,14 +160,37 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const statusBadge = getStatusBadge(formData.status)
-
   const mockRegistrations = 24
   const capacity = Number.parseInt(formData.capacity) || 100
   const occupancyPercent = Math.round((mockRegistrations / capacity) * 100)
   const paidAmount = mockRegistrations * 3500 // assuming 3500 per registration
   const totalAmount = mockRegistrations * Number.parseInt(formData.price || "0")
   const paidPercent = totalAmount > 0 ? Math.round((paidAmount / totalAmount) * 100) : 0
+
+  const tabPlaceholders: Record<SecondaryTab, { title: string; description: string; message: string; Icon: LucideIcon }> =
+    {
+      registrations: {
+        title: "Přihlášky",
+        description: "Tato sekce brzy nabídne přehled účastníků a stav jejich přihlášek.",
+        message: "Správa přihlášek je zatím ve vývoji. Připravujeme filtry a detailní zobrazení každého účastníka.",
+        Icon: Users,
+      },
+      payments: {
+        title: "Platby",
+        description: "Podívejte se na stav plateb a finanční přehledy každé akce.",
+        message: "Platební modul právě dokončujeme. Brzy zde uvidíte tok plateb a exporty pro účetnictví.",
+        Icon: CreditCard,
+      },
+      settings: {
+        title: "Nastavení",
+        description: "Konfigurace automatických emailů, dokumentů a přístupů pro tým.",
+        message: "Sekce nastavení je zatím v přípravě. Připravujeme pokročilé workflow a sdílení oprávnění.",
+        Icon: Sliders,
+      },
+    }
+
+  const secondaryTab = activeTab === "overview" ? null : (activeTab as SecondaryTab)
+  const placeholderConfig = secondaryTab ? tabPlaceholders[secondaryTab] : null
 
   return (
     <div className="space-y-6">
@@ -160,7 +214,13 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
               <Duplicate className="h-4 w-4" />
               Duplikovat
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setIsEditing(!isEditing)} className="gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsEditing(!isEditing)}
+              className="gap-2"
+              disabled={activeTab !== "overview"}
+            >
               <EditIcon className="h-4 w-4" />
               {isEditing ? "Zrušit" : "Upravit"}
             </Button>
@@ -176,14 +236,25 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
           </div>
         </div>
 
-        {/* Status Badge */}
-        <div className="flex items-center gap-2">
-          <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
-        </div>
       </div>
 
-      {/* Single View */}
-      {isEditing ? (
+      {placeholderConfig ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <placeholderConfig.Icon className="h-5 w-5 text-emerald-600" />
+              {placeholderConfig.title}
+            </CardTitle>
+            <CardDescription>{placeholderConfig.description}</CardDescription>
+          </CardHeader>
+          <CardContent className="py-12 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
+              <placeholderConfig.Icon className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <p className="text-muted-foreground">{placeholderConfig.message}</p>
+          </CardContent>
+        </Card>
+      ) : isEditing ? (
         <form onSubmit={handleSubmit}>
           <Card>
             <CardHeader>
@@ -291,15 +362,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                   />
                 </div>
 
-                <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="status">Stav</Label>
-                  <Input
-                    id="status"
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    required
-                  />
-                </div>
               </div>
 
               <div className="flex gap-2 pt-4">
@@ -403,28 +465,26 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
           </Card>
 
           {/* Registration Link Alert */}
-          {event.status === "published" && (
-            <Alert>
-              <AlertDescription className="flex items-center justify-between gap-4">
-                <div className="flex-1">
-                  <p className="font-medium mb-1">Registrační odkaz</p>
-                  <p className="text-sm text-muted-foreground break-all">{registrationUrl}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={copyRegistrationLink}>
-                    {copied ? <CheckCircle2 className="h-4 w-4 mr-2" /> : <CopyIcon className="h-4 w-4 mr-2" />}
-                    {copied ? "Zkopírováno" : "Kopírovat"}
+          <Alert>
+            <AlertDescription className="flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <p className="font-medium mb-1">Registrační odkaz</p>
+                <p className="text-sm text-muted-foreground break-all">{registrationUrl}</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={copyRegistrationLink}>
+                  {copied ? <CheckCircle2 className="h-4 w-4 mr-2" /> : <CopyIcon className="h-4 w-4 mr-2" />}
+                  {copied ? "Zkopírováno" : "Kopírovat"}
+                </Button>
+                <Link href={registrationUrl} target="_blank">
+                  <Button variant="outline" size="sm">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Otevřít
                   </Button>
-                  <Link href={registrationUrl} target="_blank">
-                    <Button variant="outline" size="sm">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Otevřít
-                    </Button>
-                  </Link>
-                </div>
-              </AlertDescription>
-            </Alert>
-          )}
+                </Link>
+              </div>
+            </AlertDescription>
+          </Alert>
 
           {/* Description Card */}
           {event.description && (

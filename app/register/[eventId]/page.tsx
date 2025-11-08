@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { use, useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import type { Child } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import { Plus, Trash2, Calendar, MapPin, Users, CheckCircle2 } from "lucide-react"
 
 export default function RegisterPage({ params }: { params: Promise<{ eventId: string }> }) {
-  const resolvedParams = use(params)
+  const [resolvedParams, setResolvedParams] = useState<{ eventId: string } | null>(null)
   const [event, setEvent] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -36,11 +36,22 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
   ])
 
   useEffect(() => {
+    let isMounted = true
+    params.then((value) => {
+      if (isMounted) setResolvedParams(value)
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [params])
+
+  useEffect(() => {
+    if (!resolvedParams?.eventId) return
     // Load event from localStorage
     const allEvents = JSON.parse(localStorage.getItem("events") || "[]")
-    const foundEvent = allEvents.find((e: any) => e.id === resolvedParams.eventId && e.status === "published")
+    const foundEvent = allEvents.find((e: any) => e.id === resolvedParams.eventId)
     setEvent(foundEvent)
-  }, [resolvedParams.eventId])
+  }, [resolvedParams?.eventId])
 
   const addChild = () => {
     setChildren([
@@ -79,6 +90,9 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
     setIsLoading(true)
 
     try {
+      if (!resolvedParams) {
+        throw new Error("Registrace není dostupná")
+      }
       // Validate all children have required fields
       const invalidChild = children.find((child) => !child.name || !child.birthDate)
       if (invalidChild) {
@@ -113,12 +127,24 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
     }
   }
 
+  if (!resolvedParams) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full">
+          <CardContent className="text-center py-12">
+            <p className="text-muted-foreground">Načítám registraci...</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   if (!event) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardContent className="text-center py-12">
-            <p className="text-muted-foreground">Akce nenalezena nebo není publikována</p>
+            <p className="text-muted-foreground">Akce nenalezena</p>
           </CardContent>
         </Card>
       </div>

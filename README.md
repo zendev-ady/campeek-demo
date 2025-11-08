@@ -6,8 +6,8 @@ Campeek is a Next.js PROTOTYPE for an app for organizing children’s camps and 
 
 - **Guided landing + demo seed** – Use the “Zobrazit demo” CTA to populate the browser’s `localStorage` with sample data (user, organization, events, registrations) for instant exploration.
 - **Authentication & onboarding** – Email/password login backed by a lightweight `localStorage` user store plus quick registration for new organizers.
-- **Organizations & events** – Create multiple organizations, draft/publish/archive events, duplicate them, and edit metadata such as capacity, pricing, age limits, and descriptions.
-- **Dashboard & insights** – Overview cards highlight totals and statuses, and link to detailed event management pages.
+- **Organizations & events** – Vytvářejte a duplikujte akce napříč organizacemi a upravujte kapacitu, ceny, věkové limity i popisy.
+- **Dashboard & insights** – Overview cards zvýrazňují celkový přehled, blížící se akce a kapacity, a linkují na detailní správu.
 - **Public registration flow** – Dynamic `register/[eventId]` form allows multiple children, calculates sibling discounts, and persists submissions locally for later review.
 - **Work-in-progress modules** – Dedicated areas for Contacts, Communication, and Organization settings already scaffolded for future development.
 

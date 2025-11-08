@@ -3,7 +3,6 @@
 import type { Event } from "@/lib/types"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Calendar, MapPin, Users, MoreVertical, Copy, Archive, Trash2, Eye } from "lucide-react"
+import { Calendar, MapPin, Users, MoreVertical, Copy, Trash2, Eye } from "lucide-react"
 import { useEvents } from "@/lib/event-context"
 import { useRouter } from "next/navigation"
 
@@ -20,7 +19,7 @@ interface EventCardProps {
 }
 
 export function EventCard({ event }: EventCardProps) {
-  const { updateEvent, deleteEvent, duplicateEvent } = useEvents()
+  const { deleteEvent, duplicateEvent } = useEvents()
   const router = useRouter()
 
   const formatDate = (date: string) => {
@@ -31,21 +30,8 @@ export function EventCard({ event }: EventCardProps) {
     })
   }
 
-  const getStatusBadge = (status: Event["status"]) => {
-    const variants = {
-      draft: { label: "Koncept", variant: "secondary" as const },
-      published: { label: "Publikováno", variant: "default" as const },
-      archived: { label: "Archivováno", variant: "outline" as const },
-    }
-    return variants[status]
-  }
-
   const handleDuplicate = async () => {
     await duplicateEvent(event.id)
-  }
-
-  const handleArchive = async () => {
-    await updateEvent(event.id, { status: "archived" })
   }
 
   const handleDelete = async () => {
@@ -53,8 +39,6 @@ export function EventCard({ event }: EventCardProps) {
       await deleteEvent(event.id)
     }
   }
-
-  const statusBadge = getStatusBadge(event.status)
 
   return (
     <Card className="hover:shadow-md transition-shadow">
@@ -79,12 +63,6 @@ export function EventCard({ event }: EventCardProps) {
                 <Copy className="h-4 w-4 mr-2" />
                 Duplikovat
               </DropdownMenuItem>
-              {event.status !== "archived" && (
-                <DropdownMenuItem onClick={handleArchive}>
-                  <Archive className="h-4 w-4 mr-2" />
-                  Archivovat
-                </DropdownMenuItem>
-              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleDelete} className="text-destructive">
                 <Trash2 className="h-4 w-4 mr-2" />
@@ -93,9 +71,6 @@ export function EventCard({ event }: EventCardProps) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Badge variant={statusBadge.variant} className="w-fit">
-          {statusBadge.label}
-        </Badge>
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="flex items-center text-sm text-muted-foreground">

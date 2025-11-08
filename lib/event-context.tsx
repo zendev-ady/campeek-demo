@@ -96,10 +96,18 @@ export function EventProvider({ children }: { children: React.ReactNode }) {
     const eventToDuplicate = events.find((e) => e.id === id)
     if (!eventToDuplicate) throw new Error("Akce nenalezena")
 
+    const {
+      id: _id,
+      createdAt: _createdAt,
+      updatedAt: _updatedAt,
+      createdBy: _createdBy,
+      organizationId: _organizationId,
+      ...eventFields
+    } = eventToDuplicate
+
     const duplicated = await createEvent({
-      ...eventToDuplicate,
+      ...eventFields,
       name: `${eventToDuplicate.name} (kopie)`,
-      status: "draft",
     })
 
     return duplicated

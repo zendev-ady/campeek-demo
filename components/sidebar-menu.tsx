@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEvents } from "@/lib/event-context"
@@ -16,10 +16,11 @@ export function SidebarMenu() {
   // Get current event ID from pathname
   const currentEventId = pathname.includes("/dashboard/events/") ? pathname.split("/")[3] : null
 
-  // Auto-expand current event
-  if (currentEventId && expandedEvent !== currentEventId) {
-    setExpandedEvent(currentEventId)
-  }
+  // Auto-expand current event when navigating directly to its page
+  useEffect(() => {
+    if (!currentEventId) return
+    setExpandedEvent((prev) => (prev === currentEventId ? prev : currentEventId))
+  }, [currentEventId])
 
   const globalMenuItems = [
     { id: "overview", label: "Přehled", href: "/dashboard", icon: Calendar },

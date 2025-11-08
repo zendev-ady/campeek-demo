@@ -7,7 +7,7 @@ import { CreateEventDialog } from "@/components/create-event-dialog"
 import { EventCard } from "@/components/event-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Plus, Calendar, TrendingUp } from "lucide-react"
+import { Plus, Calendar, TrendingUp, Users } from "lucide-react"
 
 export default function DashboardPage() {
   const { currentOrganization, organizations } = useOrganization()
@@ -35,10 +35,22 @@ export default function DashboardPage() {
     )
   }
 
-  const publishedEvents = events.filter((e) => e.status === "published")
-  // Removed activeRegistrations and totalRevenue calculations that depended on registrations
+  const now = new Date()
+  const upcomingEvents = events.filter((event) => new Date(event.startDate) >= now)
+  const upcomingWithinMonth = upcomingEvents.filter((event) => {
+    const diffInDays = (new Date(event.startDate).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+    return diffInDays <= 30
+  })
+  const nextEvent = [...upcomingEvents].sort(
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+  )[0]
+  const totalCapacity = events.reduce((sum, event) => sum + (event.capacity || 0), 0)
+  const averageCapacity = events.length ? Math.round(totalCapacity / events.length) : 0
 
   const recentEvents = events.slice(0, 6)
+
+  const formatShortDate = (date: string) =>
+    new Date(date).toLocaleDateString("cs-CZ", { day: "numeric", month: "short" })
 
   return (
     <div className="space-y-8">
@@ -65,29 +77,35 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{events.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">{publishedEvents.length} publikováno</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {nextEvent ? `Nejbližší start ${formatShortDate(nextEvent.startDate)}` : "Naplánujte první termín"}
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Stav akcí</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">{events.filter((e) => e.status === "draft").length}</div>
-            <p className="text-xs text-muted-foreground mt-1">V návrhu</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Archivováno</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Nadcházející (30 dní)</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{events.filter((e) => e.status === "archived").length}</div>
-            <p className="text-xs text-muted-foreground mt-1">Archivované akce</p>
+            <div className="text-3xl font-bold">{upcomingWithinMonth.length}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              z {upcomingEvents.length} budoucích termínů
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Celková kapacita</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{totalCapacity}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Průměrně {averageCapacity || 0} míst na akci
+            </p>
           </CardContent>
         </Card>
       </div>

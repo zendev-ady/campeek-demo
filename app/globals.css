@@ -1,0 +1,272 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ========================================
+     CAMPEEK DESIGN SYSTEM
+     Modern CRM for Event Management
+     ======================================== */
+
+  /* PRIMARY BRAND COLOR - Emerald Green */
+  /* Used for CTAs, accents, and primary interactions */
+  --primary: oklch(0.52 0.12 165);
+  --primary-foreground: oklch(1 0 0);
+
+  /* BACKGROUND & TEXT LAYERS */
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.15 0 0);
+
+  /* CARD SURFACES */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0 0);
+
+  /* POPOVERS & DROPDOWNS */
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0 0);
+
+  /* SECONDARY ELEMENTS */
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.15 0 0);
+
+  /* MUTED TEXT & DISABLED STATES */
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.5 0 0);
+
+  /* ACCENT COLOR - Same as primary for consistency */
+  --accent: oklch(0.52 0.12 165);
+  --accent-foreground: oklch(1 0 0);
+
+  /* DESTRUCTIVE ACTIONS - Red tones */
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* BORDERS & INPUTS */
+  --border: oklch(0.92 0 0);
+  --input: oklch(0.92 0 0);
+
+  /* FOCUS RING - Emerald for consistency */
+  --ring: oklch(0.52 0.12 165);
+
+  /* CHART COLORS - Complementary palette */
+  --chart-1: oklch(0.52 0.12 165);
+  --chart-2: oklch(0.65 0.15 180);
+  --chart-3: oklch(0.7 0.12 140);
+  --chart-4: oklch(0.6 0.2 300);
+  --chart-5: oklch(0.75 0.15 80);
+
+  /* BORDER RADIUS */
+  --radius: 0.5rem;
+
+  /* SIDEBAR THEME */
+  --sidebar: oklch(0.98 0 0);
+  --sidebar-foreground: oklch(0.15 0 0);
+  --sidebar-primary: oklch(0.52 0.12 165);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.96 0 0);
+  --sidebar-accent-foreground: oklch(0.15 0 0);
+  --sidebar-border: oklch(0.92 0 0);
+  --sidebar-ring: oklch(0.52 0.12 165);
+
+  /* TYPOGRAPHY */
+  --font-outfit: "Outfit", sans-serif;
+}
+
+.dark {
+  /* DARK MODE OVERRIDES */
+  --background: oklch(0.12 0 0);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.15 0 0);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.15 0 0);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.52 0.12 165);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.2 0 0);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.2 0 0);
+  --muted-foreground: oklch(0.6 0 0);
+  --accent: oklch(0.2 0 0);
+  --accent-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.5 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.2 0 0);
+  --input: oklch(0.2 0 0);
+  --ring: oklch(0.52 0.12 165);
+  --chart-1: oklch(0.52 0.12 165);
+  --chart-2: oklch(0.65 0.15 180);
+  --chart-3: oklch(0.7 0.12 140);
+  --chart-4: oklch(0.6 0.2 300);
+  --chart-5: oklch(0.75 0.15 80);
+  --sidebar: oklch(0.15 0 0);
+  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.52 0.12 165);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.2 0 0);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(0.2 0 0);
+  --sidebar-ring: oklch(0.52 0.12 165);
+}
+
+@theme inline {
+  /* TYPOGRAPHY FONTS */
+  --font-sans: "Inter", "Inter Fallback";
+  --font-outfit: "Outfit", sans-serif;
+
+  /* COLOR PALETTE MAPPING */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* BORDER RADIUS SCALE */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* SIDEBAR COLORS */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  /* FONT UTILITY CLASSES */
+  .font-outfit {
+    font-family: var(--font-outfit);
+  }
+
+  /* GLOBAL ELEMENT STYLES */
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* TYPOGRAPHY HIERARCHY */
+  h1 {
+    @apply text-4xl font-semibold text-foreground;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold text-foreground;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold text-foreground;
+  }
+
+  h4 {
+    @apply text-lg font-semibold text-foreground;
+  }
+
+  /* LINKS */
+  a {
+    @apply text-primary hover:underline;
+  }
+}
+
+* {
+  border-color: theme("colors.border");
+}
+
+body {
+  background-color: theme("colors.background");
+  color: theme("colors.foreground");
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC STYLES
+   ======================================== */
+
+/* Hero Gradient Background */
+.hero-gradient {
+  @apply bg-gray-100;
+}
+
+/* Header Card with Emerald Theme */
+.header-card {
+  @apply bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-2xl shadow-xl shadow-emerald-900/20;
+}
+
+/* Light Feature Card */
+.feature-card-light {
+  @apply bg-white rounded-3xl shadow-xl;
+}
+
+/* Dark Feature Card with Emerald */
+.feature-card-dark {
+  @apply bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-2xl hover:shadow-2xl hover:shadow-emerald-900/30 transition-all;
+}
+
+/* CTA Button - Primary */
+.btn-primary {
+  @apply bg-gradient-to-br from-emerald-600 to-emerald-800 text-emerald-50 px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:shadow-emerald-900/30 transition-all;
+}
+
+/* CTA Button - Secondary */
+.btn-secondary {
+  @apply bg-gray-100 text-emerald-800 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all border-2 border-emerald-200;
+}
+
+/* Pricing Card - Standard */
+.pricing-card {
+  @apply bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-2xl p-8 shadow-xl;
+}
+
+/* Pricing Card - Highlighted (Popular) */
+.pricing-card-featured {
+  @apply bg-gradient-to-br from-emerald-600 to-emerald-800 shadow-2xl shadow-emerald-900/40 md:scale-105;
+}
+
+/* Badge - Emerald theme */
+.badge-emerald {
+  @apply bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-xs font-semibold;
+}
+
+/* Dashboard Sidebar */
+.sidebar-campeek {
+  @apply w-64 border-r bg-white flex flex-col;
+}
+
+/* Nav Item - Active State */
+.nav-item-active {
+  @apply bg-emerald-50 text-emerald-900 font-medium;
+}
+
+/* Footer Section */
+.footer-section {
+  @apply bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-3xl p-16 text-emerald-50 shadow-2xl;
+}

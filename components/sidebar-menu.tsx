@@ -30,10 +30,30 @@ export function SidebarMenu() {
   ]
 
   const eventMenuItems = [
-    { label: "Přehled", href: (id: string) => `/dashboard/events/${id}`, icon: Eye },
-    { label: "Přihlášky", href: (id: string) => `/dashboard/events/${id}?tab=registrations`, icon: Users },
-    { label: "Platby", href: (id: string) => `/dashboard/events/${id}?tab=payments`, icon: CreditCard },
-    { label: "Nastavení", href: (id: string) => `/dashboard/events/${id}?tab=settings`, icon: Sliders },
+    {
+      label: "Přehled",
+      href: (id: string) => `/dashboard/events/${id}`,
+      icon: Eye,
+      match: (currentPath: string, basePath: string) => currentPath === basePath,
+    },
+    {
+      label: "Přihlášky",
+      href: (id: string) => `/dashboard/events/${id}/registrations`,
+      icon: Users,
+      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/registrations`,
+    },
+    {
+      label: "Platby",
+      href: (id: string) => `/dashboard/events/${id}/payments`,
+      icon: CreditCard,
+      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/payments`,
+    },
+    {
+      label: "Nastavení",
+      href: (id: string) => `/dashboard/events/${id}/settings`,
+      icon: Sliders,
+      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/settings`,
+    },
   ]
 
   return (
@@ -77,7 +97,6 @@ export function SidebarMenu() {
         {/* Events List */}
         {events.map((event) => {
           const isExpanded = expandedEvent === event.id
-          const hasSubmenu = true
 
           return (
             <div key={event.id} className="space-y-1">
@@ -105,8 +124,8 @@ export function SidebarMenu() {
                 <div className="ml-2 space-y-1 border-l border-emerald-700/30 pl-2">
                   {eventMenuItems.map((subitem) => {
                     const subHref = subitem.href(event.id)
-                    const isSubActive =
-                      (pathname === `/dashboard/events/${event.id}` && !pathname.includes("?")) || pathname === subHref
+                    const baseEventPath = `/dashboard/events/${event.id}`
+                    const isSubActive = subitem.match(pathname, baseEventPath)
                     const SubIcon = subitem.icon
                     return (
                       <Link key={subitem.label} href={subHref}>

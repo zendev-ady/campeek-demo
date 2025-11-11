@@ -1,33 +1,77 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Users } from "lucide-react"
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { useEvents } from "@/lib/event-context"
+import { Button } from "@/components/ui/button"
+import { EventModulePlaceholder } from "@/components/event-module-placeholder"
+import { ArrowLeft, Users } from "lucide-react"
 
-export default function EventRegistrationsPage() {
+export default function EventRegistrationsPage({ params }: { params: Promise<{ id: string }> }) {
+  const [resolvedId, setResolvedId] = useState<string | null>(null)
+
+  useEffect(() => {
+    let isMounted = true
+    params.then(({ id }) => {
+      if (isMounted) setResolvedId(id)
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [params])
+
+  if (!resolvedId) {
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+        Načítám sekci přihlášek...
+      </div>
+    )
+  }
+
+  return <EventRegistrationsPageClient eventId={resolvedId} />
+}
+
+function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
+  const { getEventById } = useEvents()
+  const event = getEventById(eventId)
+
+  if (!event) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard">
+            <Button variant="ghost" size="icon">
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+          </Link>
+          <h2 className="text-3xl font-bold">Akce nenalezena</h2>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-balance">Přihlášky</h1>
-        <p className="text-muted-foreground mt-1">Správa přihlášek na akci</p>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <p className="text-sm text-muted-foreground">Přihlášky · {event.name}</p>
+          <h1 className="text-3xl font-bold tracking-tight">Správa přihlášek</h1>
+        </div>
+        <Link href={`/dashboard/events/${event.id}`}>
+          <Button variant="ghost" className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Zpět na přehled akce
+          </Button>
+        </Link>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Stránka v přípravě
-          </CardTitle>
-          <CardDescription>
-            Tato stránka bude brzy dostupná. Zde budete moct spravovat všechny přihlášky na danou akci.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="py-12 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
-            <Users className="h-8 w-8 text-muted-foreground" />
-          </div>
-          <p className="text-muted-foreground">Tato funkce je zatím v přípravě...</p>
-        </CardContent>
-      </Card>
+      <EventModulePlaceholder
+        title="Přihlášky"
+        description="Tato sekce brzy nabídne přehled účastníků a stav jejich přihlášek."
+        message="Správa přihlášek je zatím ve vývoji. Připravujeme filtry a detailní zobrazení každého účastníka."
+        Icon={Users}
+      />
     </div>
   )
 }
+

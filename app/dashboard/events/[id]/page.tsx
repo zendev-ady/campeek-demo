@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useEvents } from "@/lib/event-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import type { LucideIcon } from "lucide-react"
 import {
   ArrowLeft,
   CheckCircle2,
@@ -19,15 +18,8 @@ import {
   Trash2,
   Locate as Duplicate,
   EditIcon,
-  Users,
-  CreditCard,
 } from "lucide-react"
 import Link from "next/link"
-import { EventSettingsShell } from "@/components/event-settings-shell"
-
-type TabType = "overview" | "registrations" | "payments" | "settings"
-type SecondaryTab = Exclude<TabType, "overview">
-type PlaceholderTab = Exclude<SecondaryTab, "settings">
 
 export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const [resolvedId, setResolvedId] = useState<string | null>(null)
@@ -55,7 +47,6 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
 function EventDetailPageClient({ eventId }: { eventId: string }) {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const { getEventById, updateEvent, deleteEvent, duplicateEvent } = useEvents()
 
   const event = getEventById(eventId)
@@ -74,18 +65,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
     ageMin: event?.ageMin?.toString() || "",
     ageMax: event?.ageMax?.toString() || "",
   })
-
-  const isTabType = (value: string | null): value is TabType => {
-    return value === "overview" || value === "registrations" || value === "payments" || value === "settings"
-  }
-  const tabParam = searchParams.get("tab")
-  const activeTab: TabType = isTabType(tabParam) ? tabParam : "overview"
-
-  useEffect(() => {
-    if (activeTab !== "overview" && isEditing) {
-      setIsEditing(false)
-    }
-  }, [activeTab, isEditing])
 
   useEffect(() => {
     if (!event) return
@@ -180,30 +159,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
   const totalAmount = mockRegistrations * Number.parseInt(formData.price || "0")
   const paidPercent = totalAmount > 0 ? Math.round((paidAmount / totalAmount) * 100) : 0
 
-  const tabPlaceholders: Record<
-    PlaceholderTab,
-    { title: string; description: string; message: string; Icon: LucideIcon }
-  > = {
-    registrations: {
-      title: "Přihlášky",
-      description: "Tato sekce brzy nabídne přehled účastníků a stav jejich přihlášek.",
-      message: "Správa přihlášek je zatím ve vývoji. Připravujeme filtry a detailní zobrazení každého účastníka.",
-      Icon: Users,
-    },
-    payments: {
-      title: "Platby",
-      description: "Podívejte se na stav plateb a finanční přehledy každé akce.",
-      message: "Platební modul právě dokončujeme. Brzy zde uvidíte tok plateb a exporty pro účetnictví.",
-      Icon: CreditCard,
-    },
-  }
-
-  const secondaryTab = activeTab === "overview" ? null : (activeTab as SecondaryTab)
-  const placeholderConfig =
-    secondaryTab && secondaryTab !== "settings"
-      ? tabPlaceholders[secondaryTab as PlaceholderTab]
-      : null
-
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -231,7 +186,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
               size="sm"
               onClick={() => setIsEditing(!isEditing)}
               className="gap-2"
-              disabled={activeTab !== "overview"}
             >
               <EditIcon className="h-4 w-4" />
               {isEditing ? "Zrušit" : "Upravit"}
@@ -250,25 +204,7 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
 
       </div>
 
-      {activeTab === "settings" ? (
-        <EventSettingsShell />
-      ) : placeholderConfig ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <placeholderConfig.Icon className="h-5 w-5 text-emerald-600" />
-              {placeholderConfig.title}
-            </CardTitle>
-            <CardDescription>{placeholderConfig.description}</CardDescription>
-          </CardHeader>
-          <CardContent className="py-12 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
-              <placeholderConfig.Icon className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <p className="text-muted-foreground">{placeholderConfig.message}</p>
-          </CardContent>
-        </Card>
-      ) : isEditing ? (
+      {isEditing ? (
         <form onSubmit={handleSubmit}>
           <Card>
             <CardHeader>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEvents } from "@/lib/event-context"
-import { ChevronDown, Plus, Calendar, Users, MessageSquare, Settings, Eye, CreditCard, Sliders } from "lucide-react"
+import { ChevronDown, Calendar, Users, MessageSquare, Settings, Eye, CreditCard, Sliders, FolderTree } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -69,8 +69,8 @@ export function SidebarMenu() {
         {/* Create New Event */}
         <Link href="/dashboard/events">
           <Button variant="ghost" className="w-full justify-start gap-3 text-emerald-200 hover:bg-emerald-700/40">
-            <Plus className="h-4 w-4" />
-            Nová akce
+            <FolderTree className="h-4 w-4" />
+            Správa akcí
           </Button>
         </Link>
 

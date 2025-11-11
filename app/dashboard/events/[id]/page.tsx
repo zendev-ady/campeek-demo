@@ -21,12 +21,13 @@ import {
   EditIcon,
   Users,
   CreditCard,
-  Sliders,
 } from "lucide-react"
 import Link from "next/link"
+import { EventSettingsShell } from "@/components/event-settings-shell"
 
 type TabType = "overview" | "registrations" | "payments" | "settings"
 type SecondaryTab = Exclude<TabType, "overview">
+type PlaceholderTab = Exclude<SecondaryTab, "settings">
 
 export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const [resolvedId, setResolvedId] = useState<string | null>(null)
@@ -85,6 +86,18 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
       setIsEditing(false)
     }
   }, [activeTab, isEditing])
+
+  useEffect(() => {
+    if (!event) return
+    try {
+      const stored = JSON.parse(localStorage.getItem("recentEvents") || "[]")
+      const filtered = Array.isArray(stored) ? stored.filter((entry: any) => entry?.id !== event.id) : []
+      const updated = [{ id: event.id, openedAt: new Date().toISOString() }, ...filtered].slice(0, 10)
+      localStorage.setItem("recentEvents", JSON.stringify(updated))
+    } catch (error) {
+      console.error("Failed to update recent events history:", error)
+    }
+  }, [event?.id])
 
   if (!event) {
     return (
@@ -167,30 +180,29 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
   const totalAmount = mockRegistrations * Number.parseInt(formData.price || "0")
   const paidPercent = totalAmount > 0 ? Math.round((paidAmount / totalAmount) * 100) : 0
 
-  const tabPlaceholders: Record<SecondaryTab, { title: string; description: string; message: string; Icon: LucideIcon }> =
-    {
-      registrations: {
-        title: "Přihlášky",
-        description: "Tato sekce brzy nabídne přehled účastníků a stav jejich přihlášek.",
-        message: "Správa přihlášek je zatím ve vývoji. Připravujeme filtry a detailní zobrazení každého účastníka.",
-        Icon: Users,
-      },
-      payments: {
-        title: "Platby",
-        description: "Podívejte se na stav plateb a finanční přehledy každé akce.",
-        message: "Platební modul právě dokončujeme. Brzy zde uvidíte tok plateb a exporty pro účetnictví.",
-        Icon: CreditCard,
-      },
-      settings: {
-        title: "Nastavení",
-        description: "Konfigurace automatických emailů, dokumentů a přístupů pro tým.",
-        message: "Sekce nastavení je zatím v přípravě. Připravujeme pokročilé workflow a sdílení oprávnění.",
-        Icon: Sliders,
-      },
-    }
+  const tabPlaceholders: Record<
+    PlaceholderTab,
+    { title: string; description: string; message: string; Icon: LucideIcon }
+  > = {
+    registrations: {
+      title: "Přihlášky",
+      description: "Tato sekce brzy nabídne přehled účastníků a stav jejich přihlášek.",
+      message: "Správa přihlášek je zatím ve vývoji. Připravujeme filtry a detailní zobrazení každého účastníka.",
+      Icon: Users,
+    },
+    payments: {
+      title: "Platby",
+      description: "Podívejte se na stav plateb a finanční přehledy každé akce.",
+      message: "Platební modul právě dokončujeme. Brzy zde uvidíte tok plateb a exporty pro účetnictví.",
+      Icon: CreditCard,
+    },
+  }
 
   const secondaryTab = activeTab === "overview" ? null : (activeTab as SecondaryTab)
-  const placeholderConfig = secondaryTab ? tabPlaceholders[secondaryTab] : null
+  const placeholderConfig =
+    secondaryTab && secondaryTab !== "settings"
+      ? tabPlaceholders[secondaryTab as PlaceholderTab]
+      : null
 
   return (
     <div className="space-y-6">
@@ -238,7 +250,9 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
 
       </div>
 
-      {placeholderConfig ? (
+      {activeTab === "settings" ? (
+        <EventSettingsShell />
+      ) : placeholderConfig ? (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

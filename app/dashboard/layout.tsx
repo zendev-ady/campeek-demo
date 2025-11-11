@@ -51,20 +51,20 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen bg-background">
       {/* Sidebar */}
-      <aside className="w-64 border-r bg-gradient-to-br from-emerald-800 to-emerald-900 flex flex-col">
-        <div className="p-6 border-b border-emerald-700/50">
+      <aside className="w-64 border-r bg-emerald-900 flex flex-col">
+        <div className="p-6 border-b border-emerald-200">
           <Link href="/dashboard">
             <Brand />
           </Link>
         </div>
         {/* Organization Switcher */}
-        <div className="px-4 py-3 border-b border-emerald-700/50">
+        <div className="px-4 py-3 border-b border-emerald-200">
           <OrganizationSwitcher />
         </div>
         {/* Navigation */}
         {currentOrganization && <SidebarMenu />} {/* Replace old navigation with new dynamic SidebarMenu */}
         {/* User Section */}
-        <div className="p-4 border-t border-emerald-700/50">
+        <div className="p-4 border-t border-emerald-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">
               <div className="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-medium">

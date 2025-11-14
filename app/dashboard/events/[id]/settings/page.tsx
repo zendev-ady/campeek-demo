@@ -5,7 +5,7 @@ import Link from "next/link"
 import { EventSettingsShell } from "@/components/event-settings-shell"
 import { useEvents } from "@/lib/event-context"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, ChevronRight } from "lucide-react"
 
 export default function EventSettingsPage({ params }: { params: Promise<{ id: string }> }) {
   const [resolvedId, setResolvedId] = useState<string | null>(null)
@@ -52,18 +52,31 @@ function EventSettingsPageClient({ eventId }: { eventId: string }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <p className="text-sm text-muted-foreground">Nastavení · {event.name}</p>
-          <h1 className="text-3xl font-bold tracking-tight">Konfigurace akce</h1>
-          <p className="text-muted-foreground">Spravujte veškerá nastavení týkající se Vaší akce.</p>
+      {/* Navigation Header */}
+      <div className="space-y-3">
+        {/* Back Button + Breadcrumb */}
+        <div className="flex items-center gap-4">
+          <Link href={`/dashboard/events/${event.id}`}>
+            <Button variant="ghost" size="icon" className="h-9 w-9">
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+          </Link>
+          <div className="flex items-center gap-2 text-sm">
+            <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+              Dashboard
+            </Link>
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            <Link href="/dashboard/events" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+              Akce
+            </Link>
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            <Link href={`/dashboard/events/${event.id}`} className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+              {event.name}
+            </Link>
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            <span className="text-foreground font-semibold">Nastavení</span>
+          </div>
         </div>
-        <Link href={`/dashboard/events/${event.id}`}>
-          <Button variant="ghost" className="gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            Zpět na přehled akce
-          </Button>
-        </Link>
       </div>
 
       <EventSettingsShell />

@@ -98,32 +98,29 @@ export function NotificationsSettingsPanel() {
 
   return (
     <div className="space-y-10">
-      <div className="sticky top-0 z-20 flex flex-col gap-3 rounded-2xl border border-emerald-100 bg-white/95 p-4 shadow-sm backdrop-blur">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nastavení akce</p>
-            <h2 className="text-xl font-semibold text-foreground">Notifikace</h2>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" className="gap-2" onClick={testWebhook}>
-              <Webhook className="h-4 w-4" />
-              Test webhook
-            </Button>
-            <Button
-              onClick={handleSave}
-              disabled={isSaving}
-              className="min-w-[140px] gap-2 bg-emerald-600 text-white hover:bg-emerald-500"
-            >
-              {isSaving ? <BellRing className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-              {isSaving ? "Ukládám..." : "Uložit"}
-            </Button>
+      {/* Simple Header */}
+      <div className="flex items-center justify-between pb-4 border-b">
+        <div className="flex items-center gap-3">
+          <h2 className="text-xl font-semibold text-foreground">Notifikace</h2>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span className={cn("h-2 w-2 rounded-full", hasChanges ? "bg-amber-500" : "bg-emerald-500")} />
+            <span className="text-xs">{hasChanges ? "Neuloženo" : "Uloženo"}</span>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-4 text-sm">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <span className={cn("h-2.5 w-2.5 rounded-full", hasChanges ? "bg-amber-500" : "bg-emerald-500")} />
-            {hasChanges ? "Máte neuložené změny" : "Všechny změny jsou uložené"}
-          </div>
+        <div className="flex gap-2">
+          <Button variant="outline" className="gap-2" onClick={testWebhook} size="sm">
+            <Webhook className="h-4 w-4" />
+            Test
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="gap-2 bg-emerald-600 text-white hover:bg-emerald-500"
+            size="sm"
+          >
+            {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {isSaving ? "Ukládám..." : "Uložit"}
+          </Button>
         </div>
       </div>
 

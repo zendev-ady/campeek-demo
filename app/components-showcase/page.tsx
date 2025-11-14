@@ -54,7 +54,7 @@ export default function CampeekDesignSystem() {
   const [modalOpen, setModalOpen] = React.useState(false)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-900 to-emerald-950 text-white p-8 md:p-16">
+    <div className="dark min-h-screen bg-gradient-to-br from-emerald-900 to-emerald-950 text-white p-8 md:p-16">
       {/* Grid Background */}
       <div className="fixed inset-0 opacity-[0.03] pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -298,32 +298,32 @@ export default function CampeekDesignSystem() {
           <p className="text-white/60 mb-10">Notification and feedback messages</p>
 
           <div className="space-y-4">
-            <Alert className="glass-alert border-emerald-500/30">
-              <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+            <Alert variant="success">
+              <CheckCircle2 className="h-5 w-5" />
               <div>
                 <h4 className="font-semibold text-emerald-500 mb-1">Úspěšně uloženo</h4>
                 <p className="text-sm text-white/70">Vaše změny byly úspěšně uloženy do systému.</p>
               </div>
             </Alert>
 
-            <Alert className="glass-alert border-red-500/30">
-              <XCircle className="h-5 w-5 text-red-500" />
+            <Alert variant="error">
+              <XCircle className="h-5 w-5" />
               <div>
                 <h4 className="font-semibold text-red-500 mb-1">Chyba při ukládání</h4>
                 <p className="text-sm text-white/70">Něco se pokazilo. Zkuste to prosím znovu.</p>
               </div>
             </Alert>
 
-            <Alert className="glass-alert border-amber-500/30">
-              <AlertTriangle className="h-5 w-5 text-amber-500" />
+            <Alert variant="warning">
+              <AlertTriangle className="h-5 w-5" />
               <div>
                 <h4 className="font-semibold text-amber-500 mb-1">Upozornění</h4>
                 <p className="text-sm text-white/70">Tato akce vyžaduje vaši pozornost.</p>
               </div>
             </Alert>
 
-            <Alert className="glass-alert border-blue-500/30">
-              <Info className="h-5 w-5 text-blue-500" />
+            <Alert variant="info">
+              <Info className="h-5 w-5" />
               <div>
                 <h4 className="font-semibold text-blue-500 mb-1">Informace</h4>
                 <p className="text-sm text-white/70">Nová aktualizace je k dispozici.</p>

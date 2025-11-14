@@ -222,10 +222,7 @@
 @layer components {
   /* Gradient Text */
   .gradient-text {
-    background: linear-gradient(180deg, #ffffff 30%, #059669 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    @apply text-emerald-50;
   }
 
   /* Glass Card */
@@ -317,7 +314,8 @@
   }
 
   /* Glass Skeleton */
-  .glass-skeleton {
+  .glass-skeleton,
+  .skeleton-loading {
     @apply bg-gradient-to-r from-white/5 via-white/10 to-white/5;
     background-size: 200% 100%;
     animation: shimmer-skeleton 2s ease-in-out infinite;

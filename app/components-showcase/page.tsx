@@ -136,7 +136,7 @@ export default function CampeekDesignSystem() {
           <p className="text-white/60 mb-10">Glassmorphic card components with optimized blur</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="glass-card p-8 hover:scale-[1.02] transition-transform">
+            <Card variant="glass" className=" p-8 hover:scale-[1.02] transition-transform">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 border border-emerald-400/30 flex items-center justify-center mb-6">
                 <Calendar className="w-7 h-7 text-emerald-400" />
               </div>
@@ -146,7 +146,7 @@ export default function CampeekDesignSystem() {
               </p>
             </Card>
 
-            <Card className="glass-card p-8 hover:scale-[1.02] transition-transform">
+            <Card variant="glass" className=" p-8 hover:scale-[1.02] transition-transform">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 border border-emerald-400/30 flex items-center justify-center mb-6">
                 <Users className="w-7 h-7 text-emerald-400" />
               </div>
@@ -156,7 +156,7 @@ export default function CampeekDesignSystem() {
               </p>
             </Card>
 
-            <Card className="glass-card p-8 hover:scale-[1.02] transition-transform">
+            <Card variant="glass" className=" p-8 hover:scale-[1.02] transition-transform">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 border border-emerald-400/30 flex items-center justify-center mb-6">
                 <Star className="w-7 h-7 text-emerald-400" />
               </div>
@@ -342,7 +342,7 @@ export default function CampeekDesignSystem() {
 
           {/* Status & Priority Showcase */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="glass-card p-6">
+            <Card variant="glass" className=" p-6">
               <h4 className="text-lg font-semibold mb-4">Statusy</h4>
               <div className="space-y-3">
                 <StatusBadge status="pending">Čeká na schválení</StatusBadge>
@@ -352,7 +352,7 @@ export default function CampeekDesignSystem() {
               </div>
             </Card>
 
-            <Card className="glass-card p-6">
+            <Card variant="glass" className=" p-6">
               <h4 className="text-lg font-semibold mb-4">Priority</h4>
               <div className="space-y-3">
                 <PriorityBadge priority="high">High Priority</PriorityBadge>
@@ -361,7 +361,7 @@ export default function CampeekDesignSystem() {
               </div>
             </Card>
 
-            <Card className="glass-card p-6">
+            <Card variant="glass" className=" p-6">
               <h4 className="text-lg font-semibold mb-4">Akční tlačítka</h4>
               <div className="flex gap-2 mb-3">
                 <ActionButton action="view" title="Zobrazit">
@@ -574,14 +574,14 @@ export default function CampeekDesignSystem() {
           <p className="text-white/60 mb-10">Skeleton screens for better perceived performance</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="glass-card p-6">
+            <Card variant="glass" className=" p-6">
               <Skeleton className="h-6 w-3/5 mb-4 glass-skeleton" />
               <Skeleton className="h-4 w-full mb-2 glass-skeleton" />
               <Skeleton className="h-4 w-full mb-2 glass-skeleton" />
               <Skeleton className="h-4 w-4/5 glass-skeleton" />
             </Card>
 
-            <Card className="glass-card p-6">
+            <Card variant="glass" className=" p-6">
               <Skeleton className="h-6 w-3/5 mb-4 glass-skeleton" />
               <Skeleton className="h-4 w-full mb-2 glass-skeleton" />
               <Skeleton className="h-4 w-full mb-2 glass-skeleton" />
@@ -595,7 +595,7 @@ export default function CampeekDesignSystem() {
           <h2 className="text-3xl md:text-4xl font-bold mb-2 gradient-text">Typography Scale</h2>
           <p className="text-white/60 mb-10">8px-based font scale using Outfit typeface</p>
 
-          <Card className="glass-card p-10">
+          <Card variant="glass" className=" p-10">
             <div className="space-y-6">
               <h1 className="text-7xl font-bold gradient-text">Display 1</h1>
               <h2 className="text-6xl font-bold text-emerald-400">Display 2</h2>
@@ -667,12 +667,12 @@ function ButtonShowcase({ variant, label }: { variant: string; label: string }) 
     <div className="glass-card p-8 text-center">
       <p className="text-sm text-white/60 uppercase tracking-wider mb-6 font-medium">{label}</p>
       <div className="space-y-4 flex flex-col items-center">
-        <Button className={`btn-${variant}`}>Normal</Button>
-        <Button className={`btn-${variant}`} disabled>Disabled</Button>
+        <button className={`btn btn-${variant}`}>Normal</button>
+        <button className={`btn btn-${variant}`} disabled>Disabled</button>
         {variant === 'primary' && (
-          <Button className={`btn-${variant}`} disabled>
-            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          </Button>
+          <button className={`btn btn-${variant} btn-loading`} disabled>
+            Loading
+          </button>
         )}
       </div>
     </div>

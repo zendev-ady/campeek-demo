@@ -1,54 +1,44 @@
 import * as React from 'react'
+import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import { cn } from '@/lib/utils'
 
-// Simple Tooltip Component (CSS-based, no Radix UI)
-interface TooltipProps {
-  content: string
-  children: React.ReactNode
-  position?: 'top' | 'bottom' | 'left' | 'right'
-  className?: string
-}
-
-function TooltipSimple({
-  content,
+export function TooltipSimple({
   children,
-  position = 'top',
+  content,
+  side = 'top',
   className,
-}: TooltipProps) {
+}: {
+  children: React.ReactNode
+  content: React.ReactNode
+  side?: 'top' | 'right' | 'bottom' | 'left'
+  className?: string
+}) {
   return (
-    <div className={cn('relative inline-block group', className)}>
-      {children}
-      <div
-        className={cn(
-          'absolute z-50 px-3 py-1.5 text-xs font-medium text-white',
-          'bg-black/90 backdrop-blur-md rounded-md whitespace-nowrap',
-          'opacity-0 invisible group-hover:opacity-100 group-hover:visible',
-          'transition-all duration-150 pointer-events-none',
-          {
-            'bottom-full left-1/2 -translate-x-1/2 mb-2': position === 'top',
-            'top-full left-1/2 -translate-x-1/2 mt-2': position === 'bottom',
-            'right-full top-1/2 -translate-y-1/2 mr-2': position === 'left',
-            'left-full top-1/2 -translate-y-1/2 ml-2': position === 'right',
-          }
-        )}
-        role="tooltip"
-      >
-        {content}
-        {/* Arrow */}
-        <div
-          className={cn(
-            'absolute w-0 h-0 border-4 border-transparent',
-            {
-              'top-full left-1/2 -translate-x-1/2 border-t-black/90': position === 'top',
-              'bottom-full left-1/2 -translate-x-1/2 border-b-black/90': position === 'bottom',
-              'top-1/2 left-full -translate-y-1/2 border-l-black/90': position === 'left',
-              'top-1/2 right-full -translate-y-1/2 border-r-black/90': position === 'right',
-            }
-          )}
-        />
-      </div>
-    </div>
+    <TooltipPrimitive.Provider delayDuration={200}>
+      <TooltipPrimitive.Root>
+        <TooltipPrimitive.Trigger asChild>
+          {children}
+        </TooltipPrimitive.Trigger>
+        <TooltipPrimitive.Portal>
+          <TooltipPrimitive.Content
+            side={side}
+            sideOffset={8}
+            className={cn(
+              "z-50 overflow-hidden rounded-lg bg-black/90 backdrop-blur-xl px-3 py-1.5 text-xs text-white shadow-lg",
+              "animate-in fade-in-0 zoom-in-95",
+              "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+              "data-[side=bottom]:slide-in-from-top-2",
+              "data-[side=left]:slide-in-from-right-2",
+              "data-[side=right]:slide-in-from-left-2",
+              "data-[side=top]:slide-in-from-bottom-2",
+              className
+            )}
+          >
+            {content}
+            <TooltipPrimitive.Arrow className="fill-black/90" />
+          </TooltipPrimitive.Content>
+        </TooltipPrimitive.Portal>
+      </TooltipPrimitive.Root>
+    </TooltipPrimitive.Provider>
   )
 }
-
-export { TooltipSimple }

@@ -161,6 +161,26 @@
 }
 
 @layer base {
+  :root {
+    /* Emerald colors */
+    --emerald-300: 110 231 183;
+    --emerald-400: 52 211 153;
+    --emerald-500: 16 185 129;
+    --emerald-600: 5 150 105;
+    --emerald-900: 6 78 59;
+    --emerald-950: 2 44 34;
+
+    /* Glass effects */
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-bg-hover: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(5, 150, 105, 0.2);
+    --glass-border-hover: rgba(5, 150, 105, 0.4);
+
+    /* Shadows */
+    --shadow-emerald-md: 0 10px 30px rgba(5, 150, 105, 0.2);
+    --shadow-emerald-lg: 0 20px 50px rgba(5, 150, 105, 0.3);
+  }
+
   /* FONT UTILITY CLASSES */
   .font-outfit {
     font-family: var(--font-outfit);
@@ -173,6 +193,7 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Outfit', sans-serif;
   }
 
   /* TYPOGRAPHY HIERARCHY */
@@ -207,376 +228,168 @@ body {
   color: theme("colors.foreground");
 }
 
-/* ========================================
-   COMPONENT-SPECIFIC STYLES
-   ======================================== */
-
-/* Hero Gradient Background */
-.hero-gradient {
-  @apply bg-gray-100;
-}
-
-/* Header Card with Emerald Theme */
-.header-card {
-  @apply bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-2xl shadow-xl shadow-emerald-900/20;
-}
-
-/* Light Feature Card */
-.feature-card-light {
-  @apply bg-white rounded-3xl shadow-xl;
-}
-
-/* Dark Feature Card with Emerald */
-.feature-card-dark {
-  @apply bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-2xl hover:shadow-2xl hover:shadow-emerald-900/30 transition-all;
-}
-
-/* CTA Button - Primary */
-.btn-primary {
-  @apply bg-gradient-to-br from-emerald-600 to-emerald-800 text-emerald-50 px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:shadow-emerald-900/30 transition-all;
-}
-
-/* CTA Button - Secondary */
-.btn-secondary {
-  @apply bg-gray-100 text-emerald-800 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all border-2 border-emerald-200;
-}
-
-/* Pricing Card - Standard */
-.pricing-card {
-  @apply bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-2xl p-8 shadow-xl;
-}
-
-/* Pricing Card - Highlighted (Popular) */
-.pricing-card-featured {
-  @apply bg-gradient-to-br from-emerald-600 to-emerald-800 shadow-2xl shadow-emerald-900/40 md:scale-105;
-}
-
-/* Badge - Emerald theme */
-.badge-emerald {
-  @apply bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-xs font-semibold;
-}
-
-/* Dashboard Sidebar */
-.sidebar-campeek {
-  @apply w-64 border-r bg-white flex flex-col;
-}
-
-/* Nav Item - Active State */
-.nav-item-active {
-  @apply bg-emerald-50 text-emerald-900 font-medium;
-}
-
-/* Footer Section */
-.footer-section {
-  @apply bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-3xl p-16 text-emerald-50 shadow-2xl;
-}
-
-/* ========================================
-   GLASSMORPHISM UTILITY CLASSES
-   ======================================== */
-
-/* Glass Card Base */
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur-amount));
-  border: 1px solid var(--glass-border);
-  transition: var(--transition-all);
-}
-
-.glass-card:hover {
-  background: var(--glass-bg-hover);
-  border-color: var(--glass-border-hover);
-  box-shadow: var(--shadow-md);
-}
-
-/* Glass Card Variants */
-.glass-card-light {
-  background: var(--glass-bg-light);
-  backdrop-filter: blur(var(--blur-amount));
-  border: 1px solid var(--glass-border-light);
-}
-
-.glass-card-strong {
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(var(--blur-amount-lg));
-  border: 1px solid var(--glass-border-strong);
-}
-
-/* Glass Button */
-.glass-button {
-  background: var(--gradient-glass-emerald);
-  backdrop-filter: blur(var(--blur-amount));
-  border: 1px solid var(--glass-border);
-  transition: var(--transition-all);
-}
-
-.glass-button:hover {
-  background: linear-gradient(135deg, rgba(5, 150, 105, 0.5) 0%, rgba(6, 78, 59, 0.5) 100%);
-  border-color: var(--glass-border-hover);
-  transform: translateY(-2px);
-}
-
-/* Glass Modal Overlay */
-.glass-overlay {
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
-}
-
-/* ========================================
-   GRADIENT TEXT UTILITIES
-   ======================================== */
-
-.gradient-text-primary {
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.gradient-text-emerald {
-  background: linear-gradient(180deg, #ffffff 10%, #059669 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ========================================
-   SHADOW UTILITIES
-   ======================================== */
-
-.shadow-emerald-sm {
-  box-shadow: var(--shadow-sm);
-}
-
-.shadow-emerald-md {
-  box-shadow: var(--shadow-md);
-}
-
-.shadow-emerald-lg {
-  box-shadow: var(--shadow-lg);
-}
-
-.shadow-emerald-xl {
-  box-shadow: var(--shadow-xl);
-}
-
-.shadow-focus-ring {
-  box-shadow: var(--shadow-focus);
-}
-
-/* ========================================
-   LOADING & SKELETON UTILITIES
-   ======================================== */
-
-.skeleton-loading {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.05) 25%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.05) 75%
-  );
-  background-size: 200% 100%;
-  animation: skeleton-shimmer 1.5s infinite;
-}
-
-@keyframes skeleton-shimmer {
-  0% {
-    background-position: 200% 0;
+@layer components {
+  /* Gradient Text */
+  .gradient-text {
+    background: linear-gradient(180deg, #ffffff 30%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  100% {
-    background-position: -200% 0;
+
+  /* Glass Card */
+  .glass-card {
+    @apply bg-white/[0.04] backdrop-blur-2xl border border-white/10;
+    @apply transition-all duration-300;
+  }
+
+  .glass-card:hover {
+    @apply bg-white/[0.06] border-emerald-500/40 shadow-lg shadow-emerald-500/20;
+  }
+
+  /* Glass Input */
+  .glass-input {
+    @apply bg-white/5 border border-emerald-500/30 rounded-xl;
+    @apply text-white placeholder:text-white/40;
+    @apply transition-all duration-300;
+    @apply focus:border-emerald-400 focus:bg-white/[0.08] focus:ring-4 focus:ring-emerald-500/20;
+  }
+
+  /* Glass Progress */
+  .glass-progress {
+    @apply h-3 bg-white/5 rounded-full overflow-hidden;
+  }
+
+  .glass-progress > div {
+    @apply bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full relative overflow-hidden;
+  }
+
+  .glass-progress > div::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Glass Tabs */
+  .glass-tabs-list {
+    @apply bg-transparent border-b border-white/10 rounded-none p-0;
+  }
+
+  .glass-tab {
+    @apply bg-transparent border-b-2 border-transparent rounded-none;
+    @apply text-white/60 font-semibold transition-all duration-200;
+    @apply hover:text-white/90;
+    @apply data-[state=active]:text-emerald-400 data-[state=active]:border-emerald-400;
+  }
+
+  /* Glass Badge Variants */
+  .glass-badge {
+    @apply bg-white/5 backdrop-blur-2xl border border-emerald-500/30 text-emerald-400;
+    @apply text-xs font-semibold px-3 py-1 rounded-full;
+  }
+
+  .glass-badge-outline {
+    @apply bg-transparent border border-emerald-400 text-emerald-400;
+    @apply text-xs font-semibold px-3 py-1 rounded-full;
+  }
+
+  .glass-badge-primary {
+    @apply bg-gradient-to-br from-emerald-400 to-emerald-600 text-white border-0;
+    @apply text-xs font-semibold px-3 py-1 rounded-full;
+  }
+
+  /* Glass Alert */
+  .glass-alert {
+    @apply bg-white/[0.04] backdrop-blur-2xl border rounded-2xl p-4;
+    @apply flex items-start gap-3;
+  }
+
+  /* Glass Modal */
+  .glass-modal {
+    @apply bg-white/[0.04] backdrop-blur-3xl border border-white/10;
+    @apply rounded-3xl p-6;
+  }
+
+  /* Glass Overlay */
+  .glass-overlay {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Glass Skeleton */
+  .glass-skeleton {
+    @apply bg-gradient-to-r from-white/5 via-white/10 to-white/5;
+    @apply bg-[length:200%_100%] animate-shimmer-skeleton;
+  }
+
+  @keyframes shimmer-skeleton {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Button Variants */
+  .btn-primary {
+    @apply bg-gradient-to-br from-emerald-600 to-emerald-900;
+    @apply border border-emerald-400/30 text-white font-semibold;
+    @apply shadow-lg shadow-emerald-500/30;
+    @apply transition-all duration-300;
+    @apply hover:-translate-y-0.5 hover:shadow-xl hover:shadow-emerald-500/40;
+    @apply active:translate-y-0;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply bg-white/5 backdrop-blur-2xl;
+    @apply border border-white/20 text-white font-semibold;
+    @apply transition-all duration-300;
+    @apply hover:bg-white/10 hover:border-emerald-400/40;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-glass {
+    @apply bg-gradient-to-br from-emerald-600/30 to-emerald-900/30;
+    @apply border border-emerald-400/50 backdrop-blur-2xl text-white font-semibold;
+    @apply transition-all duration-300;
+    @apply hover:from-emerald-600/50 hover:to-emerald-900/50 hover:-translate-y-0.5;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0;
+  }
+
+  .btn-outline {
+    @apply bg-transparent border-2 border-emerald-400 text-emerald-400 font-semibold;
+    @apply transition-all duration-300;
+    @apply hover:bg-emerald-400/10 hover:-translate-y-0.5;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0;
   }
 }
 
-.spinner-loading {
-  border: 2px solid currentColor;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+@layer utilities {
+  /* Custom scrollbar for webkit browsers */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-2 h-2;
   }
-}
 
-.animate-shimmer {
-  animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-white/5 rounded-full;
   }
-  100% {
-    transform: translateX(100%);
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-emerald-500/50 rounded-full;
   }
-}
 
-/* ========================================
-   STATUS BADGE UTILITIES
-   ======================================== */
-
-.badge-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: var(--border-radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  white-space: nowrap;
-}
-
-.badge-status::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.badge-status-pending {
-  background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.badge-status-pending::before {
-  background: #fbbf24;
-}
-
-.badge-status-approved {
-  background: rgba(16, 185, 129, 0.15);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.badge-status-approved::before {
-  background: #34d399;
-}
-
-.badge-status-rejected {
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-.badge-status-rejected::before {
-  background: #f87171;
-}
-
-.badge-status-review {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.3);
-}
-
-.badge-status-review::before {
-  background: #60a5fa;
-}
-
-/* ========================================
-   PRIORITY BADGE UTILITIES
-   ======================================== */
-
-.badge-priority {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.badge-priority-high {
-  background: rgba(239, 68, 68, 0.2);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.4);
-}
-
-.badge-priority-medium {
-  background: rgba(245, 158, 11, 0.2);
-  color: #fcd34d;
-  border: 1px solid rgba(245, 158, 11, 0.4);
-}
-
-.badge-priority-low {
-  background: rgba(59, 130, 246, 0.2);
-  color: #93c5fd;
-  border: 1px solid rgba(59, 130, 246, 0.4);
-}
-
-/* ========================================
-   TRANSITION UTILITIES
-   ======================================== */
-
-.transition-fast {
-  transition: var(--transition-fast);
-}
-
-.transition-base {
-  transition: var(--transition-base);
-}
-
-.transition-slow {
-  transition: var(--transition-slow);
-}
-
-/* ========================================
-   ACCESSIBILITY UTILITIES
-   ======================================== */
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-/* Focus visible for keyboard navigation */
-*:focus-visible {
-  outline: 2px solid var(--color-primary-light);
-  outline-offset: 2px;
-}
-
-/* ========================================
-   SPACING UTILITIES
-   Using Design System 8px Grid
-   ======================================== */
-
-.space-xs {
-  padding: var(--space-xs);
-}
-
-.space-sm {
-  padding: var(--space-sm);
-}
-
-.space-md {
-  padding: var(--space-md);
-}
-
-.space-lg {
-  padding: var(--space-lg);
-}
-
-.space-xl {
-  padding: var(--space-xl);
-}
-
-.space-2xl {
-  padding: var(--space-2xl);
-}
-
-.space-3xl {
-  padding: var(--space-3xl);
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-emerald-500/70;
+  }
 }

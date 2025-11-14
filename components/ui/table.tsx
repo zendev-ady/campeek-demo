@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 // Main Table Container with Glass Effect
@@ -97,18 +98,14 @@ const TableBody = React.forwardRef<
 ))
 TableBody.displayName = 'TableBody'
 
-// Table Footer
-const TableFooter = React.forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(({ className, ...props }, ref) => (
-  <tfoot
-    ref={ref}
-    className={cn('border-t bg-muted/50 font-medium', className)}
-    {...props}
-  />
-))
-TableFooter.displayName = 'TableFooter'
+// Table Footer (div wrapper, not tfoot element)
+function TableFooter({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={cn("p-4 border-t border-white/10 flex justify-between items-center flex-wrap gap-4", className)}>
+      {children}
+    </div>
+  )
+}
 
 // Table Row
 const TableRow = React.forwardRef<
@@ -128,15 +125,20 @@ const TableRow = React.forwardRef<
 TableRow.displayName = 'TableRow'
 
 // Table Header Cell
+interface TableHeaderCellProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  align?: 'left' | 'center' | 'right'
+}
+
 const TableHeaderCell = React.forwardRef<
   HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
+  TableHeaderCellProps
+>(({ className, align = 'left', ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
-      'px-6 py-3 text-left align-middle font-semibold text-xs text-foreground/70',
-      'uppercase tracking-wider border-b border-white/10',
+      'px-6 py-4 text-left text-sm font-semibold text-white/70 uppercase tracking-wider border-b border-white/10',
+      align === 'center' && 'text-center',
+      align === 'right' && 'text-right',
       className
     )}
     {...props}
@@ -145,13 +147,22 @@ const TableHeaderCell = React.forwardRef<
 TableHeaderCell.displayName = 'TableHeaderCell'
 
 // Table Cell
+interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
+  align?: 'left' | 'center' | 'right'
+}
+
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
-  React.TdHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
+  TableCellProps
+>(({ className, align = 'left', ...props }, ref) => (
   <td
     ref={ref}
-    className={cn('px-6 py-4 align-middle text-sm text-foreground/85', className)}
+    className={cn(
+      'px-6 py-4 text-white/85',
+      align === 'center' && 'text-center',
+      align === 'right' && 'text-right',
+      className
+    )}
     {...props}
   />
 ))
@@ -170,90 +181,73 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = 'TableCaption'
 
-// Table Pagination Footer
-interface TablePaginationProps extends React.HTMLAttributes<HTMLDivElement> {
-  currentPage?: number
-  totalPages?: number
-  totalItems?: number
-  itemsPerPage?: number
-  onPageChange?: (page: number) => void
-}
-
-function TablePagination({
-  className,
-  currentPage = 1,
-  totalPages = 1,
-  totalItems,
-  itemsPerPage,
-  onPageChange,
-  ...props
-}: TablePaginationProps) {
-  const startItem = (currentPage - 1) * (itemsPerPage || 0) + 1
-  const endItem = Math.min(currentPage * (itemsPerPage || 0), totalItems || 0)
+// Table Pagination
+function TablePagination({ className }: { className?: string }) {
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const totalPages = 10
 
   return (
-    <div
-      className={cn(
-        'px-6 py-4 border-t border-white/10 flex justify-between items-center',
-        className
-      )}
-      {...props}
-    >
-      <div className="text-sm text-foreground/60">
-        {totalItems && itemsPerPage && (
-          <>Zobrazeno {startItem}-{endItem} z {totalItems} záznamů</>
+    <div className={cn("flex gap-2", className)}>
+      <button
+        disabled={currentPage === 1}
+        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+        className="w-8 h-8 inline-flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/70 text-sm font-semibold transition-all hover:bg-white/10 hover:border-emerald-500/40 hover:text-emerald-400 disabled:opacity-30 disabled:cursor-not-allowed"
+      >
+        <ChevronLeft className="w-4 h-4" />
+      </button>
+
+      <button
+        onClick={() => setCurrentPage(1)}
+        className={cn(
+          "w-8 h-8 inline-flex items-center justify-center rounded-lg border text-sm font-semibold transition-all",
+          currentPage === 1
+            ? "bg-emerald-600 border-emerald-600 text-white"
+            : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-emerald-500/40 hover:text-emerald-400"
         )}
-      </div>
-      <div className="flex gap-2">
-        <button
-          onClick={() => onPageChange?.(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={cn(
-            'w-8 h-8 flex items-center justify-center',
-            'bg-white/5 border border-white/10 rounded-md',
-            'transition-all hover:bg-white/10 hover:border-emerald-400/40',
-            'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/5'
-          )}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
+      >
+        1
+      </button>
 
-        {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-          const page = i + 1
-          return (
-            <button
-              key={page}
-              onClick={() => onPageChange?.(page)}
-              className={cn(
-                'w-8 h-8 flex items-center justify-center text-sm font-semibold',
-                'border rounded-md transition-all',
-                page === currentPage
-                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                  : 'bg-white/5 border-white/10 text-foreground/70 hover:bg-white/10 hover:border-emerald-400/40 hover:text-emerald-400'
-              )}
-            >
-              {page}
-            </button>
-          )
-        })}
+      <button
+        onClick={() => setCurrentPage(2)}
+        className={cn(
+          "w-8 h-8 inline-flex items-center justify-center rounded-lg border text-sm font-semibold transition-all",
+          currentPage === 2
+            ? "bg-emerald-600 border-emerald-600 text-white"
+            : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-emerald-500/40 hover:text-emerald-400"
+        )}
+      >
+        2
+      </button>
 
-        <button
-          onClick={() => onPageChange?.(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={cn(
-            'w-8 h-8 flex items-center justify-center',
-            'bg-white/5 border border-white/10 rounded-md',
-            'transition-all hover:bg-white/10 hover:border-emerald-400/40',
-            'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/5'
-          )}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-      </div>
+      <button
+        onClick={() => setCurrentPage(3)}
+        className={cn(
+          "w-8 h-8 inline-flex items-center justify-center rounded-lg border text-sm font-semibold transition-all",
+          currentPage === 3
+            ? "bg-emerald-600 border-emerald-600 text-white"
+            : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-emerald-500/40 hover:text-emerald-400"
+        )}
+      >
+        3
+      </button>
+
+      <div className="w-8 h-8 inline-flex items-center justify-center text-white/50 text-sm">...</div>
+
+      <button
+        onClick={() => setCurrentPage(totalPages)}
+        className="w-8 h-8 inline-flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/70 text-sm font-semibold transition-all hover:bg-white/10 hover:border-emerald-500/40 hover:text-emerald-400"
+      >
+        {totalPages}
+      </button>
+
+      <button
+        disabled={currentPage === totalPages}
+        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+        className="w-8 h-8 inline-flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/70 text-sm font-semibold transition-all hover:bg-white/10 hover:border-emerald-500/40 hover:text-emerald-400 disabled:opacity-30 disabled:cursor-not-allowed"
+      >
+        <ChevronRight className="w-4 h-4" />
+      </button>
     </div>
   )
 }
@@ -286,54 +280,49 @@ function PriorityBadge({ priority, children }: PriorityBadgeProps) {
   )
 }
 
-// Action Buttons Component
-interface TableActionsProps {
-  onView?: () => void
-  onEdit?: () => void
-  onDelete?: () => void
-  className?: string
+// Table Actions Container
+export function TableActions({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={cn("flex gap-2 justify-end", className)}>
+      {children}
+    </div>
+  )
 }
 
-function TableActions({ onView, onEdit, onDelete, className }: TableActionsProps) {
+// Action Button
+export function ActionButton({
+  action,
+  title,
+  children,
+  className,
+  onClick
+}: {
+  action: 'view' | 'edit' | 'delete';
+  title?: string;
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}) {
+  const actionStyles = {
+    view: "hover:bg-blue-500/20 hover:border-blue-500/40 hover:text-blue-400",
+    edit: "hover:bg-emerald-500/20 hover:border-emerald-500/40 hover:text-emerald-400",
+    delete: "hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-400",
+  }
+
   return (
-    <div className={cn('flex gap-2 justify-end', className)}>
-      {onView && (
-        <button
-          onClick={onView}
-          className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded-md transition-all hover:bg-blue-500/20 hover:border-blue-500/40 group"
-          title="Zobrazit detail"
-        >
-          <svg className="w-4 h-4 stroke-foreground/60 group-hover:stroke-blue-400 transition-colors" viewBox="0 0 24 24" fill="none" strokeWidth="2">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        </button>
+    <button
+      title={title}
+      onClick={onClick}
+      className={cn(
+        "w-8 h-8 inline-flex items-center justify-center rounded-lg",
+        "bg-white/5 border border-white/10 text-white/60",
+        "transition-all hover:-translate-y-0.5",
+        actionStyles[action],
+        className
       )}
-      {onEdit && (
-        <button
-          onClick={onEdit}
-          className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded-md transition-all hover:bg-emerald-500/20 hover:border-emerald-500/40 group"
-          title="Upravit"
-        >
-          <svg className="w-4 h-4 stroke-foreground/60 group-hover:stroke-emerald-400 transition-colors" viewBox="0 0 24 24" fill="none" strokeWidth="2">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-          </svg>
-        </button>
-      )}
-      {onDelete && (
-        <button
-          onClick={onDelete}
-          className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded-md transition-all hover:bg-red-500/20 hover:border-red-500/40 group"
-          title="Smazat"
-        >
-          <svg className="w-4 h-4 stroke-foreground/60 group-hover:stroke-red-400 transition-colors" viewBox="0 0 24 24" fill="none" strokeWidth="2">
-            <polyline points="3 6 5 6 21 6"></polyline>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-          </svg>
-        </button>
-      )}
-    </div>
+    >
+      {children}
+    </button>
   )
 }
 
@@ -353,4 +342,5 @@ export {
   StatusBadge,
   PriorityBadge,
   TableActions,
+  ActionButton,
 }

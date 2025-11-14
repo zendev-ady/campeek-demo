@@ -22,7 +22,7 @@ export default function EventSettingsPage({ params }: { params: Promise<{ id: st
 
   if (!resolvedId) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+      <div className="flex min-h-[40vh] items-center justify-center text-white/60">
         Načítám nastavení akce...
       </div>
     )
@@ -40,11 +40,11 @@ function EventSettingsPageClient({ eventId }: { eventId: string }) {
       <div className="space-y-6">
         <div className="flex items-center gap-4">
           <Link href="/dashboard">
-            <Button variant="ghost" size="icon">
+            <button className="inline-flex items-center justify-center h-10 w-10 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors">
               <ArrowLeft className="h-5 w-5" />
-            </Button>
+            </button>
           </Link>
-          <h2 className="text-3xl font-bold">Akce nenalezena</h2>
+          <h2 className="text-3xl font-bold text-white">Akce nenalezena</h2>
         </div>
       </div>
     )
@@ -57,24 +57,24 @@ function EventSettingsPageClient({ eventId }: { eventId: string }) {
         {/* Back Button + Breadcrumb */}
         <div className="flex items-center gap-4">
           <Link href={`/dashboard/events/${event.id}`}>
-            <Button variant="ghost" size="icon" className="h-9 w-9">
+            <button className="inline-flex items-center justify-center h-9 w-9 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors">
               <ArrowLeft className="h-5 w-5" />
-            </Button>
+            </button>
           </Link>
           <div className="flex items-center gap-2 text-sm">
-            <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+            <Link href="/dashboard" className="text-white/60 hover:text-white transition-colors font-medium">
               Dashboard
             </Link>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            <Link href="/dashboard/events" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+            <ChevronRight className="h-4 w-4 text-white/60" />
+            <Link href="/dashboard/events" className="text-white/60 hover:text-white transition-colors font-medium">
               Akce
             </Link>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            <Link href={`/dashboard/events/${event.id}`} className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+            <ChevronRight className="h-4 w-4 text-white/60" />
+            <Link href={`/dashboard/events/${event.id}`} className="text-white/60 hover:text-white transition-colors font-medium">
               {event.name}
             </Link>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            <span className="text-foreground font-semibold">Nastavení</span>
+            <ChevronRight className="h-4 w-4 text-white/60" />
+            <span className="text-white font-semibold">Nastavení</span>
           </div>
         </div>
       </div>

@@ -20,12 +20,12 @@ export function SettingsTabsCard({ activeTab, onTabChange, children }: SettingsT
     <div className="space-y-6">
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Nastavení</h1>
-        <p className="text-muted-foreground">Konfigurace a správa nastavení akce</p>
+        <h1 className="text-3xl font-bold tracking-tight text-white">Nastavení</h1>
+        <p className="text-white/60">Konfigurace a správa nastavení akce</p>
       </div>
 
       {/* Tab Navigation - Sidebar Style */}
-      <nav className="border-b border-border">
+      <nav className="border-b border-white/10">
         <div className="flex gap-1 -mb-px">
           {tabs.map((tab) => {
             const Icon = tab.icon
@@ -38,11 +38,11 @@ export function SettingsTabsCard({ activeTab, onTabChange, children }: SettingsT
                 className={cn(
                   "flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors rounded-t-lg border-b-2",
                   isActive
-                    ? "text-emerald-700 border-emerald-600 bg-emerald-50/50"
-                    : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/50",
+                    ? "text-white border-emerald-400 bg-white/10"
+                    : "text-white/60 border-transparent hover:text-white hover:bg-white/5",
                 )}
               >
-                <Icon className={cn("h-4 w-4", isActive ? "text-emerald-600" : "text-muted-foreground")} />
+                <Icon className={cn("h-4 w-4", isActive ? "text-emerald-400" : "text-white/60")} />
                 <span>{tab.label}</span>
               </button>
             )
@@ -51,12 +51,12 @@ export function SettingsTabsCard({ activeTab, onTabChange, children }: SettingsT
       </nav>
 
       {/* Tab Content */}
-      <Card>
+      <Card variant="glass">
         <CardContent className="p-6">
           {children ? (
-            <div className="space-y-10 text-foreground">{children}</div>
+            <div className="space-y-10 text-white">{children}</div>
           ) : (
-            <div className="text-center py-12 text-muted-foreground">
+            <div className="text-center py-12 text-white/60">
               Modul {activeLabel.toLowerCase()} je zatím v přípravě.
             </div>
           )}

@@ -12,19 +12,19 @@ type EventModulePlaceholderProps = {
 
 export function EventModulePlaceholder({ title, description, message, Icon }: EventModulePlaceholderProps) {
   return (
-    <Card>
+    <Card variant="glass">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Icon className="h-5 w-5 text-emerald-600" />
+        <CardTitle className="flex items-center gap-2 text-white">
+          <Icon className="h-5 w-5 text-emerald-400" />
           {title}
         </CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription className="text-white/70">{description}</CardDescription>
       </CardHeader>
       <CardContent className="py-12 text-center">
-        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-          <Icon className="h-8 w-8 text-muted-foreground" />
+        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/5">
+          <Icon className="h-8 w-8 text-emerald-400" />
         </div>
-        <p className="text-muted-foreground">{message}</p>
+        <p className="text-white/60">{message}</p>
       </CardContent>
     </Card>
   )

@@ -22,7 +22,7 @@ export default function EventPaymentsPage({ params }: { params: Promise<{ id: st
 
   if (!resolvedId) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+      <div className="flex min-h-[40vh] items-center justify-center text-white/60">
         Načítám sekci plateb...
       </div>
     )
@@ -40,11 +40,11 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
       <div className="space-y-6">
         <div className="flex items-center gap-4">
           <Link href="/dashboard">
-            <Button variant="ghost" size="icon">
+            <button className="inline-flex items-center justify-center h-10 w-10 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors">
               <ArrowLeft className="h-5 w-5" />
-            </Button>
+            </button>
           </Link>
-          <h2 className="text-3xl font-bold">Akce nenalezena</h2>
+          <h2 className="text-3xl font-bold text-white">Akce nenalezena</h2>
         </div>
       </div>
     )
@@ -54,14 +54,14 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm text-muted-foreground">Platby · {event.name}</p>
-          <h1 className="text-3xl font-bold tracking-tight">Správa plateb</h1>
+          <p className="text-sm text-white/60">Platby · {event.name}</p>
+          <h1 className="text-3xl font-bold tracking-tight text-white">Správa plateb</h1>
         </div>
         <Link href={`/dashboard/events/${event.id}`}>
-          <Button variant="ghost" className="gap-2">
+          <button className="btn btn-secondary gap-2">
             <ArrowLeft className="h-4 w-4" />
             Zpět na přehled akce
-          </Button>
+          </button>
         </Link>
       </div>
 

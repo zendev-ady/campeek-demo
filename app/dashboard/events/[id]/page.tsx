@@ -36,7 +36,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
   if (!resolvedId) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+      <div className="flex min-h-[40vh] items-center justify-center text-white/60">
         Načítám detail akce...
       </div>
     )
@@ -83,14 +83,14 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
       <div className="space-y-6">
         <div className="flex items-center gap-4">
           <Link href="/dashboard">
-            <Button variant="ghost" size="icon">
+            <button className="inline-flex items-center justify-center h-10 w-10 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors">
               <ArrowLeft className="h-5 w-5" />
-            </Button>
+            </button>
           </Link>
-          <h2 className="text-3xl font-bold">Akce nenalezena</h2>
+          <h2 className="text-3xl font-bold text-white">Akce nenalezena</h2>
         </div>
-        <Card>
-          <CardContent className="text-center py-12 text-muted-foreground">
+        <Card variant="glass">
+          <CardContent className="text-center py-12 text-white/60">
             Požadovaná akce nebyla nalezena.
           </CardContent>
         </Card>
@@ -165,40 +165,36 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
       <div className="space-y-4">
         <div className="flex items-center gap-4">
           <Link href="/dashboard">
-            <Button variant="ghost" size="icon">
+            <button className="inline-flex items-center justify-center h-10 w-10 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors">
               <ArrowLeft className="h-5 w-5" />
-            </Button>
+            </button>
           </Link>
           <div className="flex-1">
-            <h1 className="text-3xl font-bold tracking-tight">{event.name}</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-3xl font-bold tracking-tight text-white">{event.name}</h1>
+            <p className="text-white/60">
               {new Date(event.startDate).toLocaleDateString("cs-CZ")} -{" "}
               {new Date(event.endDate).toLocaleDateString("cs-CZ")}
             </p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={handleDuplicate} className="gap-2 bg-transparent">
+            <button onClick={handleDuplicate} className="btn btn-secondary text-sm">
               <Duplicate className="h-4 w-4" />
               Duplikovat
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+            </button>
+            <button
               onClick={() => setIsEditing(!isEditing)}
-              className="gap-2"
+              className="btn btn-secondary text-sm"
             >
               <EditIcon className="h-4 w-4" />
               {isEditing ? "Zrušit" : "Upravit"}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+            </button>
+            <button
               onClick={handleDelete}
-              className="gap-2 text-destructive hover:text-destructive bg-transparent"
+              className="btn btn-outline text-sm text-red-400 border-red-400/30 hover:bg-red-500/10"
             >
               <Trash2 className="h-4 w-4" />
               Smazat
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -206,10 +202,10 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
 
       {isEditing ? (
         <form onSubmit={handleSubmit}>
-          <Card>
+          <Card variant="glass">
             <CardHeader>
-              <CardTitle>Informace o akci</CardTitle>
-              <CardDescription>Základní údaje o vaší akci nebo táboře</CardDescription>
+              <CardTitle className="text-white">Informace o akci</CardTitle>
+              <CardDescription className="text-white/70">Základní údaje o vaší akci nebo táboře</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
@@ -315,12 +311,12 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
               </div>
 
               <div className="flex gap-2 pt-4">
-                <Button type="submit" disabled={isLoading}>
+                <button type="submit" disabled={isLoading} className="btn btn-primary">
                   {isLoading ? "Ukládání..." : "Uložit změny"}
-                </Button>
-                <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>
+                </button>
+                <button type="button" onClick={() => setIsEditing(false)} className="btn btn-secondary">
                   Zrušit
-                </Button>
+                </button>
               </div>
             </CardContent>
           </Card>
@@ -330,83 +326,83 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
           {/* Metrics Tiles */}
           <div className="grid gap-4 sm:grid-cols-2">
             {/* Occupancy Tile */}
-            <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200">
+            <Card variant="glass">
               <CardHeader>
-                <CardTitle className="text-emerald-900">Naplnění tábora</CardTitle>
+                <CardTitle className="text-white">Naplnění tábora</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between items-baseline">
-                    <span className="text-3xl font-bold text-emerald-900">{mockRegistrations}</span>
-                    <span className="text-emerald-700">z {capacity} míst</span>
+                    <span className="text-3xl font-bold gradient-text">{mockRegistrations}</span>
+                    <span className="text-white/70">z {capacity} míst</span>
                   </div>
-                  <div className="w-full bg-emerald-200 rounded-full h-3">
+                  <div className="w-full bg-white/10 rounded-full h-3">
                     <div
-                      className="bg-emerald-600 h-3 rounded-full transition-all"
+                      className="bg-gradient-to-r from-emerald-400 to-emerald-600 h-3 rounded-full transition-all"
                       style={{ width: `${occupancyPercent}%` }}
                     />
                   </div>
-                  <p className="text-sm text-emerald-700 font-medium">{occupancyPercent}% naplnění</p>
+                  <p className="text-sm text-emerald-400 font-medium">{occupancyPercent}% naplnění</p>
                 </div>
               </CardContent>
             </Card>
 
             {/* Financial Tile */}
-            <Card className="bg-gradient-to-br from-emerald-800 to-emerald-900 border-emerald-700">
+            <Card variant="glass">
               <CardHeader>
-                <CardTitle className="text-emerald-100">Finanční přehled</CardTitle>
+                <CardTitle className="text-white">Finanční přehled</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between items-baseline">
-                    <span className="text-3xl font-bold text-emerald-100">{paidAmount.toLocaleString()} Kč</span>
-                    <span className="text-emerald-300">z {totalAmount.toLocaleString()} Kč</span>
+                    <span className="text-3xl font-bold gradient-text">{paidAmount.toLocaleString()} Kč</span>
+                    <span className="text-white/70">z {totalAmount.toLocaleString()} Kč</span>
                   </div>
-                  <div className="w-full bg-emerald-700 rounded-full h-3">
+                  <div className="w-full bg-white/10 rounded-full h-3">
                     <div
-                      className="bg-emerald-300 h-3 rounded-full transition-all"
+                      className="bg-gradient-to-r from-emerald-400 to-emerald-600 h-3 rounded-full transition-all"
                       style={{ width: `${paidPercent}%` }}
                     />
                   </div>
-                  <p className="text-sm text-emerald-300 font-medium">{paidPercent}% zaplaceno</p>
+                  <p className="text-sm text-emerald-400 font-medium">{paidPercent}% zaplaceno</p>
                 </div>
               </CardContent>
             </Card>
           </div>
 
           {/* Basic Info Card */}
-          <Card>
+          <Card variant="glass">
             <CardHeader>
-              <CardTitle>Základní informace</CardTitle>
+              <CardTitle className="text-white">Základní informace</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Název akce</p>
-                  <p className="text-lg font-semibold">{event.name}</p>
+                  <p className="text-sm font-medium text-white/60">Název akce</p>
+                  <p className="text-lg font-semibold text-white">{event.name}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Termín (od–do)</p>
-                  <p className="text-lg font-semibold">
+                  <p className="text-sm font-medium text-white/60">Termín (od–do)</p>
+                  <p className="text-lg font-semibold text-white">
                     {new Date(event.startDate).toLocaleDateString("cs-CZ")} -{" "}
                     {new Date(event.endDate).toLocaleDateString("cs-CZ")}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Místo konání</p>
-                  <p className="text-lg font-semibold">{event.location}</p>
+                  <p className="text-sm font-medium text-white/60">Místo konání</p>
+                  <p className="text-lg font-semibold text-white">{event.location}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Cena za účastníka</p>
-                  <p className="text-lg font-semibold">{event.price} Kč</p>
+                  <p className="text-sm font-medium text-white/60">Cena za účastníka</p>
+                  <p className="text-lg font-semibold text-white">{event.price} Kč</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Kapacita</p>
-                  <p className="text-lg font-semibold">{event.capacity} míst</p>
+                  <p className="text-sm font-medium text-white/60">Kapacita</p>
+                  <p className="text-lg font-semibold text-white">{event.capacity} míst</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Věkové kategorie</p>
-                  <p className="text-lg font-semibold">
+                  <p className="text-sm font-medium text-white/60">Věkové kategorie</p>
+                  <p className="text-lg font-semibold text-white">
                     {event.ageMin || "bez limitu"} - {event.ageMax || "bez limitu"} let
                   </p>
                 </div>
@@ -415,35 +411,37 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
           </Card>
 
           {/* Registration Link Alert */}
-          <Alert>
-            <AlertDescription className="flex items-center justify-between gap-4">
-              <div className="flex-1">
-                <p className="font-medium mb-1">Registrační odkaz</p>
-                <p className="text-sm text-muted-foreground break-all">{registrationUrl}</p>
+          <Card variant="glass">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex-1">
+                  <p className="font-medium mb-1 text-white">Registrační odkaz</p>
+                  <p className="text-sm text-white/60 break-all">{registrationUrl}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={copyRegistrationLink} className="btn btn-secondary text-sm">
+                    {copied ? <CheckCircle2 className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
+                    {copied ? "Zkopírováno" : "Kopírovat"}
+                  </button>
+                  <Link href={registrationUrl} target="_blank">
+                    <button className="btn btn-secondary text-sm">
+                      <ExternalLink className="h-4 w-4" />
+                      Otevřít
+                    </button>
+                  </Link>
+                </div>
               </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={copyRegistrationLink}>
-                  {copied ? <CheckCircle2 className="h-4 w-4 mr-2" /> : <CopyIcon className="h-4 w-4 mr-2" />}
-                  {copied ? "Zkopírováno" : "Kopírovat"}
-                </Button>
-                <Link href={registrationUrl} target="_blank">
-                  <Button variant="outline" size="sm">
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Otevřít
-                  </Button>
-                </Link>
-              </div>
-            </AlertDescription>
-          </Alert>
+            </CardContent>
+          </Card>
 
           {/* Description Card */}
           {event.description && (
-            <Card>
+            <Card variant="glass">
               <CardHeader>
-                <CardTitle>Popis</CardTitle>
+                <CardTitle className="text-white">Popis</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">{event.description}</p>
+                <p className="text-white/70">{event.description}</p>
               </CardContent>
             </Card>
           )}

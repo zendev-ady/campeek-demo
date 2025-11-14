@@ -384,10 +384,10 @@ export default function CampeekDesignSystem() {
           <TableContainer>
             <TableHeader>
               <h3 className="text-xl font-bold">Přihlášky účastníků</h3>
-              <Button className="btn-primary">
-                <Plus className="w-4 h-4 mr-2" />
+              <button className="btn btn-primary">
+                <Plus className="w-4 h-4" />
                 Přidat novou
-              </Button>
+              </button>
             </TableHeader>
 
             <TableWrapper>
@@ -547,7 +547,7 @@ export default function CampeekDesignSystem() {
 
           <Dialog open={modalOpen} onOpenChange={setModalOpen}>
             <DialogTrigger asChild>
-              <Button className="btn-primary">Otevřít Modal</Button>
+              <button className="btn btn-primary">Otevřít Modal</button>
             </DialogTrigger>
             <DialogContent className="glass-modal">
               <DialogHeader>
@@ -557,12 +557,12 @@ export default function CampeekDesignSystem() {
                 <p>Toto je příklad modálního okna. Můžete jej použít pro důležité akce, formuláře nebo potvrzovací dialogy.</p>
               </div>
               <DialogFooter>
-                <Button variant="secondary" onClick={() => setModalOpen(false)} className="btn-secondary">
+                <button onClick={() => setModalOpen(false)} className="btn btn-secondary">
                   Zrušit
-                </Button>
-                <Button onClick={() => setModalOpen(false)} className="btn-primary">
+                </button>
+                <button onClick={() => setModalOpen(false)} className="btn btn-primary">
                   Potvrdit
-                </Button>
+                </button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
@@ -618,15 +618,15 @@ export default function CampeekDesignSystem() {
 
           <div className="flex gap-4 flex-wrap">
             <TooltipSimple content="Toto je tooltip">
-              <Button className="btn-secondary">Najetím myší</Button>
+              <button className="btn btn-secondary">Najetím myší</button>
             </TooltipSimple>
 
             <TooltipSimple content="Zobrazit více informací">
-              <Button className="btn-primary">Informace</Button>
+              <button className="btn btn-primary">Informace</button>
             </TooltipSimple>
 
             <TooltipSimple content="Pomocný text zde">
-              <Button className="btn-outline">Nápověda</Button>
+              <button className="btn btn-outline">Nápověda</button>
             </TooltipSimple>
           </div>
         </section>

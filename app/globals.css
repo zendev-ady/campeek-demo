@@ -376,94 +376,63 @@ body {
 
   /* Status Badges */
   .badge-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    white-space: nowrap;
-    border-width: 1px;
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full;
+    @apply text-xs font-semibold whitespace-nowrap border;
   }
 
   .badge-status::before {
     content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    display: inline-block;
+    @apply w-1.5 h-1.5 rounded-full inline-block;
   }
 
   .badge-status-pending {
-    background: rgba(245, 158, 11, 0.15);
-    color: #fbbf24;
-    border-color: rgba(245, 158, 11, 0.3);
+    @apply bg-amber-500/15 text-amber-400 border-amber-500/30;
   }
 
   .badge-status-pending::before {
-    background: #fbbf24;
+    @apply bg-amber-400;
   }
 
   .badge-status-approved {
-    background: rgba(16, 185, 129, 0.15);
-    color: #34d399;
-    border-color: rgba(16, 185, 129, 0.3);
+    @apply bg-emerald-500/15 text-emerald-400 border-emerald-500/30;
   }
 
   .badge-status-approved::before {
-    background: #34d399;
+    @apply bg-emerald-400;
   }
 
   .badge-status-rejected {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border-color: rgba(239, 68, 68, 0.3);
+    @apply bg-red-500/15 text-red-400 border-red-500/30;
   }
 
   .badge-status-rejected::before {
-    background: #f87171;
+    @apply bg-red-400;
   }
 
   .badge-status-review {
-    background: rgba(59, 130, 246, 0.15);
-    color: #60a5fa;
-    border-color: rgba(59, 130, 246, 0.3);
+    @apply bg-blue-500/15 text-blue-400 border-blue-500/30;
   }
 
   .badge-status-review::before {
-    background: #60a5fa;
+    @apply bg-blue-400;
   }
 
   /* Priority Badges */
   .badge-priority {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-width: 1px;
+    @apply inline-flex items-center px-2.5 py-1 rounded-md;
+    @apply text-xs font-semibold uppercase tracking-wide border;
   }
 
   .badge-priority-high {
-    background: rgba(239, 68, 68, 0.2);
-    color: #fca5a5;
-    border-color: rgba(239, 68, 68, 0.4);
+    @apply bg-red-500/20 text-red-300 border-red-500/40;
   }
 
   .badge-priority-medium {
-    background: rgba(245, 158, 11, 0.2);
-    color: #fcd34d;
-    border-color: rgba(245, 158, 11, 0.4);
+    @apply bg-amber-500/20 text-amber-300 border-amber-500/40;
   }
 
   .badge-priority-low {
-    background: rgba(59, 130, 246, 0.2);
-    color: #93c5fd;
-    border-color: rgba(59, 130, 246, 0.4);
+    @apply bg-blue-500/20 text-blue-300 border-blue-500/40;
   }
 }
 

@@ -1,6 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../styles/design-tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -268,4 +269,301 @@ body {
 /* Footer Section */
 .footer-section {
   @apply bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-3xl p-16 text-emerald-50 shadow-2xl;
+}
+
+/* ========================================
+   GLASSMORPHISM UTILITY CLASSES
+   ======================================== */
+
+/* Glass Card Base */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--glass-border);
+  transition: var(--transition-all);
+}
+
+.glass-card:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* Glass Card Variants */
+.glass-card-light {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--glass-border-light);
+}
+
+.glass-card-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--blur-amount-lg));
+  border: 1px solid var(--glass-border-strong);
+}
+
+/* Glass Button */
+.glass-button {
+  background: var(--gradient-glass-emerald);
+  backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--glass-border);
+  transition: var(--transition-all);
+}
+
+.glass-button:hover {
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.5) 0%, rgba(6, 78, 59, 0.5) 100%);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+}
+
+/* Glass Modal Overlay */
+.glass-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+/* ========================================
+   GRADIENT TEXT UTILITIES
+   ======================================== */
+
+.gradient-text-primary {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-emerald {
+  background: linear-gradient(180deg, #ffffff 10%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========================================
+   SHADOW UTILITIES
+   ======================================== */
+
+.shadow-emerald-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-emerald-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-emerald-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-emerald-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+.shadow-focus-ring {
+  box-shadow: var(--shadow-focus);
+}
+
+/* ========================================
+   LOADING & SKELETON UTILITIES
+   ======================================== */
+
+.skeleton-loading {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.spinner-loading {
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   STATUS BADGE UTILITIES
+   ======================================== */
+
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.badge-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.badge-status-pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-status-pending::before {
+  background: #fbbf24;
+}
+
+.badge-status-approved {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-status-approved::before {
+  background: #34d399;
+}
+
+.badge-status-rejected {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-status-rejected::before {
+  background: #f87171;
+}
+
+.badge-status-review {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.badge-status-review::before {
+  background: #60a5fa;
+}
+
+/* ========================================
+   PRIORITY BADGE UTILITIES
+   ======================================== */
+
+.badge-priority {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-priority-high {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.badge-priority-medium {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.badge-priority-low {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+/* ========================================
+   TRANSITION UTILITIES
+   ======================================== */
+
+.transition-fast {
+  transition: var(--transition-fast);
+}
+
+.transition-base {
+  transition: var(--transition-base);
+}
+
+.transition-slow {
+  transition: var(--transition-slow);
+}
+
+/* ========================================
+   ACCESSIBILITY UTILITIES
+   ======================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   SPACING UTILITIES
+   Using Design System 8px Grid
+   ======================================== */
+
+.space-xs {
+  padding: var(--space-xs);
+}
+
+.space-sm {
+  padding: var(--space-sm);
+}
+
+.space-md {
+  padding: var(--space-md);
+}
+
+.space-lg {
+  padding: var(--space-lg);
+}
+
+.space-xl {
+  padding: var(--space-xl);
+}
+
+.space-2xl {
+  padding: var(--space-2xl);
+}
+
+.space-3xl {
+  padding: var(--space-3xl);
 }

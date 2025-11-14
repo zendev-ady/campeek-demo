@@ -180,8 +180,8 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
           ))}
         </div>
         <div className="mt-3">
-          <h3 className="font-semibold text-base">{STEPS[currentStep - 1].title}</h3>
-          <p className="text-sm text-muted-foreground mt-1">{STEPS[currentStep - 1].description}</p>
+          <h3 className="font-semibold text-base text-white">{STEPS[currentStep - 1].title}</h3>
+          <p className="text-sm text-white/60 mt-1">{STEPS[currentStep - 1].description}</p>
         </div>
       </div>
 
@@ -197,9 +197,10 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="name">Název akce *</Label>
+              <Label htmlFor="name" className="text-white">Název akce *</Label>
               <Input
                 id="name"
+                variant="glass"
                 placeholder="např. Letní tábor 2025"
                 value={formData.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
@@ -207,9 +208,10 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Popis</Label>
+              <Label htmlFor="description" className="text-white">Popis</Label>
               <Textarea
                 id="description"
+                variant="glass"
                 placeholder="Popis akce"
                 rows={3}
                 value={formData.description}
@@ -219,19 +221,21 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="startDate">Datum začátku *</Label>
+                <Label htmlFor="startDate" className="text-white">Datum začátku *</Label>
                 <Input
                   id="startDate"
                   type="date"
+                  variant="glass"
                   value={formData.startDate}
                   onChange={(e) => handleInputChange("startDate", e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="endDate">Datum konce *</Label>
+                <Label htmlFor="endDate" className="text-white">Datum konce *</Label>
                 <Input
                   id="endDate"
                   type="date"
+                  variant="glass"
                   value={formData.endDate}
                   onChange={(e) => handleInputChange("endDate", e.target.value)}
                 />
@@ -239,9 +243,10 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Místo konání *</Label>
+              <Label htmlFor="location" className="text-white">Místo konání *</Label>
               <Input
                 id="location"
+                variant="glass"
                 placeholder="např. Tábor u Sázavy"
                 value={formData.location}
                 onChange={(e) => handleInputChange("location", e.target.value)}
@@ -250,10 +255,11 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
 
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="capacity">Kapacita</Label>
+                <Label htmlFor="capacity" className="text-white">Kapacita</Label>
                 <Input
                   id="capacity"
                   type="number"
+                  variant="glass"
                   min="1"
                   placeholder="50"
                   value={formData.capacity}
@@ -261,10 +267,11 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="ageMin">Minimální věk</Label>
+                <Label htmlFor="ageMin" className="text-white">Minimální věk</Label>
                 <Input
                   id="ageMin"
                   type="number"
+                  variant="glass"
                   min="0"
                   placeholder="6"
                   value={formData.ageMin}
@@ -272,10 +279,11 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="ageMax">Maximální věk</Label>
+                <Label htmlFor="ageMax" className="text-white">Maximální věk</Label>
                 <Input
                   id="ageMax"
                   type="number"
+                  variant="glass"
                   min="0"
                   placeholder="15"
                   value={formData.ageMax}
@@ -319,10 +327,11 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="price">Cena (Kč) *</Label>
+              <Label htmlFor="price" className="text-white">Cena (Kč) *</Label>
               <Input
                 id="price"
                 type="number"
+                variant="glass"
                 min="0"
                 step="0.01"
                 placeholder="5000"
@@ -338,19 +347,20 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                   checked={formData.allowInstallments}
                   onCheckedChange={(checked) => handleInputChange("allowInstallments", checked)}
                 />
-                <label htmlFor="allowInstallments" className="text-sm cursor-pointer font-medium">
+                <label htmlFor="allowInstallments" className="text-sm cursor-pointer font-medium text-white">
                   Povolit platbu na zálohu + doplatek
                 </label>
               </div>
 
               {formData.allowInstallments && (
-                <div className="space-y-4 mt-4 p-4 bg-blue-50 rounded-lg">
+                <div className="space-y-4 mt-4 p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="depositAmount">Výše zálohy (Kč)</Label>
+                      <Label htmlFor="depositAmount" className="text-white">Výše zálohy (Kč)</Label>
                       <Input
                         id="depositAmount"
                         type="number"
+                        variant="glass"
                         min="0"
                         step="0.01"
                         placeholder="2500"
@@ -359,10 +369,11 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="finalPaymentAmount">Výše doplatku (Kč)</Label>
+                      <Label htmlFor="finalPaymentAmount" className="text-white">Výše doplatku (Kč)</Label>
                       <Input
                         id="finalPaymentAmount"
                         type="number"
+                        variant="glass"
                         min="0"
                         step="0.01"
                         placeholder="2500"
@@ -373,19 +384,21 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="depositDueDate">Splatnost zálohy</Label>
+                      <Label htmlFor="depositDueDate" className="text-white">Splatnost zálohy</Label>
                       <Input
                         id="depositDueDate"
                         type="date"
+                        variant="glass"
                         value={formData.depositDueDate}
                         onChange={(e) => handleInputChange("depositDueDate", e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="finalPaymentDueDate">Splatnost doplatku</Label>
+                      <Label htmlFor="finalPaymentDueDate" className="text-white">Splatnost doplatku</Label>
                       <Input
                         id="finalPaymentDueDate"
                         type="date"
+                        variant="glass"
                         value={formData.finalPaymentDueDate}
                         onChange={(e) => handleInputChange("finalPaymentDueDate", e.target.value)}
                       />
@@ -396,10 +409,11 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
 
               {!formData.allowInstallments && (
                 <div className="space-y-2 mt-4">
-                  <Label htmlFor="paymentDueDate">Datum splatnosti</Label>
+                  <Label htmlFor="paymentDueDate" className="text-white">Datum splatnosti</Label>
                   <Input
                     id="paymentDueDate"
                     type="date"
+                    variant="glass"
                     value={formData.paymentDueDate}
                     onChange={(e) => handleInputChange("paymentDueDate", e.target.value)}
                   />
@@ -408,7 +422,7 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="space-y-3 border-t pt-4">
-              <Label className="text-base font-medium">Způsob platby</Label>
+              <Label className="text-base font-medium text-white">Způsob platby</Label>
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
                   <Checkbox
@@ -416,7 +430,7 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                     checked={formData.paymentMethods.includes("transfer")}
                     onCheckedChange={() => handlePaymentMethodToggle("transfer")}
                   />
-                  <label htmlFor="transfer" className="text-sm cursor-pointer">
+                  <label htmlFor="transfer" className="text-sm cursor-pointer text-white">
                     Bankovní převod
                   </label>
                 </div>
@@ -426,7 +440,7 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                     checked={formData.paymentMethods.includes("cash")}
                     onCheckedChange={() => handlePaymentMethodToggle("cash")}
                   />
-                  <label htmlFor="cash" className="text-sm cursor-pointer">
+                  <label htmlFor="cash" className="text-sm cursor-pointer text-white">
                     Hotově na místě
                   </label>
                 </div>
@@ -434,9 +448,10 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
 
               {formData.paymentMethods.includes("transfer") && (
                 <div className="space-y-2 mt-4">
-                  <Label htmlFor="bankAccount">Číslo účtu</Label>
+                  <Label htmlFor="bankAccount" className="text-white">Číslo účtu</Label>
                   <Input
                     id="bankAccount"
+                    variant="glass"
                     placeholder="Ponechat jako výchozí"
                     value={formData.bankAccount}
                     onChange={(e) => handleInputChange("bankAccount", e.target.value)}
@@ -456,19 +471,21 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="registrationStartDate">Zahájení sboru přihlášek</Label>
+                <Label htmlFor="registrationStartDate" className="text-white">Zahájení sboru přihlášek</Label>
                 <Input
                   id="registrationStartDate"
                   type="date"
+                  variant="glass"
                   value={formData.registrationStartDate}
                   onChange={(e) => handleInputChange("registrationStartDate", e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="registrationEndDate">Ukončení sboru přihlášek</Label>
+                <Label htmlFor="registrationEndDate" className="text-white">Ukončení sboru přihlášek</Label>
                 <Input
                   id="registrationEndDate"
                   type="date"
+                  variant="glass"
                   value={formData.registrationEndDate}
                   onChange={(e) => handleInputChange("registrationEndDate", e.target.value)}
                 />
@@ -482,12 +499,12 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                   checked={formData.allowDiscounts}
                   onCheckedChange={(checked) => handleInputChange("allowDiscounts", checked)}
                 />
-                <label htmlFor="allowDiscounts" className="text-sm cursor-pointer font-medium">
+                <label htmlFor="allowDiscounts" className="text-sm cursor-pointer font-medium text-white">
                   Povolit slevy
                 </label>
               </div>
               {formData.allowDiscounts && (
-                <p className="text-sm text-muted-foreground ml-6">Slevy bude možné spravovat po vytvoření akce</p>
+                <p className="text-sm text-white/60 ml-6">Slevy bude možné spravovat po vytvoření akce</p>
               )}
             </div>
 
@@ -498,12 +515,12 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                   checked={formData.allowDiscountCodes}
                   onCheckedChange={(checked) => handleInputChange("allowDiscountCodes", checked)}
                 />
-                <label htmlFor="allowDiscountCodes" className="text-sm cursor-pointer font-medium">
+                <label htmlFor="allowDiscountCodes" className="text-sm cursor-pointer font-medium text-white">
                   Povolit slevové kódy
                 </label>
               </div>
               {formData.allowDiscountCodes && (
-                <p className="text-sm text-muted-foreground ml-6">
+                <p className="text-sm text-white/60 ml-6">
                   Slevové kódy bude možné spravovat po vytvoření akce
                 </p>
               )}
@@ -519,10 +536,11 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="contactEmail">Kontaktní e-mail</Label>
+              <Label htmlFor="contactEmail" className="text-white">Kontaktní e-mail</Label>
               <Input
                 id="contactEmail"
                 type="email"
+                variant="glass"
                 placeholder="Ponechat jako výchozí"
                 value={formData.contactEmail}
                 onChange={(e) => handleInputChange("contactEmail", e.target.value)}
@@ -530,10 +548,11 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="contactPhone">Kontaktní telefon</Label>
+              <Label htmlFor="contactPhone" className="text-white">Kontaktní telefon</Label>
               <Input
                 id="contactPhone"
                 type="tel"
+                variant="glass"
                 placeholder="Ponechat jako výchozí"
                 value={formData.contactPhone}
                 onChange={(e) => handleInputChange("contactPhone", e.target.value)}
@@ -551,53 +570,53 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
 
             {/* Summary Cards */}
             <div className="space-y-4">
-              <Card>
+              <Card variant="glass">
                 <CardHeader>
-                  <CardTitle className="text-base">Základní informace</CardTitle>
+                  <CardTitle className="text-base text-white">Základní informace</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Název:</span>
-                    <span className="font-medium">{formData.name}</span>
+                    <span className="text-white/60">Název:</span>
+                    <span className="font-medium text-white">{formData.name}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Období:</span>
-                    <span className="font-medium">
+                    <span className="text-white/60">Období:</span>
+                    <span className="font-medium text-white">
                       {new Date(formData.startDate).toLocaleDateString("cs-CZ")} -{" "}
                       {new Date(formData.endDate).toLocaleDateString("cs-CZ")}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Místo:</span>
-                    <span className="font-medium">{formData.location}</span>
+                    <span className="text-white/60">Místo:</span>
+                    <span className="font-medium text-white">{formData.location}</span>
                   </div>
                   {formData.capacity && (
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Kapacita:</span>
-                      <span className="font-medium">{formData.capacity} osob</span>
+                      <span className="text-white/60">Kapacita:</span>
+                      <span className="font-medium text-white">{formData.capacity} osob</span>
                     </div>
                   )}
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card variant="glass">
                 <CardHeader>
-                  <CardTitle className="text-base">Ceny a platby</CardTitle>
+                  <CardTitle className="text-base text-white">Ceny a platby</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Cena:</span>
-                    <span className="font-medium">{Number(formData.price).toLocaleString("cs-CZ")} Kč</span>
+                    <span className="text-white/60">Cena:</span>
+                    <span className="font-medium text-white">{Number(formData.price).toLocaleString("cs-CZ")} Kč</span>
                   </div>
                   {formData.allowInstallments && (
                     <>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Záloha:</span>
-                        <span className="font-medium">{Number(formData.depositAmount).toLocaleString("cs-CZ")} Kč</span>
+                        <span className="text-white/60">Záloha:</span>
+                        <span className="font-medium text-white">{Number(formData.depositAmount).toLocaleString("cs-CZ")} Kč</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Doplatek:</span>
-                        <span className="font-medium">
+                        <span className="text-white/60">Doplatek:</span>
+                        <span className="font-medium text-white">
                           {Number(formData.finalPaymentAmount).toLocaleString("cs-CZ")} Kč
                         </span>
                       </div>

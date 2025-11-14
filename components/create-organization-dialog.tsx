@@ -52,9 +52,10 @@ export function CreateOrganizationDialog({ children }: { children: React.ReactNo
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Název organizace *</Label>
+              <Label htmlFor="name" className="text-white">Název organizace *</Label>
               <Input
                 id="name"
+                variant="glass"
                 placeholder="např. Letní tábory 2025"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -62,9 +63,10 @@ export function CreateOrganizationDialog({ children }: { children: React.ReactNo
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Popis (volitelné)</Label>
+              <Label htmlFor="description" className="text-white">Popis (volitelné)</Label>
               <Textarea
                 id="description"
+                variant="glass"
                 placeholder="Krátký popis vaší organizace"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}

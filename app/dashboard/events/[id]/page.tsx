@@ -210,9 +210,10 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="name">Název akce *</Label>
+                  <Label htmlFor="name" className="text-white">Název akce *</Label>
                   <Input
                     id="name"
+                    variant="glass"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
@@ -220,9 +221,10 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                 </div>
 
                 <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="description">Popis</Label>
+                  <Label htmlFor="description" className="text-white">Popis</Label>
                   <Textarea
                     id="description"
+                    variant="glass"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={4}
@@ -230,10 +232,11 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="startDate">Datum začátku *</Label>
+                  <Label htmlFor="startDate" className="text-white">Datum začátku *</Label>
                   <Input
                     id="startDate"
                     type="date"
+                    variant="glass"
                     value={formData.startDate}
                     onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                     required
@@ -241,10 +244,11 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="endDate">Datum konce *</Label>
+                  <Label htmlFor="endDate" className="text-white">Datum konce *</Label>
                   <Input
                     id="endDate"
                     type="date"
+                    variant="glass"
                     value={formData.endDate}
                     onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
                     required
@@ -252,9 +256,10 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                 </div>
 
                 <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="location">Místo konání *</Label>
+                  <Label htmlFor="location" className="text-white">Místo konání *</Label>
                   <Input
                     id="location"
+                    variant="glass"
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                     required
@@ -262,10 +267,11 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="capacity">Kapacita *</Label>
+                  <Label htmlFor="capacity" className="text-white">Kapacita *</Label>
                   <Input
                     id="capacity"
                     type="number"
+                    variant="glass"
                     min="1"
                     value={formData.capacity}
                     onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
@@ -274,10 +280,11 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="price">Cena (Kč) *</Label>
+                  <Label htmlFor="price" className="text-white">Cena (Kč) *</Label>
                   <Input
                     id="price"
                     type="number"
+                    variant="glass"
                     min="0"
                     step="0.01"
                     value={formData.price}
@@ -287,10 +294,11 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="ageMin">Minimální věk</Label>
+                  <Label htmlFor="ageMin" className="text-white">Minimální věk</Label>
                   <Input
                     id="ageMin"
                     type="number"
+                    variant="glass"
                     min="0"
                     value={formData.ageMin}
                     onChange={(e) => setFormData({ ...formData, ageMin: e.target.value })}
@@ -298,10 +306,11 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="ageMax">Maximální věk</Label>
+                  <Label htmlFor="ageMax" className="text-white">Maximální věk</Label>
                   <Input
                     id="ageMax"
                     type="number"
+                    variant="glass"
                     min="0"
                     value={formData.ageMax}
                     onChange={(e) => setFormData({ ...formData, ageMax: e.target.value })}

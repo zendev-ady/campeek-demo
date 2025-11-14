@@ -51,76 +51,63 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-emerald-900 to-emerald-950 text-white relative overflow-hidden">
-      {/* Grid Background Pattern */}
-      <div className="fixed inset-0 opacity-[0.03] pointer-events-none z-0">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(5, 150, 105, 0.5)" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
-
+    <div className="min-h-screen bg-white text-gray-900 relative overflow-hidden">
       {/* Content Container */}
       <div className="relative z-10">
-        {/* Header/Navigation - Glass Effect */}
-        <header className="sticky top-4 z-50 px-4 sm:px-6 max-w-7xl mx-auto">
-          <div className="glass-card px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Brand />
+        {/* Header/Navigation */}
+        <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Brand />
+              </div>
+              <nav className="hidden md:flex items-center gap-8">
+                <a href="#funkce" className="text-gray-600 hover:text-emerald-600 transition-colors font-medium">
+                  Funkce
+                </a>
+                <a href="#cenik" className="text-gray-600 hover:text-emerald-600 transition-colors font-medium">
+                  Ceník
+                </a>
+                <a href="#kontakt" className="text-gray-600 hover:text-emerald-600 transition-colors font-medium">
+                  Kontakt
+                </a>
+              </nav>
+              <Link href="/login" className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium">
+                Začít zdarma
+              </Link>
             </div>
-            <nav className="hidden md:flex items-center gap-8">
-              <a href="#funkce" className="text-white/80 hover:text-white transition-colors font-medium">
-                Funkce
-              </a>
-              <a href="#cenik" className="text-white/80 hover:text-white transition-colors font-medium">
-                Ceník
-              </a>
-              <a href="#kontakt" className="text-white/80 hover:text-white transition-colors font-medium">
-                Kontakt
-              </a>
-            </nav>
-            <Link href="/login" className="btn btn-primary">
-              Začít zdarma
-            </Link>
           </div>
         </header>
 
         {/* Hero Section */}
-        <section className="pt-16 pb-20 px-4 sm:px-6">
+        <section className="pt-16 pb-20 px-4 sm:px-6 bg-gradient-to-b from-emerald-50/50 to-white">
           <div className="max-w-7xl mx-auto">
-            <div className="glass-card p-12 sm:p-16 relative overflow-hidden">
-              {/* Subtle gradient overlay */}
-              <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial from-emerald-400/10 to-transparent rounded-full translate-x-1/3 -translate-y-1/3 blur-3xl"></div>
-
+            <div className="relative overflow-hidden">
               <div className="relative z-10 max-w-4xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 glass-badge mb-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-6">
                   <Zap className="w-4 h-4" />
                   Moderní řešení pro organizátory
                 </div>
 
                 <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                  <span className="gradient-text">Zjednodušte organizaci</span>
+                  <span className="text-emerald-600">Zjednodušte organizaci</span>
                   <br />
-                  <span className="text-white">dětských táborů a akcí</span>
+                  <span className="text-gray-900">dětských táborů a akcí</span>
                 </h1>
 
-                <p className="text-xl sm:text-2xl text-white/70 mb-10 leading-relaxed max-w-3xl mx-auto">
-                  Komplexní CRM systém spojující <span className="text-emerald-400 font-semibold">přírodu s technologií</span>.
+                <p className="text-xl sm:text-2xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto">
+                  Komplexní CRM systém spojující <span className="text-emerald-600 font-semibold">přírodu s technologií</span>.
                   Automatizujte registrace, platby a komunikaci na jednom místě.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-                  <Link href="/register" className="btn btn-primary text-lg">
+                  <Link href="/register" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium text-lg">
                     Vyzkoušet zdarma
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                   <button
                     onClick={handleDemoClick}
-                    className="btn btn-glass text-lg"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-emerald-600 border-2 border-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors font-medium text-lg"
                     disabled={isLoadingDemo}
                   >
                     {isLoadingDemo ? "Načítám demo..." : "Zobrazit demo"}
@@ -128,18 +115,18 @@ export default function LandingPage() {
                 </div>
 
                 {/* Stats Row */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-white/10">
-                  <div className="glass-card p-6">
-                    <div className="text-4xl font-bold gradient-text mb-2">500+</div>
-                    <div className="text-sm text-white/60">Organizátorů</div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-gray-200">
+                  <div className="bg-white border border-emerald-200 rounded-xl p-6 shadow-sm">
+                    <div className="text-4xl font-bold text-emerald-600 mb-2">500+</div>
+                    <div className="text-sm text-gray-600">Organizátorů</div>
                   </div>
-                  <div className="glass-card p-6">
-                    <div className="text-4xl font-bold gradient-text mb-2">15 000+</div>
-                    <div className="text-sm text-white/60">Účastníků</div>
+                  <div className="bg-white border border-emerald-200 rounded-xl p-6 shadow-sm">
+                    <div className="text-4xl font-bold text-emerald-600 mb-2">15 000+</div>
+                    <div className="text-sm text-gray-600">Účastníků</div>
                   </div>
-                  <div className="glass-card p-6">
-                    <div className="text-4xl font-bold gradient-text mb-2">98%</div>
-                    <div className="text-sm text-white/60">Spokojenost</div>
+                  <div className="bg-white border border-emerald-200 rounded-xl p-6 shadow-sm">
+                    <div className="text-4xl font-bold text-emerald-600 mb-2">98%</div>
+                    <div className="text-sm text-gray-600">Spokojenost</div>
                   </div>
                 </div>
               </div>
@@ -148,15 +135,15 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section id="funkce" className="py-20 px-4 sm:px-6">
+        <section id="funkce" className="py-20 px-4 sm:px-6 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-                <span className="gradient-text">Vše, co potřebujete</span>
+                <span className="text-emerald-600">Vše, co potřebujete</span>
                 <br />
-                <span className="text-white">na jednom místě</span>
+                <span className="text-gray-900">na jednom místě</span>
               </h2>
-              <p className="text-xl text-white/70">
+              <p className="text-xl text-gray-600">
                 Navrženo s ohledem na reálné potřeby organizátorů dětských akcí v České republice
               </p>
             </div>
@@ -211,13 +198,13 @@ export default function LandingPage() {
               ].map((feature, idx) => (
                 <div
                   key={idx}
-                  className="glass-card p-8 hover:scale-[1.02] transition-all cursor-pointer group"
+                  className="bg-gradient-to-br from-emerald-50 to-white border-2 border-emerald-200 rounded-xl p-8 hover:shadow-lg hover:border-emerald-300 transition-all cursor-pointer group"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 border border-emerald-400/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <feature.icon className="w-7 h-7 text-emerald-400" strokeWidth={2} />
+                  <div className="w-14 h-14 rounded-2xl bg-emerald-100 border border-emerald-300 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <feature.icon className="w-7 h-7 text-emerald-600" strokeWidth={2} />
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
-                  <p className="text-white/70 leading-relaxed">{feature.description}</p>
+                  <h3 className="text-xl font-bold mb-3 text-gray-900">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
                 </div>
               ))}
             </div>
@@ -225,13 +212,13 @@ export default function LandingPage() {
         </section>
 
         {/* Target Audience Section */}
-        <section className="py-20 px-4 sm:px-6">
+        <section className="py-20 px-4 sm:px-6 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-                <span className="gradient-text">Pro koho je Campeek určen?</span>
+                <span className="text-emerald-600">Pro koho je Campeek určen?</span>
               </h2>
-              <p className="text-xl text-white/70">
+              <p className="text-xl text-gray-600">
                 Pomáháme různým typům organizátorů zjednodušit jejich práci
               </p>
             </div>
@@ -259,13 +246,13 @@ export default function LandingPage() {
                   benefits: ["Hromadné přihlášky", "Export dat", "Integrace s třídními knihami"],
                 },
               ].map((segment, idx) => (
-                <div key={idx} className="glass-card p-8 hover:scale-[1.02] transition-all">
-                  <h3 className="text-2xl font-bold text-white mb-3">{segment.title}</h3>
-                  <p className="text-white/70 mb-6">{segment.description}</p>
+                <div key={idx} className="bg-white border-2 border-gray-200 rounded-xl p-8 hover:shadow-lg hover:border-emerald-200 transition-all">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{segment.title}</h3>
+                  <p className="text-gray-600 mb-6">{segment.description}</p>
                   <ul className="space-y-3">
                     {segment.benefits.map((benefit, bidx) => (
-                      <li key={bidx} className="flex items-start gap-3 text-white/80">
-                        <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-emerald-400" />
+                      <li key={bidx} className="flex items-start gap-3 text-gray-700">
+                        <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-emerald-600" />
                         <span>{benefit}</span>
                       </li>
                     ))}
@@ -277,13 +264,13 @@ export default function LandingPage() {
         </section>
 
         {/* Pricing Section */}
-        <section id="cenik" className="py-20 px-4 sm:px-6">
+        <section id="cenik" className="py-20 px-4 sm:px-6 bg-gradient-to-b from-emerald-50/30 to-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-                <span className="gradient-text">Transparentní ceník</span>
+                <span className="text-emerald-600">Transparentní ceník</span>
               </h2>
-              <p className="text-xl text-white/70">
+              <p className="text-xl text-gray-600">
                 Žádné skryté poplatky. Platíte jen za to, co skutečně používáte.
               </p>
             </div>
@@ -333,31 +320,31 @@ export default function LandingPage() {
               ].map((plan, idx) => (
                 <div
                   key={idx}
-                  className={`glass-card p-8 transition-all ${
-                    plan.highlighted ? "glass-card-strong md:scale-105 border-emerald-400/50" : ""
+                  className={`bg-white border-2 rounded-xl p-8 transition-all ${
+                    plan.highlighted ? "border-emerald-500 shadow-xl md:scale-105 ring-4 ring-emerald-100" : "border-gray-200 hover:border-emerald-200 hover:shadow-lg"
                   }`}
                 >
                   {plan.highlighted && (
-                    <div className="glass-badge-primary mb-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-4">
                       <Star className="w-3 h-3" />
                       Nejpopulárnější
                     </div>
                   )}
-                  <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
                   <div className="mb-4">
-                    <span className="text-4xl font-bold gradient-text">{plan.price}</span>
-                    {plan.period && <span className="text-white/60 ml-2">{plan.period}</span>}
+                    <span className="text-4xl font-bold text-emerald-600">{plan.price}</span>
+                    {plan.period && <span className="text-gray-500 ml-2">{plan.period}</span>}
                   </div>
-                  <p className="text-white/70 mb-6">{plan.description}</p>
+                  <p className="text-gray-600 mb-6">{plan.description}</p>
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, fidx) => (
-                      <li key={fidx} className="flex items-start gap-3 text-white/80">
-                        <CheckCircle className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <li key={fidx} className="flex items-start gap-3 text-gray-700">
+                        <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                         <span>{feature}</span>
                       </li>
                     ))}
                   </ul>
-                  <button className={plan.highlighted ? "btn btn-primary w-full" : "btn btn-secondary w-full"}>
+                  <button className={plan.highlighted ? "w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium" : "w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-emerald-600 border-2 border-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors font-medium"}>
                     {plan.cta}
                   </button>
                 </div>
@@ -367,23 +354,24 @@ export default function LandingPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-4 sm:px-6">
+        <section className="py-20 px-4 sm:px-6 bg-gradient-to-br from-emerald-600 to-emerald-700">
           <div className="max-w-4xl mx-auto">
-            <div className="glass-card-strong p-16 text-center relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-radial from-emerald-400/10 via-transparent to-transparent"></div>
+            <div className="p-16 text-center relative overflow-hidden">
               <div className="relative z-10">
-                <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-                  <span className="gradient-text">Připraveni zjednodušit organizaci?</span>
+                <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-white">
+                  Připraveni zjednodušit organizaci?
                 </h2>
-                <p className="text-xl text-white/70 mb-8">
+                <p className="text-xl text-emerald-50 mb-8">
                   Přidejte se ke stovkám spokojených organizátorů již dnes
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link href="/login" className="btn btn-primary text-lg">
+                  <Link href="/login" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors font-medium text-lg">
                     Začít zdarma
                     <ArrowRight className="w-5 h-5" />
                   </Link>
-                  <button className="btn btn-glass text-lg">Naplánovat demo</button>
+                  <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-emerald-700 text-white border-2 border-white/30 rounded-lg hover:bg-emerald-800 transition-colors font-medium text-lg">
+                    Naplánovat demo
+                  </button>
                 </div>
               </div>
             </div>
@@ -391,9 +379,9 @@ export default function LandingPage() {
         </section>
 
         {/* Footer */}
-        <footer id="kontakt" className="py-16 px-4 sm:px-6">
+        <footer id="kontakt" className="py-16 px-4 sm:px-6 bg-gray-50 border-t border-gray-200">
           <div className="max-w-7xl mx-auto">
-            <div className="glass-card p-16">
+            <div className="p-16">
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                 <div>
                   <div className="flex items-center gap-3 mb-4">
@@ -402,7 +390,7 @@ export default function LandingPage() {
                       height="32"
                       viewBox="0 0 24 24"
                       fill="none"
-                      className="stroke-emerald-400"
+                      className="stroke-emerald-600"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -412,82 +400,82 @@ export default function LandingPage() {
                       <path d="M15.5 21 12 15l-3.5 6" />
                       <path d="M2 21h20" />
                     </svg>
-                    <span className="text-2xl font-bold gradient-text">campeek</span>
+                    <span className="text-2xl font-bold text-emerald-600">campeek</span>
                   </div>
-                  <p className="text-white/60">Moderní CRM pro organizátory dětských akcí</p>
+                  <p className="text-gray-600">Moderní CRM pro organizátory dětských akcí</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-4 text-white">Produkt</h4>
-                  <ul className="space-y-2 text-white/70">
+                  <h4 className="font-semibold mb-4 text-gray-900">Produkt</h4>
+                  <ul className="space-y-2 text-gray-600">
                     <li>
-                      <a href="#funkce" className="hover:text-white transition-colors">
+                      <a href="#funkce" className="hover:text-emerald-600 transition-colors">
                         Funkce
                       </a>
                     </li>
                     <li>
-                      <a href="#cenik" className="hover:text-white transition-colors">
+                      <a href="#cenik" className="hover:text-emerald-600 transition-colors">
                         Ceník
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="hover:text-white transition-colors">
+                      <a href="#" className="hover:text-emerald-600 transition-colors">
                         Demo
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="hover:text-white transition-colors">
+                      <a href="#" className="hover:text-emerald-600 transition-colors">
                         Dokumentace
                       </a>
                     </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-4 text-white">Společnost</h4>
-                  <ul className="space-y-2 text-white/70">
+                  <h4 className="font-semibold mb-4 text-gray-900">Společnost</h4>
+                  <ul className="space-y-2 text-gray-600">
                     <li>
-                      <a href="#" className="hover:text-white transition-colors">
+                      <a href="#" className="hover:text-emerald-600 transition-colors">
                         O nás
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="hover:text-white transition-colors">
+                      <a href="#" className="hover:text-emerald-600 transition-colors">
                         Blog
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="hover:text-white transition-colors">
+                      <a href="#" className="hover:text-emerald-600 transition-colors">
                         Kariéra
                       </a>
                     </li>
                     <li>
-                      <a href="#kontakt" className="hover:text-white transition-colors">
+                      <a href="#kontakt" className="hover:text-emerald-600 transition-colors">
                         Kontakt
                       </a>
                     </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-4 text-white">Právní</h4>
-                  <ul className="space-y-2 text-white/70">
+                  <h4 className="font-semibold mb-4 text-gray-900">Právní</h4>
+                  <ul className="space-y-2 text-gray-600">
                     <li>
-                      <a href="#" className="hover:text-white transition-colors">
+                      <a href="#" className="hover:text-emerald-600 transition-colors">
                         Ochrana osobních údajů
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="hover:text-white transition-colors">
+                      <a href="#" className="hover:text-emerald-600 transition-colors">
                         Obchodní podmínky
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="hover:text-white transition-colors">
+                      <a href="#" className="hover:text-emerald-600 transition-colors">
                         GDPR
                       </a>
                     </li>
                   </ul>
                 </div>
               </div>
-              <div className="pt-8 border-t border-white/10 text-center text-white/60">
+              <div className="pt-8 border-t border-gray-200 text-center text-gray-600">
                 <p>© 2025 Campeek. Všechna práva vyhrazena.</p>
               </div>
             </div>

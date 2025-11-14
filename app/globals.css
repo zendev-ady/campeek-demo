@@ -219,15 +219,6 @@
   }
 }
 
-* {
-  border-color: theme("colors.border");
-}
-
-body {
-  background-color: theme("colors.background");
-  color: theme("colors.foreground");
-}
-
 @layer components {
   /* Gradient Text */
   .gradient-text {

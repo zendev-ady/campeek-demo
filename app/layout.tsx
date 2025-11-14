@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import { Toaster } from "sonner"
 import { AuthProvider } from "@/lib/auth-context"
 import { OrganizationProvider } from "@/lib/organization-context"
 import { EventProvider } from "@/lib/event-context"
@@ -27,6 +28,7 @@ export default function RootLayout({
             <EventProvider>{children}</EventProvider>
           </OrganizationProvider>
         </AuthProvider>
+        <Toaster richColors position="top-right" closeButton />
       </body>
     </html>
   )

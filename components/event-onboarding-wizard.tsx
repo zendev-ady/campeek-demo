@@ -35,7 +35,6 @@ interface WizardState {
   allowDiscountCodes: boolean
   contactEmail: string
   contactPhone: string
-  status: "draft" | "published"
 }
 
 interface Step {
@@ -82,7 +81,6 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
     allowDiscountCodes: false,
     contactEmail: "",
     contactPhone: "",
-    status: "draft",
   })
 
   const handleInputChange = (field: keyof WizardState, value: any) => {
@@ -134,7 +132,6 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
         price: Number.parseFloat(formData.price) || 0,
         ageMin: formData.ageMin ? Number.parseInt(formData.ageMin) : undefined,
         ageMax: formData.ageMax ? Number.parseInt(formData.ageMax) : undefined,
-        status: formData.status,
         allowWaitlist: formData.allowWaitlist,
         requiresAdminApproval: formData.requiresAdminApproval,
         allowInstallments: formData.allowInstallments,
@@ -610,16 +607,6 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
               </Card>
             </div>
 
-            <div className="flex items-center gap-3 pt-4 border-t">
-              <Checkbox
-                id="publishStatus"
-                checked={formData.status === "published"}
-                onCheckedChange={(checked) => handleInputChange("status", checked ? "published" : "draft")}
-              />
-              <label htmlFor="publishStatus" className="text-sm cursor-pointer font-medium">
-                Publikovat akci hned po vytvoření (budou ji moct vidět rodiče)
-              </label>
-            </div>
           </div>
         )}
       </div>

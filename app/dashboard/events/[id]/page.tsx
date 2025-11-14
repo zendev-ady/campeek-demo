@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useEvents } from "@/lib/event-context"
 import { Button } from "@/components/ui/button"
@@ -9,17 +9,40 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { ArrowLeft, CheckCircle2, ExternalLink, CopyIcon, Trash2, Locate as Duplicate, EditIcon } from "lucide-react"
+import {
+  ArrowLeft,
+  CheckCircle2,
+  ExternalLink,
+  CopyIcon,
+  Trash2,
+  Locate as Duplicate,
+  EditIcon,
+} from "lucide-react"
 import Link from "next/link"
 
-type TabType = "overview" | "registrations" | "communication"
+export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const [resolvedId, setResolvedId] = useState<string | null>(null)
 
-export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
+  useEffect(() => {
+    let isMounted = true
+    params.then(({ id }) => {
+      if (isMounted) setResolvedId(id)
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [params])
 
-  return <EventDetailPageClient eventId={id} />
+  if (!resolvedId) {
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+        Načítám detail akce...
+      </div>
+    )
+  }
+
+  return <EventDetailPageClient eventId={resolvedId} />
 }
 
 function EventDetailPageClient({ eventId }: { eventId: string }) {
@@ -27,7 +50,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
   const { getEventById, updateEvent, deleteEvent, duplicateEvent } = useEvents()
 
   const event = getEventById(eventId)
-  const [activeTab, setActiveTab] = useState<TabType>("overview")
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -42,8 +64,19 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
     price: event?.price.toString() || "",
     ageMin: event?.ageMin?.toString() || "",
     ageMax: event?.ageMax?.toString() || "",
-    status: event?.status || "draft",
   })
+
+  useEffect(() => {
+    if (!event) return
+    try {
+      const stored = JSON.parse(localStorage.getItem("recentEvents") || "[]")
+      const filtered = Array.isArray(stored) ? stored.filter((entry: any) => entry?.id !== event.id) : []
+      const updated = [{ id: event.id, openedAt: new Date().toISOString() }, ...filtered].slice(0, 10)
+      localStorage.setItem("recentEvents", JSON.stringify(updated))
+    } catch (error) {
+      console.error("Failed to update recent events history:", error)
+    }
+  }, [event?.id])
 
   if (!event) {
     return (
@@ -80,7 +113,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
         price: Number.parseFloat(formData.price) || 0,
         ageMin: formData.ageMin ? Number.parseInt(formData.ageMin) : undefined,
         ageMax: formData.ageMax ? Number.parseInt(formData.ageMax) : undefined,
-        status: formData.status as "draft" | "published" | "archived",
       })
 
       setIsEditing(false)
@@ -111,15 +143,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
     }
   }
 
-  const getStatusBadge = (status: string) => {
-    const variants = {
-      draft: { label: "Koncept", variant: "secondary" as const },
-      published: { label: "Publikováno", variant: "default" as const },
-      archived: { label: "Archivováno", variant: "outline" as const },
-    }
-    return variants[status as keyof typeof variants]
-  }
-
   const registrationUrl =
     typeof window !== "undefined" ? `${window.location.origin}/register/${event.id}` : `/register/${event.id}`
 
@@ -128,8 +151,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
-
-  const statusBadge = getStatusBadge(formData.status)
 
   const mockRegistrations = 24
   const capacity = Number.parseInt(formData.capacity) || 100
@@ -160,7 +181,12 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
               <Duplicate className="h-4 w-4" />
               Duplikovat
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setIsEditing(!isEditing)} className="gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsEditing(!isEditing)}
+              className="gap-2"
+            >
               <EditIcon className="h-4 w-4" />
               {isEditing ? "Zrušit" : "Upravit"}
             </Button>
@@ -176,13 +202,8 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
           </div>
         </div>
 
-        {/* Status Badge */}
-        <div className="flex items-center gap-2">
-          <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
-        </div>
       </div>
 
-      {/* Single View */}
       {isEditing ? (
         <form onSubmit={handleSubmit}>
           <Card>
@@ -291,15 +312,6 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
                   />
                 </div>
 
-                <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="status">Stav</Label>
-                  <Input
-                    id="status"
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    required
-                  />
-                </div>
               </div>
 
               <div className="flex gap-2 pt-4">
@@ -403,28 +415,26 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
           </Card>
 
           {/* Registration Link Alert */}
-          {event.status === "published" && (
-            <Alert>
-              <AlertDescription className="flex items-center justify-between gap-4">
-                <div className="flex-1">
-                  <p className="font-medium mb-1">Registrační odkaz</p>
-                  <p className="text-sm text-muted-foreground break-all">{registrationUrl}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={copyRegistrationLink}>
-                    {copied ? <CheckCircle2 className="h-4 w-4 mr-2" /> : <CopyIcon className="h-4 w-4 mr-2" />}
-                    {copied ? "Zkopírováno" : "Kopírovat"}
+          <Alert>
+            <AlertDescription className="flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <p className="font-medium mb-1">Registrační odkaz</p>
+                <p className="text-sm text-muted-foreground break-all">{registrationUrl}</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={copyRegistrationLink}>
+                  {copied ? <CheckCircle2 className="h-4 w-4 mr-2" /> : <CopyIcon className="h-4 w-4 mr-2" />}
+                  {copied ? "Zkopírováno" : "Kopírovat"}
+                </Button>
+                <Link href={registrationUrl} target="_blank">
+                  <Button variant="outline" size="sm">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Otevřít
                   </Button>
-                  <Link href={registrationUrl} target="_blank">
-                    <Button variant="outline" size="sm">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Otevřít
-                    </Button>
-                  </Link>
-                </div>
-              </AlertDescription>
-            </Alert>
-          )}
+                </Link>
+              </div>
+            </AlertDescription>
+          </Alert>
 
           {/* Description Card */}
           {event.description && (

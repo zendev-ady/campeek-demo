@@ -1,33 +1,73 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Settings } from "lucide-react"
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { EventSettingsShell } from "@/components/event-settings-shell"
+import { useEvents } from "@/lib/event-context"
+import { Button } from "@/components/ui/button"
+import { ArrowLeft } from "lucide-react"
 
-export default function EventSettingsPage() {
+export default function EventSettingsPage({ params }: { params: Promise<{ id: string }> }) {
+  const [resolvedId, setResolvedId] = useState<string | null>(null)
+
+  useEffect(() => {
+    let isMounted = true
+    params.then(({ id }) => {
+      if (isMounted) setResolvedId(id)
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [params])
+
+  if (!resolvedId) {
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+        Načítám nastavení akce...
+      </div>
+    )
+  }
+
+  return <EventSettingsPageClient eventId={resolvedId} />
+}
+
+function EventSettingsPageClient({ eventId }: { eventId: string }) {
+  const { getEventById } = useEvents()
+  const event = getEventById(eventId)
+
+  if (!event) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard">
+            <Button variant="ghost" size="icon">
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+          </Link>
+          <h2 className="text-3xl font-bold">Akce nenalezena</h2>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-balance">Nastavení akce</h1>
-        <p className="text-muted-foreground mt-1">Pokročilá nastavení a konfigurace</p>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p className="text-sm text-muted-foreground">Nastavení · {event.name}</p>
+          <h1 className="text-3xl font-bold tracking-tight">Konfigurace akce</h1>
+          <p className="text-muted-foreground">Spravujte veškerá nastavení týkající se Vaší akce.</p>
+        </div>
+        <Link href={`/dashboard/events/${event.id}`}>
+          <Button variant="ghost" className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Zpět na přehled akce
+          </Button>
+        </Link>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5" />
-            Stránka v přípravě
-          </CardTitle>
-          <CardDescription>
-            Tato stránka bude brzy dostupná. Zde budete moct nastavit pokročilé možnosti a konfiguraci akce.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="py-12 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
-            <Settings className="h-8 w-8 text-muted-foreground" />
-          </div>
-          <p className="text-muted-foreground">Tato funkce je zatím v přípravě...</p>
-        </CardContent>
-      </Card>
+      <EventSettingsShell />
     </div>
   )
 }
+

@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEvents } from "@/lib/event-context"
-import { ChevronDown, Plus, Calendar, Users, MessageSquare, Settings, Eye, CreditCard, Sliders } from "lucide-react"
+import { ChevronDown, Calendar, Users, MessageSquare, Settings, Eye, CreditCard, Sliders, FolderTree } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -16,10 +16,11 @@ export function SidebarMenu() {
   // Get current event ID from pathname
   const currentEventId = pathname.includes("/dashboard/events/") ? pathname.split("/")[3] : null
 
-  // Auto-expand current event
-  if (currentEventId && expandedEvent !== currentEventId) {
-    setExpandedEvent(currentEventId)
-  }
+  // Auto-expand current event when navigating directly to its page
+  useEffect(() => {
+    if (!currentEventId) return
+    setExpandedEvent((prev) => (prev === currentEventId ? prev : currentEventId))
+  }, [currentEventId])
 
   const globalMenuItems = [
     { id: "overview", label: "Přehled", href: "/dashboard", icon: Calendar },
@@ -29,10 +30,30 @@ export function SidebarMenu() {
   ]
 
   const eventMenuItems = [
-    { label: "Přehled", href: (id: string) => `/dashboard/events/${id}`, icon: Eye },
-    { label: "Přihlášky", href: (id: string) => `/dashboard/events/${id}?tab=registrations`, icon: Users },
-    { label: "Platby", href: (id: string) => `/dashboard/events/${id}?tab=payments`, icon: CreditCard },
-    { label: "Nastavení", href: (id: string) => `/dashboard/events/${id}?tab=settings`, icon: Sliders },
+    {
+      label: "Přehled",
+      href: (id: string) => `/dashboard/events/${id}`,
+      icon: Eye,
+      match: (currentPath: string, basePath: string) => currentPath === basePath,
+    },
+    {
+      label: "Přihlášky",
+      href: (id: string) => `/dashboard/events/${id}/registrations`,
+      icon: Users,
+      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/registrations`,
+    },
+    {
+      label: "Platby",
+      href: (id: string) => `/dashboard/events/${id}/payments`,
+      icon: CreditCard,
+      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/payments`,
+    },
+    {
+      label: "Nastavení",
+      href: (id: string) => `/dashboard/events/${id}/settings`,
+      icon: Sliders,
+      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/settings`,
+    },
   ]
 
   return (
@@ -68,15 +89,14 @@ export function SidebarMenu() {
         {/* Create New Event */}
         <Link href="/dashboard/events">
           <Button variant="ghost" className="w-full justify-start gap-3 text-emerald-200 hover:bg-emerald-700/40">
-            <Plus className="h-4 w-4" />
-            Nová akce
+            <FolderTree className="h-4 w-4" />
+            Správa akcí
           </Button>
         </Link>
 
         {/* Events List */}
         {events.map((event) => {
           const isExpanded = expandedEvent === event.id
-          const hasSubmenu = true
 
           return (
             <div key={event.id} className="space-y-1">
@@ -104,8 +124,8 @@ export function SidebarMenu() {
                 <div className="ml-2 space-y-1 border-l border-emerald-700/30 pl-2">
                   {eventMenuItems.map((subitem) => {
                     const subHref = subitem.href(event.id)
-                    const isSubActive =
-                      (pathname === `/dashboard/events/${event.id}` && !pathname.includes("?")) || pathname === subHref
+                    const baseEventPath = `/dashboard/events/${event.id}`
+                    const isSubActive = subitem.match(pathname, baseEventPath)
                     const SubIcon = subitem.icon
                     return (
                       <Link key={subitem.label} href={subHref}>

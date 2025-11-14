@@ -14,6 +14,8 @@ const inputVariants = cva(
           'border-success focus-visible:border-success focus-visible:ring-success/20 focus-visible:ring-[3px]',
         error:
           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20 focus-visible:ring-[3px]',
+        glass:
+          'bg-white/5 border-emerald-500/30 text-white placeholder:text-white/40 focus-visible:border-emerald-400 focus-visible:bg-white/[0.08] focus-visible:ring-emerald-500/20 focus-visible:ring-[3px]',
       },
     },
     defaultVariants: {

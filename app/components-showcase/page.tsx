@@ -180,7 +180,7 @@ export default function CampeekDesignSystem() {
               </label>
               <Input
                 placeholder="Zadejte text..."
-                className="glass-input"
+                variant="glass"
               />
               <span className="text-xs text-white/60 mt-2 block">Pomocný text pro input</span>
             </div>
@@ -191,7 +191,8 @@ export default function CampeekDesignSystem() {
               </label>
               <Input
                 defaultValue="Validní hodnota"
-                className="glass-input border-emerald-500"
+                variant="glass"
+                className="border-emerald-500"
               />
               <span className="text-xs text-emerald-500 mt-2 block">✓ Hodnota je správná</span>
             </div>
@@ -202,7 +203,8 @@ export default function CampeekDesignSystem() {
               </label>
               <Input
                 defaultValue="neplatny-email"
-                className="glass-input border-red-500"
+                variant="glass"
+                className="border-red-500"
               />
               <span className="text-xs text-red-500 mt-2 block">✗ Zadejte platnou adresu</span>
             </div>
@@ -214,7 +216,8 @@ export default function CampeekDesignSystem() {
               <Input
                 defaultValue="Disabled input"
                 disabled
-                className="glass-input opacity-50"
+                variant="glass"
+                className="opacity-50"
               />
             </div>
           </div>

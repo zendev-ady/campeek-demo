@@ -139,14 +139,14 @@ export default function EventsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-balance">Akce a tábory</h1>
-          <p className="text-muted-foreground mt-1">Spravujte všechny své akce na jednom místě</p>
+          <h1 className="text-3xl font-bold tracking-tight text-white">Akce a tábory</h1>
+          <p className="text-white/60 mt-1">Spravujte všechny své akce na jednom místě</p>
         </div>
         <CreateEventDialog>
-          <Button size="lg">
-            <Plus className="h-4 w-4 mr-2" />
+          <button className="btn btn-primary">
+            <Plus className="h-4 w-4" />
             Nová akce
-          </Button>
+          </button>
         </CreateEventDialog>
       </div>
 
@@ -158,10 +158,10 @@ export default function EventsPage() {
               type="button"
               onClick={() => setViewMode(option.value)}
               className={cn(
-                "rounded-full border px-4 py-1.5 text-sm transition-colors shadow-sm",
+                "rounded-full border px-4 py-1.5 text-sm transition-colors",
                 viewMode === option.value
-                  ? "border-emerald-500 bg-emerald-50 text-emerald-900"
-                  : "border-transparent bg-muted text-muted-foreground hover:text-foreground",
+                  ? "border-emerald-400/50 bg-white/10 text-white shadow-sm"
+                  : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/10",
               )}
             >
               {option.label}
@@ -177,10 +177,10 @@ export default function EventsPage() {
               key={year}
               onClick={() => setSelectedYear(year)}
               className={cn(
-                "rounded-full border px-4 py-1.5 text-sm transition-colors shadow-sm",
+                "rounded-full border px-4 py-1.5 text-sm transition-colors",
                 selectedYear === year
-                  ? "border-emerald-500 bg-emerald-50 text-emerald-900"
-                  : "border-transparent bg-muted text-muted-foreground hover:text-foreground",
+                  ? "border-emerald-400/50 bg-white/10 text-white shadow-sm"
+                  : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/10",
               )}
             >
               {year === "all" ? "Vše" : year}
@@ -191,15 +191,15 @@ export default function EventsPage() {
       </div>
 
       {events.length === 0 ? (
-        <Card>
+        <Card variant="glass">
           <CardContent className="text-center py-12">
-            <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground mb-4">Zatím nemáte žádné akce</p>
+            <Calendar className="h-12 w-12 text-emerald-400 mx-auto mb-4" />
+            <p className="text-white/60 mb-4">Zatím nemáte žádné akce</p>
             <CreateEventDialog>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
+              <button className="btn btn-primary">
+                <Plus className="h-4 w-4" />
                 Vytvořit první akci
-              </Button>
+              </button>
             </CreateEventDialog>
           </CardContent>
         </Card>
@@ -218,18 +218,18 @@ export default function EventsPage() {
           </div>
         )
       ) : (
-        <Card>
+        <Card variant="glass">
           <CardContent className="text-center py-12 space-y-4">
-            <Calendar className="h-12 w-12 text-muted-foreground mx-auto" />
+            <Calendar className="h-12 w-12 text-emerald-400 mx-auto" />
             <div className="space-y-2">
-              <p className="text-lg font-semibold">{emptyCopy.title}</p>
-              <p className="text-muted-foreground">{emptyCopy.description}</p>
+              <p className="text-lg font-semibold text-white">{emptyCopy.title}</p>
+              <p className="text-white/60">{emptyCopy.description}</p>
             </div>
             <CreateEventDialog>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
+              <button className="btn btn-primary">
+                <Plus className="h-4 w-4" />
                 Vytvořit novou akci
-              </Button>
+              </button>
             </CreateEventDialog>
           </CardContent>
         </Card>

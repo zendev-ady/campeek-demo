@@ -319,7 +319,8 @@
   /* Glass Skeleton */
   .glass-skeleton {
     @apply bg-gradient-to-r from-white/5 via-white/10 to-white/5;
-    @apply bg-[length:200%_100%] animate-shimmer-skeleton;
+    background-size: 200% 100%;
+    animation: shimmer-skeleton 2s ease-in-out infinite;
   }
 
   @keyframes shimmer-skeleton {

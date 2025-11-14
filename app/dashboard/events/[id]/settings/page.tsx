@@ -52,18 +52,21 @@ function EventSettingsPageClient({ eventId }: { eventId: string }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <p className="text-sm text-muted-foreground">Nastavení · {event.name}</p>
-          <h1 className="text-3xl font-bold tracking-tight">Konfigurace akce</h1>
-          <p className="text-muted-foreground">Spravujte veškerá nastavení týkající se Vaší akce.</p>
-        </div>
-        <Link href={`/dashboard/events/${event.id}`}>
-          <Button variant="ghost" className="gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            Zpět na přehled akce
-          </Button>
+      {/* Breadcrumb Navigation */}
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Link href="/dashboard" className="hover:text-foreground transition-colors">
+          Dashboard
         </Link>
+        <span>/</span>
+        <Link href="/dashboard/events" className="hover:text-foreground transition-colors">
+          Akce
+        </Link>
+        <span>/</span>
+        <Link href={`/dashboard/events/${event.id}`} className="hover:text-foreground transition-colors">
+          {event.name}
+        </Link>
+        <span>/</span>
+        <span className="text-foreground font-medium">Nastavení</span>
       </div>
 
       <EventSettingsShell />

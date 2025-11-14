@@ -12,22 +12,21 @@ import { Plus, Calendar, TrendingUp, Users } from "lucide-react"
 export default function DashboardPage() {
   const { currentOrganization, organizations } = useOrganization()
   const { events } = useEvents()
-  // Removed useRegistrations hook
 
   if (!currentOrganization && organizations.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Card className="max-w-md">
+        <Card variant="glass" className="max-w-md">
           <CardHeader>
-            <CardTitle>Vítejte!</CardTitle>
-            <CardDescription>Pro začátek vytvořte svou první organizaci</CardDescription>
+            <CardTitle className="text-white">Vítejte!</CardTitle>
+            <CardDescription className="text-white/70">Pro začátek vytvořte svou první organizaci</CardDescription>
           </CardHeader>
           <CardContent>
             <CreateOrganizationDialog>
-              <Button className="w-full">
-                <Plus className="h-4 w-4 mr-2" />
+              <button className="btn btn-primary w-full">
+                <Plus className="h-4 w-4" />
                 Vytvořit organizaci
-              </Button>
+              </button>
             </CreateOrganizationDialog>
           </CardContent>
         </Card>
@@ -57,53 +56,53 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-balance">Přehled</h1>
-          <p className="text-muted-foreground mt-1">Vítejte zpět, zde je přehled vašich akcí</p>
+          <h1 className="text-3xl font-bold tracking-tight text-white">Přehled</h1>
+          <p className="text-white/60 mt-1">Vítejte zpět, zde je přehled vašich akcí</p>
         </div>
         <CreateEventDialog>
-          <Button size="lg">
-            <Plus className="h-4 w-4 mr-2" />
+          <button className="btn btn-primary">
+            <Plus className="h-4 w-4" />
             Nová akce
-          </Button>
+          </button>
         </CreateEventDialog>
       </div>
 
       {/* Metrics Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
+        <Card variant="glass">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Celkem akcí</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-white/70">Celkem akcí</CardTitle>
+            <Calendar className="h-4 w-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{events.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <div className="text-3xl font-bold gradient-text">{events.length}</div>
+            <p className="text-xs text-white/60 mt-1">
               {nextEvent ? `Nejbližší start ${formatShortDate(nextEvent.startDate)}` : "Naplánujte první termín"}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card variant="glass">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Nadcházející (30 dní)</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-white/70">Nadcházející (30 dní)</CardTitle>
+            <TrendingUp className="h-4 w-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{upcomingWithinMonth.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <div className="text-3xl font-bold gradient-text">{upcomingWithinMonth.length}</div>
+            <p className="text-xs text-white/60 mt-1">
               z {upcomingEvents.length} budoucích termínů
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card variant="glass">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Celková kapacita</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-white/70">Celková kapacita</CardTitle>
+            <Users className="h-4 w-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{totalCapacity}</div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <div className="text-3xl font-bold gradient-text">{totalCapacity}</div>
+            <p className="text-xs text-white/60 mt-1">
               Průměrně {averageCapacity || 0} míst na akci
             </p>
           </CardContent>
@@ -113,22 +112,22 @@ export default function DashboardPage() {
       {/* Recent Events */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Nedávné akce</h2>
-          <Button variant="ghost" asChild>
+          <h2 className="text-xl font-semibold text-white">Nedávné akce</h2>
+          <Button variant="ghost" asChild className="text-white/70 hover:text-white hover:bg-white/5">
             <a href="/dashboard/events">Zobrazit vše</a>
           </Button>
         </div>
 
         {recentEvents.length === 0 ? (
-          <Card>
+          <Card variant="glass">
             <CardContent className="text-center py-12">
-              <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground mb-4">Zatím nemáte žádné akce</p>
+              <Calendar className="h-12 w-12 text-emerald-400 mx-auto mb-4" />
+              <p className="text-white/60 mb-4">Zatím nemáte žádné akce</p>
               <CreateEventDialog>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
+                <button className="btn btn-primary">
+                  <Plus className="h-4 w-4" />
                   Vytvořit první akci
-                </Button>
+                </button>
               </CreateEventDialog>
             </CardContent>
           </Card>

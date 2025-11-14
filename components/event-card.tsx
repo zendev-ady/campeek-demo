@@ -41,30 +41,39 @@ export function EventCard({ event }: EventCardProps) {
   }
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card variant="glass" className="hover:scale-[1.02] transition-all">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="space-y-1 flex-1">
-            <CardTitle className="text-xl">{event.name}</CardTitle>
-            <CardDescription className="line-clamp-2">{event.description}</CardDescription>
+            <CardTitle className="text-xl text-white">{event.name}</CardTitle>
+            <CardDescription className="line-clamp-2 text-white/70">{event.description}</CardDescription>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="ml-2">
+              <Button variant="ghost" size="icon" className="ml-2 text-white/60 hover:text-white hover:bg-white/10">
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => router.push(`/dashboard/events/${event.id}`)}>
-                <Eye className="h-4 w-4 mr-2" />
+            <DropdownMenuContent align="end" className="glass-card border-white/10">
+              <DropdownMenuItem
+                onClick={() => router.push(`/dashboard/events/${event.id}`)}
+                className="text-white/80 focus:bg-white/10 focus:text-white cursor-pointer"
+              >
+                <Eye className="h-4 w-4 mr-2 text-emerald-400" />
                 Zobrazit detail
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleDuplicate}>
-                <Copy className="h-4 w-4 mr-2" />
+              <DropdownMenuItem
+                onClick={handleDuplicate}
+                className="text-white/80 focus:bg-white/10 focus:text-white cursor-pointer"
+              >
+                <Copy className="h-4 w-4 mr-2 text-emerald-400" />
                 Duplikovat
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleDelete} className="text-destructive">
+              <DropdownMenuSeparator className="bg-white/10" />
+              <DropdownMenuItem
+                onClick={handleDelete}
+                className="text-red-400 focus:bg-red-500/10 focus:text-red-400 cursor-pointer"
+              >
                 <Trash2 className="h-4 w-4 mr-2" />
                 Smazat
               </DropdownMenuItem>
@@ -73,22 +82,24 @@ export function EventCard({ event }: EventCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
-        <div className="flex items-center text-sm text-muted-foreground">
-          <Calendar className="h-4 w-4 mr-2" />
+        <div className="flex items-center text-sm text-white/70">
+          <Calendar className="h-4 w-4 mr-2 text-emerald-400" />
           {formatDate(event.startDate)} - {formatDate(event.endDate)}
         </div>
-        <div className="flex items-center text-sm text-muted-foreground">
-          <MapPin className="h-4 w-4 mr-2" />
+        <div className="flex items-center text-sm text-white/70">
+          <MapPin className="h-4 w-4 mr-2 text-emerald-400" />
           {event.location}
         </div>
-        <div className="flex items-center text-sm text-muted-foreground">
-          <Users className="h-4 w-4 mr-2" />
+        <div className="flex items-center text-sm text-white/70">
+          <Users className="h-4 w-4 mr-2 text-emerald-400" />
           Kapacita: {event.capacity} účastníků
         </div>
       </CardContent>
       <CardFooter className="flex items-center justify-between">
-        <div className="text-lg font-bold">{event.price.toLocaleString("cs-CZ")} Kč</div>
-        <Button onClick={() => router.push(`/dashboard/events/${event.id}`)}>Spravovat</Button>
+        <div className="text-lg font-bold gradient-text">{event.price.toLocaleString("cs-CZ")} Kč</div>
+        <button onClick={() => router.push(`/dashboard/events/${event.id}`)} className="btn btn-secondary">
+          Spravovat
+        </button>
       </CardFooter>
     </Card>
   )

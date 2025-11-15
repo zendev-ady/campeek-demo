@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { Info, Loader2, Save } from "lucide-react"
+import { ExternalLink, Info, Loader2, Save } from "lucide-react"
 import {
   ADDITIONAL_REGISTRATION_OPTIONS,
   PARTICIPANT_SECTION_OPTIONS,
@@ -19,7 +19,11 @@ import {
 import type { RegistrationField, RegistrationSettings, FieldState } from "./types"
 import { FieldStateToggle } from "./field-state-toggle"
 
-export function RegistrationSettingsPanel() {
+interface RegistrationSettingsPanelProps {
+  eventId?: string
+}
+
+export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanelProps = {}) {
   const [settings, setSettings] = useState<RegistrationSettings>(() => ({
     isEnabled: true,
     startDate: "",
@@ -75,6 +79,18 @@ export function RegistrationSettingsPanel() {
     toast.info("Změny byly zrušeny.")
   }
 
+  const handlePreview = () => {
+    if (!eventId) {
+      toast.error("ID akce není dostupné")
+      return
+    }
+    const registrationUrl =
+      typeof window !== "undefined"
+        ? `${window.location.origin}/register/${eventId}`
+        : `/register/${eventId}`
+    window.open(registrationUrl, "_blank", "noopener,noreferrer")
+  }
+
   const participantFields = settings.fields.filter((f) => f.category === "Účastník")
   const parentFields = settings.fields.filter((f) => f.category === "Rodič")
   const otherFields = settings.fields.filter((f) => f.category === "Ostatní")
@@ -89,6 +105,26 @@ export function RegistrationSettingsPanel() {
             <span className={cn("h-2 w-2 rounded-full", hasChanges ? "bg-amber-500" : "bg-emerald-500")} />
             <span className="text-xs">{hasChanges ? "Neuloženo" : "Uloženo"}</span>
           </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handlePreview}
+            disabled={!eventId}
+            className="gap-2"
+          >
+            <ExternalLink className="h-4 w-4" />
+            Náhled formuláře
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={isSaving || !hasChanges}
+            className="gap-2 bg-emerald-600 text-white hover:bg-emerald-500"
+          >
+            {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {isSaving ? "Ukládám..." : "Uložit"}
+          </Button>
         </div>
       </div>
 

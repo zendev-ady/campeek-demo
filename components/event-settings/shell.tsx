@@ -9,7 +9,11 @@ import { NotificationsSettingsPanel } from "./notifications-settings-panel"
 import { SettingsTabsCard } from "./settings-tabs-card"
 import type { EventSettingsTabId } from "./types"
 
-export function EventSettingsShell() {
+interface EventSettingsShellProps {
+  eventId?: string
+}
+
+export function EventSettingsShell({ eventId }: EventSettingsShellProps = {}) {
   const [activeTab, setActiveTab] = useState<EventSettingsTabId>("registrations")
 
   return (
@@ -17,7 +21,7 @@ export function EventSettingsShell() {
       <SettingsTabsCard activeTab={activeTab} onTabChange={setActiveTab}>
         {activeTab === "basic" ? <BasicSettingsPanel /> : null}
         {activeTab === "finance" ? <FinanceSettingsPanel /> : null}
-        {activeTab === "registrations" ? <RegistrationSettingsPanel /> : null}
+        {activeTab === "registrations" ? <RegistrationSettingsPanel eventId={eventId} /> : null}
         {activeTab === "communication" ? <CommunicationSettingsPanel /> : null}
         {activeTab === "notifications" ? <NotificationsSettingsPanel /> : null}
       </SettingsTabsCard>

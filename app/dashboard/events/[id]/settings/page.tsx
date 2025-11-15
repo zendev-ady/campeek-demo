@@ -79,7 +79,7 @@ function EventSettingsPageClient({ eventId }: { eventId: string }) {
         </div>
       </div>
 
-      <EventSettingsShell />
+      <EventSettingsShell eventId={eventId} />
     </div>
   )
 }

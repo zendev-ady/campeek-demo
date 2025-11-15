@@ -352,23 +352,23 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
             </Card>
 
             {/* Financial Tile */}
-            <Card className="bg-black border-2 border-black">
+            <Card className="bg-white border-2 border-black">
               <CardHeader>
-                <CardTitle className="text-white">Finanční přehled</CardTitle>
+                <CardTitle className="text-black">Finanční přehled</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between items-baseline">
-                    <span className="text-3xl font-bold text-white">{paidAmount.toLocaleString()} Kč</span>
-                    <span className="text-white">z {totalAmount.toLocaleString()} Kč</span>
+                    <span className="text-3xl font-bold text-black">{paidAmount.toLocaleString()} Kč</span>
+                    <span className="text-black">z {totalAmount.toLocaleString()} Kč</span>
                   </div>
-                  <div className="w-full bg-white border-2 border-white h-3">
+                  <div className="w-full bg-white border-2 border-black h-3">
                     <div
-                      className="bg-white h-3"
+                      className="bg-black h-3"
                       style={{ width: `${paidPercent}%` }}
                     />
                   </div>
-                  <p className="text-sm text-white font-medium">{paidPercent}% zaplaceno</p>
+                  <p className="text-sm text-black font-medium">{paidPercent}% zaplaceno</p>
                 </div>
               </CardContent>
             </Card>

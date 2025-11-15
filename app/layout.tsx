@@ -6,6 +6,7 @@ import { Toaster } from "sonner"
 import { AuthProvider } from "@/lib/auth-context"
 import { OrganizationProvider } from "@/lib/organization-context"
 import { EventProvider } from "@/lib/event-context"
+import { MessageProvider } from "@/lib/message-context"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -25,7 +26,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <OrganizationProvider>
-            <EventProvider>{children}</EventProvider>
+            <EventProvider>
+              <MessageProvider>{children}</MessageProvider>
+            </EventProvider>
           </OrganizationProvider>
         </AuthProvider>
         <Toaster richColors position="top-right" closeButton />

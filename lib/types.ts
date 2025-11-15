@@ -12,6 +12,23 @@ export interface Organization {
   description?: string
   createdAt: string
   createdBy: string
+  branding?: OrganizationBranding
+  email?: OrganizationEmail
+}
+
+export interface OrganizationBranding {
+  logoUrl?: string
+  bannerUrl?: string
+  primaryColor?: string
+  secondaryColor?: string
+  accentColor?: string
+}
+
+export interface OrganizationEmail {
+  senderName: string
+  senderEmail: string
+  isVerified: boolean
+  verifiedAt?: string
 }
 
 export interface OrganizationMember {
@@ -89,4 +106,25 @@ export interface DiscountCode {
   code: string
   value: number
   type: "percentage" | "fixed"
+}
+
+export interface Message {
+  id: string
+  organizationId: string
+  eventId?: string // If sent to specific event participants
+  subject: string
+  body: string
+  recipients: MessageRecipient[]
+  sentAt: string
+  sentBy: string
+  type: "manual" | "auto-confirmation" | "auto-reminder"
+  status: "draft" | "sending" | "sent" | "failed"
+}
+
+export interface MessageRecipient {
+  email: string
+  name: string
+  status: "pending" | "sent" | "delivered" | "failed"
+  error?: string
+  deliveredAt?: string
 }

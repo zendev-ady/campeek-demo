@@ -22,7 +22,7 @@ export function EventSettingsShell({ eventId }: EventSettingsShellProps = {}) {
         {activeTab === "basic" ? <BasicSettingsPanel /> : null}
         {activeTab === "finance" ? <FinanceSettingsPanel /> : null}
         {activeTab === "registrations" ? <RegistrationSettingsPanel eventId={eventId} /> : null}
-        {activeTab === "communication" ? <CommunicationSettingsPanel /> : null}
+        {activeTab === "communication" ? <CommunicationSettingsPanel eventId={eventId} /> : null}
         {activeTab === "notifications" ? <NotificationsSettingsPanel /> : null}
       </SettingsTabsCard>
     </div>

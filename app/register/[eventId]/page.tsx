@@ -12,8 +12,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 import { Plus, Trash2, Calendar, MapPin, Users, CheckCircle2 } from "lucide-react"
+import { useMessages } from "@/lib/message-context"
+import { useOrganization } from "@/lib/organization-context"
+import { format } from "date-fns"
+import { cs } from "date-fns/locale"
 
 export default function RegisterPage({ params }: { params: Promise<{ eventId: string }> }) {
+  const { sendMessage } = useMessages()
+  const { currentOrganization } = useOrganization()
   const [resolvedParams, setResolvedParams] = useState<{ eventId: string } | null>(null)
   const [event, setEvent] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -52,6 +58,17 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
     const foundEvent = allEvents.find((e: any) => e.id === resolvedParams.eventId)
     setEvent(foundEvent)
   }, [resolvedParams?.eventId])
+
+  const calculateAge = (birthDate: string) => {
+    const today = new Date()
+    const birth = new Date(birthDate)
+    let age = today.getFullYear() - birth.getFullYear()
+    const monthDiff = today.getMonth() - birth.getMonth()
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--
+    }
+    return age
+  }
 
   const addChild = () => {
     setChildren([
@@ -112,12 +129,69 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
 
       // Save to localStorage
       const allRegistrations = JSON.parse(localStorage.getItem("registrations") || "[]")
-      allRegistrations.push({
+      const newRegistration = {
         ...registration,
         id: crypto.randomUUID(),
         createdAt: new Date().toISOString(),
-      })
+      }
+      allRegistrations.push(newRegistration)
       localStorage.setItem("registrations", JSON.stringify(allRegistrations))
+
+      // Send automatic confirmation email if organization email is verified
+      if (currentOrganization?.email?.isVerified && event) {
+        try {
+          const childrenList = children
+            .map((child) => `• ${child.name} (${calculateAge(child.birthDate)} let)`)
+            .join("\n")
+
+          const eventDates = `${format(new Date(event.startDate), "d. MMMM yyyy", {
+            locale: cs,
+          })} - ${format(new Date(event.endDate), "d. MMMM yyyy", { locale: cs })}`
+
+          const emailBody = `Dobrý den,
+
+děkujeme za přihlášku na akci:
+📅 ${event.name}
+📍 ${eventDates}, ${event.location}
+
+────────────────────────────────────────
+
+👶 Přihlášené děti:
+${childrenList}
+
+💰 Cena: ${calculatePrice().toLocaleString("cs-CZ")} Kč
+${
+  event.depositAmount
+    ? `💳 Záloha: ${event.depositAmount.toLocaleString("cs-CZ")} Kč do ${format(new Date(event.depositDueDate || ""), "d.M.yyyy", { locale: cs })}`
+    : ""
+}
+
+────────────────────────────────────────
+
+📧 Kontakt: ${currentOrganization.email.senderEmail}
+${event.contactPhone ? `📞 ${event.contactPhone}` : ""}
+
+────────────────────────────────────────
+${currentOrganization.name}
+Tato zpráva byla odeslána automaticky.`
+
+          await sendMessage(
+            `Potvrzení přihlášky - ${event.name}`,
+            emailBody,
+            [
+              {
+                email: parentEmail,
+                name: parentName,
+                status: "pending",
+              },
+            ],
+            event.id,
+          )
+        } catch (emailError) {
+          // Don't fail registration if email fails
+          console.error("Failed to send confirmation email:", emailError)
+        }
+      }
 
       setIsSuccess(true)
     } catch (err) {

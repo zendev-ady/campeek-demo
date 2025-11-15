@@ -1,0 +1,67 @@
+"use client"
+
+import type { ReactNode } from "react"
+import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { ORGANIZATION_SETTINGS_TABS } from "./constants"
+import type { OrganizationSettingsTabId } from "./types"
+
+type SettingsTabsCardProps = {
+  activeTab: OrganizationSettingsTabId
+  onTabChange: (tab: OrganizationSettingsTabId) => void
+  children?: ReactNode
+}
+
+export function SettingsTabsCard({ activeTab, onTabChange, children }: SettingsTabsCardProps) {
+  const tabs = ORGANIZATION_SETTINGS_TABS
+  const activeLabel = tabs.find((tab) => tab.id === activeTab)?.label ?? tabs[0].label
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="space-y-1">
+        <h1 className="text-3xl font-bold tracking-tight text-black">Nastavení organizace</h1>
+        <p className="text-black">Konfigurace brandingu a komunikace</p>
+      </div>
+
+      {/* Tab Navigation */}
+      <nav className="border-b-2 border-black">
+        <div className="flex gap-1 -mb-px">
+          {tabs.map((tab) => {
+            const Icon = tab.icon
+            const isActive = activeTab === tab.id
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => onTabChange(tab.id)}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2",
+                  isActive
+                    ? "text-black border-black bg-white"
+                    : "text-black border-black bg-white",
+                )}
+              >
+                <Icon className={cn("h-4 w-4", isActive ? "text-black" : "text-black")} />
+                <span>{tab.label}</span>
+              </button>
+            )
+          })}
+        </div>
+      </nav>
+
+      {/* Tab Content */}
+      <Card>
+        <CardContent className="p-6">
+          {children ? (
+            <div className="space-y-10 text-black">{children}</div>
+          ) : (
+            <div className="text-center py-12 text-black">
+              Modul {activeLabel.toLowerCase()} je zatím v přípravě.
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

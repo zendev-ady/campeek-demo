@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { createContext, useContext, useEffect, useState } from "react"
-import type { Organization, OrganizationMember } from "./types"
+import type { Organization, OrganizationMember, OrganizationBranding, OrganizationEmail } from "./types"
 import { useAuth } from "./auth-context"
 
 interface OrganizationContextType {
@@ -13,6 +13,9 @@ interface OrganizationContextType {
   switchOrganization: (orgId: string) => void
   createOrganization: (name: string, description?: string) => Promise<void>
   inviteMember: (email: string, role: "admin" | "member") => Promise<void>
+  updateBranding: (branding: OrganizationBranding) => Promise<void>
+  updateEmail: (email: OrganizationEmail) => Promise<void>
+  verifyEmail: (verificationCode: string) => Promise<boolean>
   isLoading: boolean
 }
 
@@ -109,6 +112,73 @@ export function OrganizationProvider({ children }: { children: React.ReactNode }
     console.log(`Pozvánka odeslána na ${email} s rolí ${role}`)
   }
 
+  const updateBranding = async (branding: OrganizationBranding) => {
+    if (!currentOrganization || !user) throw new Error("Není vybrána organizace")
+
+    await new Promise((resolve) => setTimeout(resolve, 300))
+
+    const updatedOrg = { ...currentOrganization, branding }
+
+    // Update in localStorage
+    const allOrgs = JSON.parse(localStorage.getItem("organizations") || "[]")
+    const updatedOrgs = allOrgs.map((org: Organization) =>
+      org.id === currentOrganization.id ? updatedOrg : org,
+    )
+    localStorage.setItem("organizations", JSON.stringify(updatedOrgs))
+
+    // Update state
+    setCurrentOrganization(updatedOrg)
+    setOrganizations(organizations.map((org) => (org.id === currentOrganization.id ? updatedOrg : org)))
+  }
+
+  const updateEmail = async (email: OrganizationEmail) => {
+    if (!currentOrganization || !user) throw new Error("Není vybrána organizace")
+
+    await new Promise((resolve) => setTimeout(resolve, 300))
+
+    const updatedOrg = { ...currentOrganization, email }
+
+    // Update in localStorage
+    const allOrgs = JSON.parse(localStorage.getItem("organizations") || "[]")
+    const updatedOrgs = allOrgs.map((org: Organization) =>
+      org.id === currentOrganization.id ? updatedOrg : org,
+    )
+    localStorage.setItem("organizations", JSON.stringify(updatedOrgs))
+
+    // Update state
+    setCurrentOrganization(updatedOrg)
+    setOrganizations(organizations.map((org) => (org.id === currentOrganization.id ? updatedOrg : org)))
+  }
+
+  const verifyEmail = async (verificationCode: string) => {
+    if (!currentOrganization || !user) throw new Error("Není vybrána organizace")
+
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    // Mock verification - in real app would verify with backend
+    // For MVP, any code works
+    const updatedEmail: OrganizationEmail = {
+      ...currentOrganization.email!,
+      isVerified: true,
+      verifiedAt: new Date().toISOString(),
+    }
+
+    const updatedOrg = { ...currentOrganization, email: updatedEmail }
+
+    // Update in localStorage
+    const allOrgs = JSON.parse(localStorage.getItem("organizations") || "[]")
+    const updatedOrgs = allOrgs.map((org: Organization) =>
+      org.id === currentOrganization.id ? updatedOrg : org,
+    )
+    localStorage.setItem("organizations", JSON.stringify(updatedOrgs))
+
+    // Update state
+    setCurrentOrganization(updatedOrg)
+    setOrganizations(organizations.map((org) => (org.id === currentOrganization.id ? updatedOrg : org)))
+
+    return true
+  }
+
   return (
     <OrganizationContext.Provider
       value={{
@@ -118,6 +188,9 @@ export function OrganizationProvider({ children }: { children: React.ReactNode }
         switchOrganization,
         createOrganization,
         inviteMember,
+        updateBranding,
+        updateEmail,
+        verifyEmail,
         isLoading,
       }}
     >

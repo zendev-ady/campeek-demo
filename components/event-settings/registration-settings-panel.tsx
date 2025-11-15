@@ -8,8 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { cn } from "@/lib/utils"
-import { ExternalLink, Info, Loader2, Save } from "lucide-react"
+import { ExternalLink, Info, Loader2, Save, AlertCircle } from "lucide-react"
 import {
   ADDITIONAL_REGISTRATION_OPTIONS,
   PARTICIPANT_SECTION_OPTIONS,
@@ -18,12 +19,14 @@ import {
 } from "./constants"
 import type { RegistrationField, RegistrationSettings, FieldState } from "./types"
 import { FieldStateToggle } from "./field-state-toggle"
+import { useOrganization } from "@/lib/organization-context"
 
 interface RegistrationSettingsPanelProps {
   eventId?: string
 }
 
 export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanelProps = {}) {
+  const { currentOrganization } = useOrganization()
   const [settings, setSettings] = useState<RegistrationSettings>(() => ({
     isEnabled: true,
     startDate: "",
@@ -95,8 +98,35 @@ export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanel
   const parentFields = settings.fields.filter((f) => f.category === "Rodič")
   const otherFields = settings.fields.filter((f) => f.category === "Ostatní")
 
+  const isEmailVerified = currentOrganization?.email?.isVerified
+
   return (
     <div className="space-y-10">
+      {/* Email Not Verified Warning */}
+      {!isEmailVerified && (
+        <Alert className="border-yellow-500 bg-yellow-50">
+          <AlertCircle className="h-4 w-4 text-yellow-600" />
+          <AlertDescription className="text-yellow-800">
+            <p className="font-semibold">⚠️ Email není ověřen</p>
+            <p className="text-sm mt-1">
+              Než můžete začít přijímat přihlášky, musíte nastavit a ověřit odesílací email.
+            </p>
+            <p className="text-sm mt-1">
+              Bez ověřeného emailu:
+              <br />• ❌ Nelze publikovat přihlašovací formulář
+              <br />• ❌ Nebudou se odesílat potvrzení přihlášek
+              <br />• ❌ Nemůžete komunikovat s účastníky
+            </p>
+            <a
+              href="/dashboard/organization"
+              className="text-sm underline font-medium mt-2 inline-block"
+            >
+              Nastavit email →
+            </a>
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Simple Header */}
       <div className="flex items-center justify-between pb-4 border-b">
         <div className="flex items-center gap-3">
@@ -111,11 +141,12 @@ export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanel
             type="button"
             variant="outline"
             onClick={handlePreview}
-            disabled={!eventId}
+            disabled={!eventId || !isEmailVerified}
             className="gap-2"
+            title={!isEmailVerified ? "Nejprve ověřte email organizace" : ""}
           >
             <ExternalLink className="h-4 w-4" />
-            Náhled formuláře
+            {!isEmailVerified ? "Formulář neaktivní" : "Náhled formuláře"}
           </Button>
           <Button
             onClick={handleSave}

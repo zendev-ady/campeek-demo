@@ -47,81 +47,79 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header/Navigation - Inverted Dark Card */}
+    <div className="min-h-screen bg-white">
+      {/* Header/Navigation */}
       <header className="sticky top-4 z-50 px-0 sm:px-0 max-w-7xl mx-auto">
-        <div className="w-full bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-2xl shadow-xl shadow-emerald-900/20 px-6 py-4 flex items-center justify-between backdrop-blur">
+        <div className="w-full bg-black px-6 py-4 flex items-center justify-between border-2 border-black">
           <div className="flex items-center gap-3">
             <Brand />
           </div>
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#funkce" className="text-emerald-100 hover:text-emerald-50 transition-colors font-medium">
+            <a href="#funkce" className="text-white font-medium">
               Funkce
             </a>
-            <a href="#cenik" className="text-emerald-100 hover:text-emerald-50 transition-colors font-medium">
+            <a href="#cenik" className="text-white font-medium">
               Ceník
             </a>
-            <a href="#kontakt" className="text-emerald-100 hover:text-emerald-50 transition-colors font-medium">
+            <a href="#kontakt" className="text-white font-medium">
               Kontakt
             </a>
           </nav>
           <Link
             href="/login"
-            className="bg-emerald-200 text-emerald-900 px-4 sm:px-6 py-2.5 rounded-xl font-semibold hover:bg-emerald-100 transition-all text-sm sm:text-base"
+            className="bg-white text-black px-4 sm:px-6 py-2.5 border-2 border-black font-semibold text-sm sm:text-base"
           >
             Začít zdarma
           </Link>
         </div>
       </header>
 
-      {/* Hero Section - Light Card */}
+      {/* Hero Section */}
       <section className="pt-8 pb-12 sm:pb-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-3xl p-8 sm:p-16 shadow-xl relative overflow-hidden">
-            <div className="absolute bottom-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-radial from-emerald-100/40 to-transparent rounded-full translate-x-1/3 translate-y-1/3"></div>
-
-            <div className="relative z-10 max-w-3xl">
-              <div className="inline-block bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold mb-6">
-                🎯 Moderní řešení pro organizátory
+          <div className="bg-white p-8 sm:p-16 border-2 border-black">
+            <div className="max-w-3xl">
+              <div className="inline-block bg-black text-white px-4 py-2 border-2 border-black text-xs sm:text-sm font-semibold mb-6">
+                Moderní řešení pro organizátory
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-emerald-900 mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-black mb-6 leading-tight">
                 Zjednodušte organizaci
                 <br />
                 dětských táborů a akcí
               </h1>
-              <p className="text-lg sm:text-xl text-gray-600 mb-10 leading-relaxed">
+              <p className="text-lg sm:text-xl text-black mb-10 leading-relaxed">
                 Komplexní CRM systém navržený přímo organizátory pro organizátory. Automatizujte registrace, platby a
                 komunikaci na jednom místě.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/register"
-                  className="bg-gradient-to-br from-emerald-600 to-emerald-800 text-emerald-50 px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-xl hover:shadow-emerald-900/30 transition-all flex items-center justify-center gap-2 group"
+                  className="bg-black text-white px-8 py-4 border-2 border-black text-lg font-semibold flex items-center justify-center gap-2"
                 >
                   Vyzkoušet zdarma
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
                 <button
                   onClick={handleDemoClick}
-                  className="bg-gray-100 text-emerald-800 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-200 transition-all border-2 border-emerald-200 disabled:opacity-70"
+                  className="bg-white text-black px-8 py-4 border-2 border-black text-lg font-semibold disabled:opacity-70"
                   disabled={isLoadingDemo}
                 >
                   {isLoadingDemo ? "Načítám demo..." : "Zobrazit demo"}
                 </button>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 mt-12 pt-8 border-t border-emerald-200">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 mt-12 pt-8 border-t-2 border-black">
                 <div>
-                  <div className="text-3xl font-bold text-emerald-900">500+</div>
-                  <div className="text-sm text-gray-600">Organizátorů</div>
+                  <div className="text-3xl font-bold text-black">500+</div>
+                  <div className="text-sm text-black">Organizátorů</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-emerald-900">15 000+</div>
-                  <div className="text-sm text-gray-600">Účastníků</div>
+                  <div className="text-3xl font-bold text-black">15 000+</div>
+                  <div className="text-sm text-black">Účastníků</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-emerald-900">98%</div>
-                  <div className="text-sm text-gray-600">Spokojenost</div>
+                  <div className="text-3xl font-bold text-black">98%</div>
+                  <div className="text-sm text-black">Spokojenost</div>
                 </div>
               </div>
             </div>
@@ -129,15 +127,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Grid - Dark Inverted Cards */}
+      {/* Features Grid */}
       <section id="funkce" className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-3xl p-8 sm:p-16 shadow-xl mb-12">
+          <div className="bg-white p-8 sm:p-16 border-2 border-black mb-12">
             <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-emerald-900 mb-4">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-black mb-4">
                 Vše, co potřebujete na jednom místě
               </h2>
-              <p className="text-lg sm:text-xl text-gray-600">
+              <p className="text-lg sm:text-xl text-black">
                 Navrženo s ohledem na reálné potřeby organizátorů dětských akcí v České republice
               </p>
             </div>
@@ -193,28 +191,28 @@ export default function LandingPage() {
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className="bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-2xl p-6 sm:p-8 hover:shadow-2xl hover:shadow-emerald-900/30 transition-all"
+                className="bg-white p-6 sm:p-8 border-2 border-black"
               >
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-emerald-700/50 rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 backdrop-blur">
-                  <feature.icon className="w-7 h-7 sm:w-8 sm:h-8 text-emerald-100" strokeWidth={2} />
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white border-2 border-black flex items-center justify-center mb-6">
+                  <feature.icon className="w-7 h-7 sm:w-8 sm:h-8 text-black" strokeWidth={2} />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-emerald-50 mb-3">{feature.title}</h3>
-                <p className="text-sm sm:text-base text-emerald-200 leading-relaxed">{feature.description}</p>
+                <h3 className="text-lg sm:text-xl font-semibold text-black mb-3">{feature.title}</h3>
+                <p className="text-sm sm:text-base text-black leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Target Audience - Light Cards */}
+      {/* Target Audience */}
       <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-3xl p-8 sm:p-16 shadow-xl mb-12">
+          <div className="bg-white p-8 sm:p-16 border-2 border-black mb-12">
             <div className="text-center">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-emerald-900 mb-4">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-black mb-4">
                 Pro koho je campeek určen?
               </h2>
-              <p className="text-lg sm:text-xl text-gray-600">
+              <p className="text-lg sm:text-xl text-black">
                 Pomáhame různým typům organizátorů zjednodušit jejich práci
               </p>
             </div>
@@ -245,14 +243,14 @@ export default function LandingPage() {
             ].map((segment, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all border border-emerald-100"
+                className="bg-white p-6 sm:p-8 border-2 border-black"
               >
-                <h3 className="text-xl sm:text-2xl font-semibold text-emerald-900 mb-3">{segment.title}</h3>
-                <p className="text-sm sm:text-base text-gray-600 mb-6">{segment.description}</p>
+                <h3 className="text-xl sm:text-2xl font-semibold text-black mb-3">{segment.title}</h3>
+                <p className="text-sm sm:text-base text-black mb-6">{segment.description}</p>
                 <ul className="space-y-2">
                   {segment.benefits.map((benefit, bidx) => (
-                    <li key={bidx} className="flex items-start gap-2 text-sm sm:text-base text-emerald-800">
-                      <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-emerald-600" />
+                    <li key={bidx} className="flex items-start gap-2 text-sm sm:text-base text-black">
+                      <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-black" />
                       <span>{benefit}</span>
                     </li>
                   ))}
@@ -263,15 +261,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing - Dark Cards */}
+      {/* Pricing */}
       <section id="cenik" className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-3xl p-8 sm:p-16 shadow-xl mb-12">
+          <div className="bg-white p-8 sm:p-16 border-2 border-black mb-12">
             <div className="text-center">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-emerald-900 mb-4">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-black mb-4">
                 Transparentní ceník
               </h2>
-              <p className="text-lg sm:text-xl text-gray-600">
+              <p className="text-lg sm:text-xl text-black">
                 Žádné skryté poplatky. Platíte jen za to, co skutečně používáte.
               </p>
             </div>
@@ -322,36 +320,36 @@ export default function LandingPage() {
             ].map((plan, idx) => (
               <div
                 key={idx}
-                className={`rounded-2xl p-6 sm:p-8 transition-all ${
+                className={`p-6 sm:p-8 border-2 border-black ${
                   plan.highlighted
-                    ? "bg-gradient-to-br from-emerald-600 to-emerald-800 shadow-2xl shadow-emerald-900/40 md:scale-105"
-                    : "bg-gradient-to-br from-emerald-800 to-emerald-900 shadow-xl"
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
                 }`}
               >
                 {plan.highlighted && (
-                  <div className="bg-emerald-400 text-emerald-900 text-xs sm:text-sm font-bold px-3 py-1 rounded-full inline-block mb-4">
+                  <div className="bg-white text-black text-xs sm:text-sm font-bold px-3 py-1 border-2 border-white inline-block mb-4">
                     Nejpopulárnější
                   </div>
                 )}
-                <h3 className="text-xl sm:text-2xl font-semibold text-emerald-50 mb-2">{plan.name}</h3>
+                <h3 className="text-xl sm:text-2xl font-semibold mb-2">{plan.name}</h3>
                 <div className="mb-4">
-                  <span className="text-3xl sm:text-4xl font-bold text-emerald-50">{plan.price}</span>
-                  {plan.period && <span className="text-emerald-200 ml-2 text-sm sm:text-base">{plan.period}</span>}
+                  <span className="text-3xl sm:text-4xl font-bold">{plan.price}</span>
+                  {plan.period && <span className="ml-2 text-sm sm:text-base">{plan.period}</span>}
                 </div>
-                <p className="text-sm sm:text-base text-emerald-200 mb-6">{plan.description}</p>
+                <p className="text-sm sm:text-base mb-6">{plan.description}</p>
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, fidx) => (
-                    <li key={fidx} className="flex items-start gap-2 text-sm sm:text-base text-emerald-100">
-                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-300 mt-0.5 flex-shrink-0" />
+                    <li key={fidx} className="flex items-start gap-2 text-sm sm:text-base">
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mt-0.5 flex-shrink-0" />
                       <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
                 <button
-                  className={`w-full py-3 rounded-xl font-semibold transition-all text-sm sm:text-base ${
+                  className={`w-full py-3 font-semibold text-sm sm:text-base border-2 ${
                     plan.highlighted
-                      ? "bg-white text-emerald-900 hover:bg-emerald-50 shadow-lg"
-                      : "bg-emerald-700/50 text-emerald-50 hover:bg-emerald-700 backdrop-blur"
+                      ? "bg-white text-black border-white"
+                      : "bg-white text-black border-black"
                   }`}
                 >
                   {plan.cta}
@@ -362,24 +360,23 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section - Dark Card */}
+      {/* CTA Section */}
       <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-emerald-700 to-emerald-900 rounded-3xl p-10 sm:p-16 text-center relative overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
-            <div className="relative z-10">
+          <div className="bg-black p-10 sm:p-16 text-center border-2 border-black">
+            <div>
               <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-4">Připraveni zjednodušit organizaci?</h2>
-              <p className="text-lg sm:text-xl text-emerald-100 mb-8">
+              <p className="text-lg sm:text-xl text-white mb-8">
                 Přidejte se ke stovkám spokojených organizátorů již dnes
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/login"
-                  className="bg-white text-emerald-900 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-50 hover:shadow-xl transition-all"
+                  className="bg-white text-black px-8 py-4 border-2 border-white text-lg font-semibold"
                 >
                   Začít zdarma
                 </Link>
-                <button className="bg-emerald-600/40 backdrop-blur text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-600/60 transition-all border-2 border-white/20">
+                <button className="bg-black text-white px-8 py-4 border-2 border-white text-lg font-semibold">
                   Naplánovat demo
                 </button>
               </div>
@@ -388,10 +385,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer - Dark Card */}
+      {/* Footer */}
       <footer id="kontakt" className="py-12 sm:py-16 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-gradient-to-br from-emerald-800 to-emerald-900 rounded-3xl p-8 sm:p-16 shadow-2xl">
+          <div className="bg-black p-8 sm:p-16 border-2 border-black">
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-12">
               <div>
                 <div className="flex items-center gap-3 mb-4">
@@ -400,7 +397,7 @@ export default function LandingPage() {
                     height="32"
                     viewBox="0 0 24 24"
                     fill="none"
-                    className="stroke-emerald-200"
+                    className="stroke-white"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -410,82 +407,82 @@ export default function LandingPage() {
                     <path d="M15.5 21 12 15l-3.5 6" />
                     <path d="M2 21h20" />
                   </svg>
-                  <span className="text-2xl font-medium text-emerald-50">campeek</span>
+                  <span className="text-2xl font-medium text-white">campeek</span>
                 </div>
-                <p className="text-emerald-200 text-sm sm:text-base">Moderní CRM pro organizátory dětských akcí</p>
+                <p className="text-white text-sm sm:text-base">Moderní CRM pro organizátory dětských akcí</p>
               </div>
               <div>
-                <h4 className="font-semibold mb-4 text-emerald-50">Produkt</h4>
-                <ul className="space-y-2 text-sm sm:text-base text-emerald-200">
+                <h4 className="font-semibold mb-4 text-white">Produkt</h4>
+                <ul className="space-y-2 text-sm sm:text-base text-white">
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       Funkce
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       Ceník
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       Demo
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       Dokumentace
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-4 text-emerald-50">Společnost</h4>
-                <ul className="space-y-2 text-sm sm:text-base text-emerald-200">
+                <h4 className="font-semibold mb-4 text-white">Společnost</h4>
+                <ul className="space-y-2 text-sm sm:text-base text-white">
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       O nás
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       Blog
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       Kariéra
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       Kontakt
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-4 text-emerald-50">Právní</h4>
-                <ul className="space-y-2 text-sm sm:text-base text-emerald-200">
+                <h4 className="font-semibold mb-4 text-white">Právní</h4>
+                <ul className="space-y-2 text-sm sm:text-base text-white">
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       Ochrana osobních údajů
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       Obchodní podmínky
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-emerald-50 transition-colors">
+                    <a href="#">
                       GDPR
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
-            <div className="pt-8 border-t border-emerald-700 text-center text-emerald-300 text-sm sm:text-base">
+            <div className="pt-8 border-t-2 border-white text-center text-white text-sm sm:text-base">
               <p>© 2025 campeek. Všechna práva vyhrazena.</p>
             </div>
           </div>

@@ -37,13 +37,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100 p-4">
-      <div className="mb-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white p-4">
+      <div className="mb-8 bg-black p-4 border-2 border-black">
         <Brand />
       </div>
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center text-emerald-900">Přihlášení</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center text-black">Přihlášení</CardTitle>
           <CardDescription className="text-center">Zadejte své přihlašovací údaje</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -78,14 +78,14 @@ export default function LoginPage() {
           <CardFooter className="flex flex-col space-y-4">
             <Button
               type="submit"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="w-full bg-black text-white border-2 border-black"
               disabled={isLoading}
             >
               {isLoading ? "Přihlašování..." : "Přihlásit se"}
             </Button>
-            <p className="text-sm text-center text-muted-foreground">
+            <p className="text-sm text-center text-black">
               Nemáte účet?{" "}
-              <Link href="/register" className="text-emerald-600 hover:text-emerald-700 font-medium">
+              <Link href="/register" className="text-black underline font-medium">
                 Zaregistrujte se
               </Link>
             </p>

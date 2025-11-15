@@ -29,7 +29,7 @@ export function RegistrationsList({ eventId, registrations }: RegistrationsListP
   if (registrations.length === 0) {
     return (
       <Card>
-        <CardContent className="text-center py-12 text-muted-foreground">
+        <CardContent className="text-center py-12 text-black">
           Zatím žádné přihlášky. Sdílejte registrační odkaz s rodiči.
         </CardContent>
       </Card>
@@ -53,13 +53,13 @@ export function RegistrationsList({ eventId, registrations }: RegistrationsListP
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b">
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Dítě</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Datum narození</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Rodič</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Stav platby</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Stav přihlášky</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Datum přihlášky</th>
+                <tr className="border-b-2 border-black">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-black">Dítě</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-black">Datum narození</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-black">Rodič</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-black">Stav platby</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-black">Stav přihlášky</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-black">Datum přihlášky</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
@@ -67,7 +67,7 @@ export function RegistrationsList({ eventId, registrations }: RegistrationsListP
                 {registrations.map((reg) => (
                   <tr
                     key={reg.id}
-                    className="border-b hover:bg-muted/50 cursor-pointer transition-colors"
+                    className="border-b-2 border-black cursor-pointer"
                     onClick={() => setSelectedRegistration(reg)}
                   >
                     <td className="px-4 py-3 text-sm">{reg.children.map((child) => child.name).join(", ")}</td>
@@ -85,7 +85,7 @@ export function RegistrationsList({ eventId, registrations }: RegistrationsListP
                     </td>
                     <td className="px-4 py-3 text-sm">{new Date(reg.createdAt).toLocaleDateString("cs-CZ")}</td>
                     <td className="px-4 py-3 text-right">
-                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      <ChevronRight className="h-4 w-4 text-black" />
                     </td>
                   </tr>
                 ))}

@@ -23,24 +23,24 @@ export function EventListRow({ event }: EventListRowProps) {
     <Card>
       <CardContent className="flex flex-wrap items-center justify-between gap-4 py-4">
         <div className="min-w-0 flex-1">
-          <p className="text-xs uppercase text-muted-foreground tracking-wide">Název</p>
-          <p className="text-lg font-semibold text-foreground truncate">{event.name}</p>
+          <p className="text-xs uppercase text-black tracking-wide">Název</p>
+          <p className="text-lg font-semibold text-black truncate">{event.name}</p>
           {event.description && (
-            <p className="text-sm text-muted-foreground truncate">{event.description}</p>
+            <p className="text-sm text-black truncate">{event.description}</p>
           )}
         </div>
 
-        <div className="flex gap-6 text-sm text-muted-foreground">
+        <div className="flex gap-6 text-sm text-black">
           <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-emerald-600" />
+            <Calendar className="h-4 w-4 text-black" />
             <span>{formatDateRange(event.startDate, event.endDate)}</span>
           </div>
           <div className="flex items-center gap-2 min-w-[140px]">
-            <MapPin className="h-4 w-4 text-emerald-600" />
+            <MapPin className="h-4 w-4 text-black" />
             <span className="truncate">{event.location}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-emerald-600" />
+            <Users className="h-4 w-4 text-black" />
             <span>{event.capacity} míst</span>
           </div>
         </div>

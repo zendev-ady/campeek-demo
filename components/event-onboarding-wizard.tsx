@@ -161,18 +161,18 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
   return (
     <div className="flex flex-col h-full">
       {/* Progress Bar */}
-      <div className="px-6 pt-4 pb-6 border-b">
+      <div className="px-6 pt-4 pb-6 border-b-2 border-black">
         <div className="flex gap-2">
           {STEPS.map((step) => (
             <button
               key={step.id}
               onClick={() => step.id < currentStep && setCurrentStep(step.id)}
-              className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`flex-1 px-4 py-2 border-2 border-black text-sm font-medium ${
                 step.id === currentStep
-                  ? "bg-emerald-600 text-white"
+                  ? "bg-black text-white"
                   : step.id < currentStep
-                    ? "bg-emerald-100 text-emerald-800 cursor-pointer hover:bg-emerald-200"
-                    : "bg-gray-100 text-gray-400"
+                    ? "bg-white text-black cursor-pointer"
+                    : "bg-white text-black"
               }`}
             >
               {step.id}
@@ -181,7 +181,7 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
         </div>
         <div className="mt-3">
           <h3 className="font-semibold text-base">{STEPS[currentStep - 1].title}</h3>
-          <p className="text-sm text-muted-foreground mt-1">{STEPS[currentStep - 1].description}</p>
+          <p className="text-sm text-black mt-1">{STEPS[currentStep - 1].description}</p>
         </div>
       </div>
 
@@ -190,8 +190,8 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
         {/* Step 1: Basic Information */}
         {currentStep === 1 && (
           <div className="space-y-6 max-w-2xl">
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-emerald-900">
+            <div className="bg-white border-2 border-black p-4 mb-6">
+              <p className="text-sm text-black">
                 Definujte základní rámec akce — kdy, kde, pro koho a s jakou kapacitou
               </p>
             </div>
@@ -312,8 +312,8 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
         {/* Step 2: Payment Settings */}
         {currentStep === 2 && (
           <div className="space-y-6 max-w-2xl">
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-emerald-900">
+            <div className="bg-white border-2 border-black p-4 mb-6">
+              <p className="text-sm text-black">
                 Určuje, jakým způsobem budou účastníci platit a jaké jsou platební podmínky.
               </p>
             </div>
@@ -344,7 +344,7 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
               </div>
 
               {formData.allowInstallments && (
-                <div className="space-y-4 mt-4 p-4 bg-blue-50 rounded-lg">
+                <div className="space-y-4 mt-4 p-4 bg-white border-2 border-black">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="depositAmount">Výše zálohy (Kč)</Label>
@@ -450,8 +450,8 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
         {/* Step 3: Registration & Discounts */}
         {currentStep === 3 && (
           <div className="space-y-6 max-w-2xl">
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-emerald-900">Určuje, kdy a jak mohou rodiče podávat přihlášky.</p>
+            <div className="bg-white border-2 border-black p-4 mb-6">
+              <p className="text-sm text-black">Určuje, kdy a jak mohou rodiče podávat přihlášky.</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -487,7 +487,7 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                 </label>
               </div>
               {formData.allowDiscounts && (
-                <p className="text-sm text-muted-foreground ml-6">Slevy bude možné spravovat po vytvoření akce</p>
+                <p className="text-sm text-black ml-6">Slevy bude možné spravovat po vytvoření akce</p>
               )}
             </div>
 
@@ -503,7 +503,7 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                 </label>
               </div>
               {formData.allowDiscountCodes && (
-                <p className="text-sm text-muted-foreground ml-6">
+                <p className="text-sm text-black ml-6">
                   Slevové kódy bude možné spravovat po vytvoření akce
                 </p>
               )}
@@ -514,8 +514,8 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
         {/* Step 4: Contacts */}
         {currentStep === 4 && (
           <div className="space-y-6 max-w-2xl">
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-emerald-900">Údaje, které se zobrazí rodičům při přihlašování a komunikaci.</p>
+            <div className="bg-white border-2 border-black p-4 mb-6">
+              <p className="text-sm text-black">Údaje, které se zobrazí rodičům při přihlašování a komunikaci.</p>
             </div>
 
             <div className="space-y-2">
@@ -545,8 +545,8 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
         {/* Step 5: Summary */}
         {currentStep === 5 && (
           <div className="space-y-6 max-w-2xl">
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-emerald-900">Přehled všech vyplněných údajů před potvrzením vytvoření akce.</p>
+            <div className="bg-white border-2 border-black p-4 mb-6">
+              <p className="text-sm text-black">Přehled všech vyplněných údajů před potvrzením vytvoření akce.</p>
             </div>
 
             {/* Summary Cards */}
@@ -557,23 +557,23 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Název:</span>
+                    <span className="text-black">Název:</span>
                     <span className="font-medium">{formData.name}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Období:</span>
+                    <span className="text-black">Období:</span>
                     <span className="font-medium">
                       {new Date(formData.startDate).toLocaleDateString("cs-CZ")} -{" "}
                       {new Date(formData.endDate).toLocaleDateString("cs-CZ")}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Místo:</span>
+                    <span className="text-black">Místo:</span>
                     <span className="font-medium">{formData.location}</span>
                   </div>
                   {formData.capacity && (
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Kapacita:</span>
+                      <span className="text-black">Kapacita:</span>
                       <span className="font-medium">{formData.capacity} osob</span>
                     </div>
                   )}
@@ -586,17 +586,17 @@ export function EventOnboardingWizard({ onClose }: { onClose: () => void }) {
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Cena:</span>
+                    <span className="text-black">Cena:</span>
                     <span className="font-medium">{Number(formData.price).toLocaleString("cs-CZ")} Kč</span>
                   </div>
                   {formData.allowInstallments && (
                     <>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Záloha:</span>
+                        <span className="text-black">Záloha:</span>
                         <span className="font-medium">{Number(formData.depositAmount).toLocaleString("cs-CZ")} Kč</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Doplatek:</span>
+                        <span className="text-black">Doplatek:</span>
                         <span className="font-medium">
                           {Number(formData.finalPaymentAmount).toLocaleString("cs-CZ")} Kč
                         </span>

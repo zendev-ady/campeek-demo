@@ -15,16 +15,16 @@ export function EventModulePlaceholder({ title, description, message, Icon }: Ev
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Icon className="h-5 w-5 text-emerald-600" />
+          <Icon className="h-5 w-5 text-black" />
           {title}
         </CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="py-12 text-center">
-        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-          <Icon className="h-8 w-8 text-muted-foreground" />
+        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center border-2 border-black bg-white">
+          <Icon className="h-8 w-8 text-black" />
         </div>
-        <p className="text-muted-foreground">{message}</p>
+        <p className="text-black">{message}</p>
       </CardContent>
     </Card>
   )

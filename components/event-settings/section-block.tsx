@@ -17,8 +17,8 @@ export function SectionBlock({
   return (
     <section className={cn("space-y-5", disabled && "pointer-events-none opacity-60")}> 
       <div>
-        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <h3 className="text-lg font-semibold text-black">{title}</h3>
+        <p className="text-sm text-black">{description}</p>
       </div>
       {children}
     </section>

@@ -29,10 +29,10 @@ export function ViewToggle({ mode, onChange, className }: ViewToggleProps) {
             size="sm"
             onClick={() => onChange(option.value)}
             className={cn(
-              "gap-2 rounded-full border px-4",
+              "gap-2 border-2 px-4",
               isActive
-                ? "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm"
-                : "border-transparent text-muted-foreground hover:text-foreground",
+                ? "border-black bg-black text-white"
+                : "border-black bg-white text-black",
             )}
           >
             <Icon className="h-4 w-4" />

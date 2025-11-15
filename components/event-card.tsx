@@ -41,7 +41,7 @@ export function EventCard({ event }: EventCardProps) {
   }
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card>
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="space-y-1 flex-1">
@@ -64,7 +64,7 @@ export function EventCard({ event }: EventCardProps) {
                 Duplikovat
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleDelete} className="text-destructive">
+              <DropdownMenuItem onClick={handleDelete} className="text-black">
                 <Trash2 className="h-4 w-4 mr-2" />
                 Smazat
               </DropdownMenuItem>
@@ -73,15 +73,15 @@ export function EventCard({ event }: EventCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
-        <div className="flex items-center text-sm text-muted-foreground">
+        <div className="flex items-center text-sm text-black">
           <Calendar className="h-4 w-4 mr-2" />
           {formatDate(event.startDate)} - {formatDate(event.endDate)}
         </div>
-        <div className="flex items-center text-sm text-muted-foreground">
+        <div className="flex items-center text-sm text-black">
           <MapPin className="h-4 w-4 mr-2" />
           {event.location}
         </div>
-        <div className="flex items-center text-sm text-muted-foreground">
+        <div className="flex items-center text-sm text-black">
           <Users className="h-4 w-4 mr-2" />
           Kapacita: {event.capacity} účastníků
         </div>

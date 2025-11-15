@@ -62,11 +62,11 @@ export function GlobalSearch() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        className="inline-flex items-center gap-2 px-3 py-2 text-sm text-black"
       >
         <Search className="h-4 w-4" />
         <span className="hidden sm:inline">Hledat...</span>
-        <kbd className="hidden sm:inline pointer-events-none h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100">
+        <kbd className="hidden sm:inline pointer-events-none h-5 select-none items-center gap-1 border-2 border-black bg-white px-1.5 font-mono text-[10px] font-medium opacity-100">
           <span className="text-xs">⌘</span>K
         </kbd>
       </button>
@@ -83,7 +83,7 @@ export function GlobalSearch() {
                   <Calendar className="mr-2 h-4 w-4" />
                   <div className="flex-1">
                     <div className="font-medium">{event.name}</div>
-                    <div className="text-xs text-muted-foreground">{event.location}</div>
+                    <div className="text-xs text-black">{event.location}</div>
                   </div>
                 </CommandItem>
               ))}

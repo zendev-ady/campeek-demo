@@ -129,10 +129,10 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
 
   if (!resolvedParams) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardContent className="text-center py-12">
-            <p className="text-muted-foreground">Načítám registraci...</p>
+            <p className="text-black">Načítám registraci...</p>
           </CardContent>
         </Card>
       </div>
@@ -141,10 +141,10 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
 
   if (!event) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardContent className="text-center py-12">
-            <p className="text-muted-foreground">Akce nenalezena</p>
+            <p className="text-black">Akce nenalezena</p>
           </CardContent>
         </Card>
       </div>
@@ -153,26 +153,26 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardHeader className="text-center">
-            <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-              <CheckCircle2 className="h-6 w-6 text-green-600" />
+            <div className="mx-auto w-12 h-12 bg-white border-2 border-black flex items-center justify-center mb-4">
+              <CheckCircle2 className="h-6 w-6 text-black" />
             </div>
             <CardTitle>Registrace úspěšná!</CardTitle>
             <CardDescription>Vaše registrace byla úspěšně odeslána</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground text-center">
+            <p className="text-sm text-black text-center">
               Na email <strong>{parentEmail}</strong> jsme vám odeslali potvrzení s dalšími informacemi.
             </p>
-            <div className="bg-muted p-4 rounded-lg space-y-2">
+            <div className="bg-white border-2 border-black p-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Počet dětí:</span>
+                <span className="text-black">Počet dětí:</span>
                 <span className="font-medium">{children.length}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Celková cena:</span>
+                <span className="text-black">Celková cena:</span>
                 <span className="font-bold">{calculatePrice().toLocaleString("cs-CZ")} Kč</span>
               </div>
               {children.length >= 2 && (
@@ -203,24 +203,24 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
             <CardDescription>{event.description}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="flex items-center text-sm text-muted-foreground">
+            <div className="flex items-center text-sm text-black">
               <Calendar className="h-4 w-4 mr-2" />
               {formatDate(event.startDate)} - {formatDate(event.endDate)}
             </div>
-            <div className="flex items-center text-sm text-muted-foreground">
+            <div className="flex items-center text-sm text-black">
               <MapPin className="h-4 w-4 mr-2" />
               {event.location}
             </div>
-            <div className="flex items-center text-sm text-muted-foreground">
+            <div className="flex items-center text-sm text-black">
               <Users className="h-4 w-4 mr-2" />
               Kapacita: {event.capacity} účastníků
             </div>
             <div className="flex items-center justify-between pt-2">
-              <span className="text-sm text-muted-foreground">Cena za dítě:</span>
+              <span className="text-sm text-black">Cena za dítě:</span>
               <span className="text-lg font-bold">{event.price.toLocaleString("cs-CZ")} Kč</span>
             </div>
             {event.ageMin || event.ageMax ? (
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-black">
                 Věk: {event.ageMin || "0"} - {event.ageMax || "∞"} let
               </div>
             ) : null}
@@ -372,7 +372,7 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
               </div>
 
               {/* Price Summary */}
-              <div className="bg-primary/5 p-4 rounded-lg space-y-2">
+              <div className="bg-white border-2 border-black p-4 space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Počet dětí:</span>
                   <span className="font-medium">{children.length}</span>

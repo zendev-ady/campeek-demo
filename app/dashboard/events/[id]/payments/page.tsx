@@ -22,7 +22,7 @@ export default function EventPaymentsPage({ params }: { params: Promise<{ id: st
 
   if (!resolvedId) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+      <div className="flex min-h-[40vh] items-center justify-center text-black">
         Načítám sekci plateb...
       </div>
     )
@@ -54,7 +54,7 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm text-muted-foreground">Platby · {event.name}</p>
+          <p className="text-sm text-black">Platby · {event.name}</p>
           <h1 className="text-3xl font-bold tracking-tight">Správa plateb</h1>
         </div>
         <Link href={`/dashboard/events/${event.id}`}>

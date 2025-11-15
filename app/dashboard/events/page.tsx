@@ -140,7 +140,7 @@ export default function EventsPage() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-balance">Akce a tábory</h1>
-          <p className="text-muted-foreground mt-1">Spravujte všechny své akce na jednom místě</p>
+          <p className="text-black mt-1">Spravujte všechny své akce na jednom místě</p>
         </div>
         <CreateEventDialog>
           <Button size="lg">
@@ -158,10 +158,10 @@ export default function EventsPage() {
               type="button"
               onClick={() => setViewMode(option.value)}
               className={cn(
-                "rounded-full border px-4 py-1.5 text-sm transition-colors shadow-sm",
+                "border-2 px-4 py-1.5 text-sm",
                 viewMode === option.value
-                  ? "border-emerald-500 bg-emerald-50 text-emerald-900"
-                  : "border-transparent bg-muted text-muted-foreground hover:text-foreground",
+                  ? "border-black bg-black text-white"
+                  : "border-black bg-white text-black",
               )}
             >
               {option.label}
@@ -177,10 +177,10 @@ export default function EventsPage() {
               key={year}
               onClick={() => setSelectedYear(year)}
               className={cn(
-                "rounded-full border px-4 py-1.5 text-sm transition-colors shadow-sm",
+                "border-2 px-4 py-1.5 text-sm",
                 selectedYear === year
-                  ? "border-emerald-500 bg-emerald-50 text-emerald-900"
-                  : "border-transparent bg-muted text-muted-foreground hover:text-foreground",
+                  ? "border-black bg-black text-white"
+                  : "border-black bg-white text-black",
               )}
             >
               {year === "all" ? "Vše" : year}
@@ -193,8 +193,8 @@ export default function EventsPage() {
       {events.length === 0 ? (
         <Card>
           <CardContent className="text-center py-12">
-            <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground mb-4">Zatím nemáte žádné akce</p>
+            <Calendar className="h-12 w-12 text-black mx-auto mb-4" />
+            <p className="text-black mb-4">Zatím nemáte žádné akce</p>
             <CreateEventDialog>
               <Button>
                 <Plus className="h-4 w-4 mr-2" />
@@ -220,10 +220,10 @@ export default function EventsPage() {
       ) : (
         <Card>
           <CardContent className="text-center py-12 space-y-4">
-            <Calendar className="h-12 w-12 text-muted-foreground mx-auto" />
+            <Calendar className="h-12 w-12 text-black mx-auto" />
             <div className="space-y-2">
               <p className="text-lg font-semibold">{emptyCopy.title}</p>
-              <p className="text-muted-foreground">{emptyCopy.description}</p>
+              <p className="text-black">{emptyCopy.description}</p>
             </div>
             <CreateEventDialog>
               <Button>

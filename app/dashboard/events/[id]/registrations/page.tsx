@@ -22,7 +22,7 @@ export default function EventRegistrationsPage({ params }: { params: Promise<{ i
 
   if (!resolvedId) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+      <div className="flex min-h-[40vh] items-center justify-center text-black">
         Načítám sekci přihlášek...
       </div>
     )
@@ -54,7 +54,7 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm text-muted-foreground">Přihlášky · {event.name}</p>
+          <p className="text-sm text-black">Přihlášky · {event.name}</p>
           <h1 className="text-3xl font-bold tracking-tight">Správa přihlášek</h1>
         </div>
         <Link href={`/dashboard/events/${event.id}`}>

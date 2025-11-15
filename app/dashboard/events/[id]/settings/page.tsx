@@ -22,7 +22,7 @@ export default function EventSettingsPage({ params }: { params: Promise<{ id: st
 
   if (!resolvedId) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+      <div className="flex min-h-[40vh] items-center justify-center text-black">
         Načítám nastavení akce...
       </div>
     )
@@ -62,19 +62,19 @@ function EventSettingsPageClient({ eventId }: { eventId: string }) {
             </Button>
           </Link>
           <div className="flex items-center gap-2 text-sm">
-            <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+            <Link href="/dashboard" className="text-black hover:text-black transition-colors font-medium">
               Dashboard
             </Link>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            <Link href="/dashboard/events" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+            <ChevronRight className="h-4 w-4 text-black" />
+            <Link href="/dashboard/events" className="text-black hover:text-black transition-colors font-medium">
               Akce
             </Link>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            <Link href={`/dashboard/events/${event.id}`} className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+            <ChevronRight className="h-4 w-4 text-black" />
+            <Link href={`/dashboard/events/${event.id}`} className="text-black hover:text-black transition-colors font-medium">
               {event.name}
             </Link>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            <span className="text-foreground font-semibold">Nastavení</span>
+            <ChevronRight className="h-4 w-4 text-black" />
+            <span className="text-black font-semibold">Nastavení</span>
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ export function OrganizationSwitcher() {
         <Button
           variant="ghost"
           size="sm"
-          className="w-full justify-center gap-2 rounded-lg border border-emerald-700/60 bg-emerald-800/40 text-emerald-50 hover:bg-emerald-700/60"
+          className="w-full justify-center gap-2 border-2 border-black bg-white text-black"
         >
           <Plus className="h-4 w-4 mr-2" />
           Vytvořit organizaci
@@ -37,21 +37,21 @@ export function OrganizationSwitcher() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="w-full justify-between gap-2 rounded-lg border border-emerald-700/60 bg-emerald-800/40 text-left text-emerald-50 hover:bg-emerald-700/60"
+          className="w-full justify-between gap-2 border-2 border-black bg-white text-left text-black"
         >
           <div className="flex items-center gap-2 truncate">
-            <Building2 className="h-4 w-4 text-emerald-300" />
+            <Building2 className="h-4 w-4 text-black" />
             <span className="truncate">{currentOrganization?.name || "Vyberte organizaci"}</span>
           </div>
-          <ChevronsUpDown className="h-4 w-4 text-emerald-200" />
+          <ChevronsUpDown className="h-4 w-4 text-black" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"
         sideOffset={8}
-        className="w-64 rounded-lg border border-emerald-700/60 bg-emerald-950/95 text-emerald-50 shadow-lg shadow-emerald-950/30 backdrop-blur"
+        className="w-64 border-2 border-black bg-white text-black"
       >
-        <DropdownMenuLabel className="text-xs font-semibold uppercase tracking-widest text-emerald-400">
+        <DropdownMenuLabel className="text-xs font-semibold uppercase tracking-widest text-black">
           Organizace
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -60,19 +60,19 @@ export function OrganizationSwitcher() {
             key={org.id}
             onClick={() => switchOrganization(org.id)}
             className={cn(
-              "flex items-center justify-between rounded-lg px-3 py-2 text-sm text-emerald-100 focus:bg-emerald-800/60 focus:text-emerald-50",
-              currentOrganization?.id === org.id && "bg-emerald-800/70 text-emerald-50",
+              "flex items-center justify-between px-3 py-2 text-sm text-black",
+              currentOrganization?.id === org.id && "bg-black text-white",
             )}
           >
             <span>{org.name}</span>
-            {currentOrganization?.id === org.id && <Check className="h-4 w-4 text-emerald-300" />}
+            {currentOrganization?.id === org.id && <Check className="h-4 w-4 text-white" />}
           </DropdownMenuItem>
         ))}
         <DropdownMenuSeparator />
         <CreateOrganizationDialog>
           <DropdownMenuItem
             onSelect={(e) => e.preventDefault()}
-            className="gap-2 rounded-lg px-3 py-2 text-emerald-100 focus:bg-emerald-800/60 focus:text-emerald-50"
+            className="gap-2 px-3 py-2 text-black"
           >
             <Plus className="h-4 w-4 mr-2" />
             Nová organizace

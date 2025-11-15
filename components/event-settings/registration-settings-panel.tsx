@@ -1,26 +1,23 @@
 "use client"
 
-import type { ReactNode } from "react"
-import { Fragment, useEffect, useMemo, useRef, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { Copy, ExternalLink, Info, Loader2, Save } from "lucide-react"
+import { Info, Loader2, Save } from "lucide-react"
 import {
   ADDITIONAL_REGISTRATION_OPTIONS,
-  CATEGORY_BADGE_STYLES,
-  IFRAME_SNIPPET,
-  PUBLIC_FORM_LINK,
+  PARTICIPANT_SECTION_OPTIONS,
+  PARENT_SECTION_OPTIONS,
   REGISTRATION_FIELDS_TEMPLATE,
 } from "./constants"
-import type { RegistrationField, RegistrationSettings } from "./types"
+import type { RegistrationField, RegistrationSettings, FieldState } from "./types"
+import { FieldStateToggle } from "./field-state-toggle"
 
 export function RegistrationSettingsPanel() {
   const [settings, setSettings] = useState<RegistrationSettings>(() => ({
@@ -29,60 +26,40 @@ export function RegistrationSettingsPanel() {
     endDate: "",
     requireAdminApproval: true,
     allowWaitlist: true,
-    sendConfirmationEmail: true,
-    showSummaryOnSubmit: true,
     fields: REGISTRATION_FIELDS_TEMPLATE.map((field) => ({ ...field })),
+    sectionNames: {
+      participant: "Účastník",
+      parent: "Rodič",
+    },
+    allowMultipleParents: false,
   }))
   const [hasChanges, setHasChanges] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const [copyState, setCopyState] = useState<"link" | "iframe" | null>(null)
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     return () => {
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current)
       }
-      if (copyTimeoutRef.current) {
-        clearTimeout(copyTimeoutRef.current)
-      }
     }
   }, [])
-
-  const dateError = useMemo(() => {
-    if (!settings.startDate || !settings.endDate) return ""
-    if (settings.endDate < settings.startDate) {
-      return "Datum ukončení nesmí být dříve než datum zahájení."
-    }
-    return ""
-  }, [settings.endDate, settings.startDate])
 
   const sectionsDisabled = !settings.isEnabled
 
   const markAsDirty = () => setHasChanges(true)
 
-  const handleFieldUpdate = (fieldId: string, updates: Partial<RegistrationField>) => {
+  const handleFieldStateChange = (fieldId: string, state: FieldState) => {
     setSettings((prev) => ({
       ...prev,
-      fields: prev.fields.map((field) => {
-        if (field.id !== fieldId) return field
-        const nextField = { ...field, ...updates }
-        if ("visible" in updates && updates.visible === false) {
-          nextField.required = false
-        }
-        return nextField
-      }),
+      fields: prev.fields.map((field) =>
+        field.id === fieldId ? { ...field, state } : field
+      ),
     }))
     markAsDirty()
   }
 
   const handleSave = () => {
-    if (dateError) {
-      toast.error("Opravte prosím termíny sběru přihlášek.")
-      return
-    }
-
     setIsSaving(true)
     saveTimeoutRef.current = setTimeout(() => {
       setIsSaving(false)
@@ -92,32 +69,31 @@ export function RegistrationSettingsPanel() {
     }, 1200)
   }
 
-  const handleCopy = async (value: string, variant: "link" | "iframe") => {
-    try {
-      await navigator.clipboard.writeText(value)
-      if (copyTimeoutRef.current) {
-        clearTimeout(copyTimeoutRef.current)
-      }
-      setCopyState(variant)
-      copyTimeoutRef.current = setTimeout(() => {
-        setCopyState(null)
-        copyTimeoutRef.current = null
-      }, 2000)
-    } catch {
-      toast.error("Nepodařilo se zkopírovat obsah do schránky.")
-    }
+  const handleCancel = () => {
+    // Reset to initial state or navigate back
+    setHasChanges(false)
+    toast.info("Změny byly zrušeny.")
   }
 
-  const handlePreview = () => {
-    if (typeof window !== "undefined") {
-      window.open(PUBLIC_FORM_LINK, "_blank", "noopener,noreferrer")
-    }
-  }
+  const participantFields = settings.fields.filter((f) => f.category === "Účastník")
+  const parentFields = settings.fields.filter((f) => f.category === "Rodič")
+  const otherFields = settings.fields.filter((f) => f.category === "Ostatní")
 
-  const sections = [
-    {
-      key: "activation",
-      content: (
+  return (
+    <div className="space-y-10">
+      {/* Simple Header */}
+      <div className="flex items-center justify-between pb-4 border-b">
+        <div className="flex items-center gap-3">
+          <h2 className="text-xl font-semibold text-black">Přihlášky</h2>
+          <div className="flex items-center gap-2 text-sm text-black">
+            <span className={cn("h-2 w-2 rounded-full", hasChanges ? "bg-amber-500" : "bg-emerald-500")} />
+            <span className="text-xs">{hasChanges ? "Neuloženo" : "Uloženo"}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-10">
+        {/* Aktivace přihlášek */}
         <SectionBlock
           title="Aktivace přihlášek"
           description="Zapněte sběr přihlášek a nastavte časové období, kdy je formulář dostupný rodičům."
@@ -136,7 +112,7 @@ export function RegistrationSettingsPanel() {
                 <Label htmlFor="enable-registrations" className="font-medium">
                   Povolit sběr přihlášek
                 </Label>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-black">
                   Pokud je vypnuto, formulář nebude dostupný a rodiče se nemohou přihlašovat.
                 </p>
               </div>
@@ -156,7 +132,7 @@ export function RegistrationSettingsPanel() {
                   markAsDirty()
                 }}
               />
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-black">
                 Od tohoto data se přihláškový formulář automaticky zpřístupní rodičům.
               </p>
             </div>
@@ -172,15 +148,10 @@ export function RegistrationSettingsPanel() {
                   markAsDirty()
                 }}
               />
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-black">
                 Po tomto datu se formulář automaticky uzavře.
               </p>
             </div>
-          </div>
-
-          <div className="flex items-start gap-2 rounded-lg border border-dashed border-emerald-200 bg-emerald-50/60 p-3 text-sm text-emerald-900">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-            Pokud není zadán žádný termín, přihlášky je možné sbírat bez časového omezení.
           </div>
 
           {!settings.isEnabled && (
@@ -189,33 +160,165 @@ export function RegistrationSettingsPanel() {
             </div>
           )}
         </SectionBlock>
-      ),
-    },
-    {
-      key: "fields",
-      content: (
+
+        <Separator className="bg-slate-200" />
+
+        {/* Sekce Účastník */}
         <SectionBlock
-          title="Pole přihlašovacího formuláře"
-          description="Vyberte, která pole se mají zobrazovat rodičům a která z nich budou povinná."
+          title={
+            <div className="flex items-center gap-2">
+              <span>👶 Sekce „{settings.sectionNames.participant}"</span>
+              <InfoTooltip content="Informace o dětech, které se účastní akce" />
+            </div>
+          }
+          description=""
           disabled={sectionsDisabled}
         >
-          <RegistrationFieldsTable
-            fields={settings.fields}
-            disabled={sectionsDisabled}
-            onFieldUpdate={handleFieldUpdate}
-          />
-          <p className="text-sm text-muted-foreground">
-            Tato pole jsou standardizovaná napříč systémem. V budoucnu bude možné přidat i vlastní pole.
-          </p>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="participant-section-name">Přejmenovat sekci</Label>
+              <select
+                id="participant-section-name"
+                value={settings.sectionNames.participant}
+                disabled={sectionsDisabled}
+                onChange={(e) => {
+                  setSettings((prev) => ({
+                    ...prev,
+                    sectionNames: { ...prev.sectionNames, participant: e.target.value },
+                  }))
+                  markAsDirty()
+                }}
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              >
+                {PARTICIPANT_SECTION_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="font-medium text-black">Sbíraná pole</h4>
+              <Separator className="bg-slate-200" />
+              <div className="space-y-2">
+                {participantFields.map((field) => (
+                  <FieldRow
+                    key={field.id}
+                    field={field}
+                    disabled={sectionsDisabled}
+                    onStateChange={handleFieldStateChange}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </SectionBlock>
-      ),
-    },
-    {
-      key: "options",
-      content: (
+
+        <Separator className="bg-slate-200" />
+
+        {/* Sekce Rodič */}
+        <SectionBlock
+          title={
+            <div className="flex items-center gap-2">
+              <span>👨‍👩‍👧‍👦 Sekce „{settings.sectionNames.parent}"</span>
+              <InfoTooltip content="Kontaktní údaje zákonných zástupců" />
+            </div>
+          }
+          description=""
+          disabled={sectionsDisabled}
+        >
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="parent-section-name">Přejmenovat sekci</Label>
+              <select
+                id="parent-section-name"
+                value={settings.sectionNames.parent}
+                disabled={sectionsDisabled}
+                onChange={(e) => {
+                  setSettings((prev) => ({
+                    ...prev,
+                    sectionNames: { ...prev.sectionNames, parent: e.target.value },
+                  }))
+                  markAsDirty()
+                }}
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              >
+                {PARENT_SECTION_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="allow-multiple-parents"
+                checked={settings.allowMultipleParents}
+                disabled={sectionsDisabled}
+                onCheckedChange={(checked) => {
+                  setSettings((prev) => ({ ...prev, allowMultipleParents: checked === true }))
+                  markAsDirty()
+                }}
+              />
+              <Label htmlFor="allow-multiple-parents" className="font-medium cursor-pointer">
+                Povolit sběr údajů o více rodičích
+              </Label>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="font-medium text-black">Sbíraná pole</h4>
+              <Separator className="bg-slate-200" />
+              <div className="space-y-2">
+                {parentFields.map((field) => (
+                  <FieldRow
+                    key={field.id}
+                    field={field}
+                    disabled={sectionsDisabled}
+                    onStateChange={handleFieldStateChange}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </SectionBlock>
+
+        <Separator className="bg-slate-200" />
+
+        {/* Sekce Ostatní */}
+        <SectionBlock
+          title={
+            <div className="flex items-center gap-2">
+              <span>📄 Sekce „Ostatní"</span>
+              <InfoTooltip content="Doplňkové informace a právní souhlasy" />
+            </div>
+          }
+          description=""
+          disabled={sectionsDisabled}
+        >
+          <div className="space-y-3">
+            <h4 className="font-medium text-black">Právní a doplňková pole</h4>
+            <Separator className="bg-slate-200" />
+            <div className="space-y-2">
+              {otherFields.map((field) => (
+                <FieldRow
+                  key={field.id}
+                  field={field}
+                  disabled={sectionsDisabled}
+                  onStateChange={handleFieldStateChange}
+                />
+              ))}
+            </div>
+          </div>
+        </SectionBlock>
+
+        <Separator className="bg-slate-200" />
+
+        {/* Doplňková nastavení */}
         <SectionBlock
           title="Doplňková nastavení přihlášek"
-          description="Doladění logiky schvalování, čekací listiny a notifikací."
+          description="Doladění logiky schvalování a čekací listiny."
           disabled={sectionsDisabled}
         >
           <div className="space-y-3">
@@ -226,7 +329,7 @@ export function RegistrationSettingsPanel() {
               >
                 <div className="space-y-1">
                   <p className="font-medium">{option.label}</p>
-                  <p className="text-sm text-muted-foreground">{option.helper}</p>
+                  <p className="text-sm text-black">{option.helper}</p>
                 </div>
                 <Switch
                   aria-label={option.label}
@@ -241,170 +344,54 @@ export function RegistrationSettingsPanel() {
             ))}
           </div>
         </SectionBlock>
-      ),
-    },
-    {
-      key: "share",
-      content: (
-        <SectionBlock
-          title="Náhled a vložení formuláře"
-          description="Sdílejte přihláškový formulář s rodiči nebo jej vložte na vlastní web."
-          disabled={sectionsDisabled}
-        >
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="publicLink">Veřejný odkaz</Label>
-              <div className="flex flex-col gap-2 rounded-xl border border-slate-200 p-3 sm:flex-row sm:items-center sm:gap-3">
-                <Input id="publicLink" value={PUBLIC_FORM_LINK} readOnly className="font-mono text-sm" />
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="gap-2 whitespace-nowrap"
-                  disabled={sectionsDisabled}
-                  onClick={() => handleCopy(PUBLIC_FORM_LINK, "link")}
-                >
-                  <Copy className="h-4 w-4" />
-                  Kopírovat
-                </Button>
-              </div>
-              {copyState === "link" && <p className="text-xs text-emerald-600">Odkaz byl zkopírován do schránky.</p>}
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="iframeCode">Iframe kód</Label>
-              <div className="rounded-xl border border-slate-200">
-                <Textarea id="iframeCode" readOnly value={IFRAME_SNIPPET} className="h-36 font-mono text-sm" />
-                <div className="flex flex-wrap items-center justify-between gap-2 border-t px-4 py-3">
-                  <p className="text-xs text-muted-foreground">
-                    Vložte na svůj web a formulář se načte přímo v rámci stránky.
-                  </p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="gap-2 whitespace-nowrap"
-                    disabled={sectionsDisabled}
-                    onClick={() => handleCopy(IFRAME_SNIPPET, "iframe")}
-                  >
-                    <Copy className="h-4 w-4" />
-                    Kopírovat kód
-                  </Button>
-                </div>
-              </div>
-              {copyState === "iframe" && <p className="text-xs text-emerald-600">Iframe kód byl zkopírován.</p>}
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-emerald-200 bg-emerald-50/60 px-4 py-4">
-              <div className="space-y-1">
-                <p className="font-medium">Náhled formuláře</p>
-                <p className="text-sm text-muted-foreground">
-                  Formulář můžete vložit na svůj web pomocí kódu iframe nebo sdílet přímo odkaz.
-                </p>
-              </div>
-              <Button
-                type="button"
-                variant="secondary"
-                className="gap-2 whitespace-nowrap border border-emerald-200 bg-white text-emerald-700 shadow-none hover:bg-emerald-100"
-                disabled={sectionsDisabled}
-                onClick={handlePreview}
-              >
-                <ExternalLink className="h-4 w-4" />
-                Zobrazit náhled
-              </Button>
-            </div>
-          </div>
-        </SectionBlock>
-      ),
-    },
-  ]
-
-  return (
-    <div className="space-y-10">
-      {/* Simple Header */}
-      <div className="flex items-center justify-between pb-4 border-b">
-        <div className="flex items-center gap-3">
-          <h2 className="text-xl font-semibold text-foreground">Přihlášky</h2>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span className={cn("h-2 w-2 rounded-full", hasChanges ? "bg-amber-500" : "bg-emerald-500")} />
-            <span className="text-xs">{hasChanges ? "Neuloženo" : "Uloženo"}</span>
-          </div>
+        {/* Footer */}
+        <div className="flex items-center justify-end gap-3 pt-4 border-t">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleCancel}
+            disabled={!hasChanges}
+          >
+            Zrušit
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={isSaving || !hasChanges}
+            className="gap-2 bg-emerald-600 text-white hover:bg-emerald-500"
+          >
+            {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {isSaving ? "Ukládám..." : "Uložit nastavení"}
+          </Button>
         </div>
-        <Button
-          onClick={handleSave}
-          disabled={isSaving}
-          className="gap-2 bg-emerald-600 text-white hover:bg-emerald-500"
-          size="sm"
-        >
-          {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-          {isSaving ? "Ukládám..." : "Uložit"}
-        </Button>
-      </div>
-      {dateError && (
-        <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-800">{dateError}</div>
-      )}
-
-      <div className="space-y-10">
-        {sections.map((section, index) => (
-          <Fragment key={section.key}>
-            {section.content}
-            {index < sections.length - 1 && <Separator className="bg-slate-200" />}
-          </Fragment>
-        ))}
       </div>
     </div>
   )
 }
 
-function RegistrationFieldsTable({
-  fields,
+function FieldRow({
+  field,
   disabled,
-  onFieldUpdate,
+  onStateChange,
 }: {
-  fields: RegistrationField[]
+  field: RegistrationField
   disabled: boolean
-  onFieldUpdate: (fieldId: string, updates: Partial<RegistrationField>) => void
+  onStateChange: (fieldId: string, state: FieldState) => void
 }) {
   return (
-    <div className="overflow-x-auto rounded-xl border">
-      <table className="w-full min-w-[720px] text-sm">
-        <thead className="bg-muted/70 text-muted-foreground">
-          <tr>
-            <th className="px-4 py-3 text-left font-medium">Název pole</th>
-            <th className="px-4 py-3 text-left font-medium">Kategorie</th>
-            <th className="px-4 py-3 text-left font-medium">Zobrazit</th>
-            <th className="px-4 py-3 text-left font-medium">Povinné</th>
-            <th className="px-4 py-3 text-left font-medium">Popis</th>
-          </tr>
-        </thead>
-        <tbody>
-          {fields.map((field) => (
-            <tr key={field.id} className="border-t">
-              <td className="px-4 py-3 font-medium text-foreground">{field.label}</td>
-              <td className="px-4 py-3">
-                <Badge variant="outline" className={cn("border bg-transparent text-xs", CATEGORY_BADGE_STYLES[field.category])}>
-                  {field.category}
-                </Badge>
-              </td>
-              <td className="px-4 py-3">
-                <Switch
-                  aria-label={`Zobrazit pole ${field.label}`}
-                  checked={field.visible}
-                  disabled={disabled}
-                  onCheckedChange={(checked) => onFieldUpdate(field.id, { visible: checked === true })}
-                />
-              </td>
-              <td className="px-4 py-3">
-                <Switch
-                  aria-label={`Nastavit pole ${field.label} jako povinné`}
-                  checked={field.required}
-                  disabled={disabled || !field.visible}
-                  onCheckedChange={(checked) => onFieldUpdate(field.id, { required: checked === true })}
-                />
-              </td>
-              <td className="px-4 py-3 text-muted-foreground">{field.description}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-4 py-3">
+      <div className="flex items-center gap-2">
+        <span className="font-medium text-black">{field.label}</span>
+        {field.isSystem && (
+          <span className="text-xs text-slate-500">(systémové)</span>
+        )}
+      </div>
+      <FieldStateToggle
+        value={field.state}
+        onChange={(state) => onStateChange(field.id, state)}
+        disabled={disabled || field.isSystem}
+        fieldLabel={field.label}
+      />
     </div>
   )
 }
@@ -415,18 +402,42 @@ function SectionBlock({
   children,
   disabled,
 }: {
-  title: string
+  title: string | React.ReactNode
   description: string
-  children: ReactNode
+  children: React.ReactNode
   disabled?: boolean
 }) {
   return (
     <section className={cn("space-y-5", disabled && "pointer-events-none opacity-60")}>
       <div>
-        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <h3 className="text-lg font-semibold text-black">{title}</h3>
+        {description && <p className="text-sm text-black">{description}</p>}
       </div>
       {children}
     </section>
+  )
+}
+
+function InfoTooltip({ content }: { content: string }) {
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  return (
+    <div className="relative inline-block">
+      <button
+        type="button"
+        className="inline-flex items-center justify-center w-5 h-5 rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 transition-colors"
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        aria-label="Informace"
+      >
+        <Info className="h-3 w-3" />
+      </button>
+      {showTooltip && (
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 text-xs text-white bg-slate-800 rounded-lg shadow-lg whitespace-nowrap z-10">
+          {content}
+          <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-slate-800" />
+        </div>
+      )}
+    </div>
   )
 }

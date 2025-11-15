@@ -8,15 +8,22 @@ export type EventSettingsTab = {
   icon: LucideIcon
 }
 
-export type RegistrationFieldCategory = "Dítě" | "Rodič" | "Souhlasy" | "Ostatní"
+export type RegistrationFieldCategory = "Účastník" | "Rodič" | "Ostatní"
+
+export type FieldState = "required" | "optional" | "hidden"
 
 export type RegistrationField = {
   id: string
   label: string
   category: RegistrationFieldCategory
-  description: string
-  required: boolean
-  visible: boolean
+  description?: string
+  state: FieldState
+  isSystem?: boolean // Systémové pole nelze měnit
+}
+
+export type SectionNames = {
+  participant: string
+  parent: string
 }
 
 export type RegistrationSettings = {
@@ -26,15 +33,12 @@ export type RegistrationSettings = {
   fields: RegistrationField[]
   requireAdminApproval: boolean
   allowWaitlist: boolean
-  sendConfirmationEmail: boolean
-  showSummaryOnSubmit: boolean
+  sectionNames: SectionNames
+  allowMultipleParents: boolean
 }
 
 export type AdditionalRegistrationOption = {
-  id: keyof Pick<
-    RegistrationSettings,
-    "requireAdminApproval" | "allowWaitlist" | "sendConfirmationEmail" | "showSummaryOnSubmit"
-  >
+  id: keyof Pick<RegistrationSettings, "requireAdminApproval" | "allowWaitlist">
   label: string
   helper: string
 }

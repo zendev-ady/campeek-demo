@@ -97,6 +97,10 @@ export interface DiscountCode {
   code: string
   value: number
   type: "percentage" | "fixed"
+  validFrom?: string
+  validUntil?: string
+  usageLimit?: number
+  usageCount?: number
 }
 
 // Communication Domain Types

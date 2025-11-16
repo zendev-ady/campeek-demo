@@ -82,12 +82,6 @@ export function MessageListRow({ message, recipients, onDetail, onResend, onCanc
               <Send className="h-4 w-4 mr-2" />
               Odeslat znovu
             </DropdownMenuItem>
-            {message.status === "scheduled" && onCancel && (
-              <DropdownMenuItem onClick={() => onCancel(message)} className="text-red-600">
-                <XCircle className="h-4 w-4 mr-2" />
-                Zrušit
-              </DropdownMenuItem>
-            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

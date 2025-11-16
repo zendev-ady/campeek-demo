@@ -77,17 +77,12 @@ export function MessageCard({ message, recipients, onDetail, onResend, onCancel 
         {getDeliveryStats()}
       </CardContent>
       <CardFooter className="flex gap-2">
-        <Button variant="outline" onClick={() => onResend(message)} size="sm">
+        <Button variant="outline" onClick={() => onResend(message)} size="sm" className="flex-1">
           Odeslat znovu
         </Button>
-        <Button onClick={() => onDetail(message)} size="sm">
+        <Button onClick={() => onDetail(message)} size="sm" className="flex-1">
           Detail
         </Button>
-        {message.status === "scheduled" && onCancel && (
-          <Button variant="destructive" onClick={() => onCancel(message)} size="sm">
-            Zrušit
-          </Button>
-        )}
       </CardFooter>
     </Card>
   )

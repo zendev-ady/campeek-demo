@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react"
 
-export type EventSettingsTabId = "basic" | "finance" | "registrations" | "communication" | "notifications"
+export type EventSettingsTabId = "basic" | "finance" | "registrations" | "notifications"
 
 export type EventSettingsTab = {
   id: EventSettingsTabId

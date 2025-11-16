@@ -27,12 +27,19 @@ export interface Event {
   name: string
   description: string
   startDate: string
+  startTime?: string
   endDate: string
+  endTime?: string
   location: string
   capacity: number
   price: number
   ageMin?: number
   ageMax?: number
+  logoUrl?: string
+  websiteUrl?: string
+  instagramUrl?: string
+  facebookUrl?: string
+  termsUrl?: string
   createdAt: string
   updatedAt: string
   createdBy: string

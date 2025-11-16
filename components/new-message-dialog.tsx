@@ -26,7 +26,8 @@ import {
 } from "@/components/ui/select"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Alert } from "@/components/ui/alert"
-import { Search } from "lucide-react"
+import { Search, Paperclip, X } from "lucide-react"
+import type { MessageAttachment } from "@/lib/types"
 
 interface NewMessageDialogProps {
   open: boolean
@@ -50,6 +51,7 @@ export function NewMessageDialog({ open, onOpenChange, prefillData }: NewMessage
   const [scheduledDate, setScheduledDate] = useState("")
   const [scheduledTime, setScheduledTime] = useState("")
   const [enableScheduling, setEnableScheduling] = useState(false)
+  const [attachments, setAttachments] = useState<MessageAttachment[]>([])
 
   useEffect(() => {
     if (open) {
@@ -65,6 +67,15 @@ export function NewMessageDialog({ open, onOpenChange, prefillData }: NewMessage
         }
         if (prefillData.recipientIds) {
           setSelectedRecipients(new Set(prefillData.recipientIds))
+        }
+        if (prefillData.attachments) {
+          setAttachments(prefillData.attachments)
+        }
+        if (prefillData.scheduledAt) {
+          setEnableScheduling(true)
+          const scheduledDate = new Date(prefillData.scheduledAt)
+          setScheduledDate(scheduledDate.toISOString().split("T")[0])
+          setScheduledTime(scheduledDate.toTimeString().substring(0, 5))
         }
       }
     } else {
@@ -82,6 +93,27 @@ export function NewMessageDialog({ open, onOpenChange, prefillData }: NewMessage
     setScheduledDate("")
     setScheduledTime("")
     setEnableScheduling(false)
+    setAttachments([])
+  }
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) return
+
+    const newAttachments: MessageAttachment[] = Array.from(files).map((file, index) => ({
+      id: `attachment-${Date.now()}-${index}`,
+      name: file.name,
+      size: file.size,
+      url: "#", // In demo mode, we don't actually upload files
+    }))
+
+    setAttachments([...attachments, ...newAttachments])
+    // Reset input
+    e.target.value = ""
+  }
+
+  const removeAttachment = (id: string) => {
+    setAttachments(attachments.filter((a) => a.id !== id))
   }
 
   const loadEvents = () => {
@@ -186,6 +218,7 @@ export function NewMessageDialog({ open, onOpenChange, prefillData }: NewMessage
             }
           : undefined,
       recipientIds: Array.from(selectedRecipients),
+      attachments: attachments.length > 0 ? attachments : undefined,
       createdAt: now,
       createdBy: user!.id,
     }
@@ -304,6 +337,71 @@ export function NewMessageDialog({ open, onOpenChange, prefillData }: NewMessage
                 rows={8}
               />
             </div>
+          </div>
+
+          {/* Attachments Section */}
+          <div className="space-y-3">
+            <Label htmlFor="attachments">Přílohy (volitelné)</Label>
+            <div className="border-2 border-dashed border-black p-4 rounded">
+              <div className="flex items-center gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => document.getElementById("file-input")?.click()}
+                  className="gap-2"
+                >
+                  <Paperclip className="h-4 w-4" />
+                  Přidat soubory
+                </Button>
+                <p className="text-sm text-black">
+                  {attachments.length === 0
+                    ? "Zatím nebyly přidány žádné přílohy"
+                    : `${attachments.length} ${attachments.length === 1 ? "soubor" : attachments.length < 5 ? "soubory" : "souborů"}`}
+                </p>
+              </div>
+              <input
+                id="file-input"
+                type="file"
+                multiple
+                onChange={handleFileUpload}
+                className="hidden"
+              />
+
+              {attachments.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  {attachments.map((attachment) => (
+                    <div
+                      key={attachment.id}
+                      className="flex items-center justify-between p-2 bg-gray-50 border border-gray-200 rounded"
+                    >
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <Paperclip className="h-4 w-4 text-black flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium truncate">
+                            {attachment.name}
+                          </p>
+                          <p className="text-xs text-black">
+                            {(attachment.size / 1024).toFixed(0)} KB
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeAttachment(attachment.id)}
+                        className="flex-shrink-0"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <p className="text-sm text-black">
+              V demo verzi jsou přílohy pouze simulovány.
+            </p>
           </div>
 
           {/* Scheduling Section */}

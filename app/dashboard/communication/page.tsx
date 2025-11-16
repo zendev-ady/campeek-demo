@@ -19,6 +19,7 @@ export default function CommunicationPage() {
   const [collectionView, setCollectionView] = useState<CollectionViewMode>("grid")
   const [newMessageOpen, setNewMessageOpen] = useState(false)
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
+  const [messageToResend, setMessageToResend] = useState<Message | null>(null)
 
   useEffect(() => {
     loadMessages()
@@ -67,15 +68,21 @@ export default function CommunicationPage() {
   }
 
   const handleResend = (message: Message) => {
+    setMessageToResend(message)
     setNewMessageOpen(true)
-    // In a real implementation, we would pass prefillData to the dialog
-    // For now, the NewMessageDialog would need to be updated to accept this
   }
 
   const handleEdit = (message: Message) => {
     setSelectedMessage(null)
+    setMessageToResend(message)
     setNewMessageOpen(true)
-    // Same as handleResend - would pass the message as prefillData
+  }
+
+  const handleDialogClose = (open: boolean) => {
+    setNewMessageOpen(open)
+    if (!open) {
+      setMessageToResend(null)
+    }
   }
 
   const handleCancel = (message: Message) => {
@@ -169,7 +176,11 @@ export default function CommunicationPage() {
       )}
 
       {/* New Message Dialog */}
-      <NewMessageDialog open={newMessageOpen} onOpenChange={setNewMessageOpen} />
+      <NewMessageDialog
+        open={newMessageOpen}
+        onOpenChange={handleDialogClose}
+        prefillData={messageToResend || undefined}
+      />
 
       {/* Message Detail Sidebar */}
       {selectedMessage && (

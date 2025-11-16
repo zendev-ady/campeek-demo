@@ -64,6 +64,7 @@ export interface Registration {
   parentPhone: string
   children: Child[]
   totalPrice: number
+  status?: "pending" | "confirmed" | "cancelled"
   createdAt: string
   notes?: string
 }
@@ -89,4 +90,59 @@ export interface DiscountCode {
   code: string
   value: number
   type: "percentage" | "fixed"
+}
+
+// Communication Domain Types
+
+export interface Message {
+  id: string
+  organizationId: string
+  subject: string
+  content: string
+  status: "scheduled" | "sent" | "cancelled"
+  scheduledAt?: string
+  sentAt?: string
+  cancelledAt?: string
+  recipientFilter?: {
+    type: "all" | "event"
+    eventId?: string
+  }
+  recipientIds: string[] // Registration IDs
+  attachments?: MessageAttachment[]
+  createdAt: string
+  createdBy: string
+}
+
+export interface MessageAttachment {
+  id: string
+  name: string
+  size: number
+  url: string
+}
+
+export interface MessageRecipient {
+  id: string
+  messageId: string
+  registrationId: string
+  parentName: string
+  parentEmail: string
+  status: "pending" | "delivered" | "failed"
+  deliveredAt?: string
+  failedReason?: string
+}
+
+export interface OrganizationBranding {
+  organizationId: string
+  name: string
+  logoUrl?: string
+  primaryColor: string
+  secondaryColor: string
+  contactEmail: string
+  emailFrom?: string // e.g., "organizace123@campeek.app"
+  smtpSettings?: {
+    server: string
+    port: number
+    username: string
+    domainVerified: boolean
+  }
 }

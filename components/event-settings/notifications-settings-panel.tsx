@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Save, Bell, UserCheck, Wallet, Clock, Calendar, AlertTriangle } from "lucide-react"
 import { toast } from "sonner"
 import type { NotificationSettings } from "@/lib/types"
@@ -20,7 +19,6 @@ export function NotificationsSettingsPanel() {
   const event = getEventById(eventId)
 
   const [formData, setFormData] = useState<NotificationSettings>({
-    // Defaults based on specification
     parentRegistrationConfirm: true,
     parentRegistrationCancel: true,
     parentPaymentConfirm: true,
@@ -55,7 +53,6 @@ export function NotificationsSettingsPanel() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validace
     if (formData.parentPaymentReminder && formData.parentPaymentReminderDays < 1) {
       toast.error("Počet dní před splatností musí být alespoň 1")
       return
@@ -104,42 +101,41 @@ export function NotificationsSettingsPanel() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="p-6 space-y-4">
       {/* Save Button - Top */}
       <div className="flex justify-end">
-        <Button type="submit" size="lg" className="gap-2">
+        <Button type="submit" size="lg" className="gap-2" onClick={handleSubmit}>
           <Save className="h-4 w-4" />
           Uložit změny
         </Button>
       </div>
 
-      {/* Upozornění rodičům */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      {/* KROK 1: Upozornění rodičům */}
+      <div className="bg-white border-2 border-black">
+        <div className="p-4 border-b-2 border-black">
+          <h2 className="font-semibold leading-none flex items-center gap-2 text-black">
             <Bell className="h-5 w-5" />
             Upozornění rodičům
-          </CardTitle>
-          <CardDescription>
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">
             Automatické emaily odeslané rodičům při různých událostech
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </p>
+        </div>
+        <div className="p-4 space-y-3">
           {/* Kategorie: Registrace */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <UserCheck className="h-4 w-4" />
               Registrace
             </h3>
 
-            <div className="space-y-3 ml-6">
-              {/* Potvrzení registrace */}
-              <div className="border-2 border-black p-3 space-y-2">
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení registrace</Label>
                     <p className="text-sm text-black mt-1">
-                      Automatický email okamžitě po úspěšném podání přihlášky. Obsahuje shrnutí registrace a platební údaje.
+                      Automatický email okamžitě po úspěšném podání přihlášky.
                     </p>
                   </div>
                   <Switch
@@ -149,14 +145,11 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              {/* Zrušení registrace */}
-              <div className="border-2 border-black p-3 space-y-2">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení zrušení</Label>
-                    <p className="text-sm text-black mt-1">
-                      Email potvrzující storno registrace.
-                    </p>
+                    <p className="text-sm text-black mt-1">Email potvrzující storno registrace.</p>
                   </div>
                   <Switch
                     checked={formData.parentRegistrationCancel}
@@ -168,20 +161,19 @@ export function NotificationsSettingsPanel() {
           </div>
 
           {/* Kategorie: Platby */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Wallet className="h-4 w-4" />
               Platby
             </h3>
 
-            <div className="space-y-3 ml-6">
-              {/* Potvrzení platby */}
-              <div className="border-2 border-black p-3 space-y-2">
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení platby</Label>
                     <p className="text-sm text-black mt-1">
-                      Email odeslaný po zaznamenání platby organizátorem. Slouží jako elektronická účtenka.
+                      Email odeslaný po zaznamenání platby organizátorem.
                     </p>
                   </div>
                   <Switch
@@ -191,7 +183,6 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              {/* Připomínka splatnosti */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -224,20 +215,19 @@ export function NotificationsSettingsPanel() {
           </div>
 
           {/* Kategorie: Čekací listina */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Clock className="h-4 w-4" />
               Čekací listina
             </h3>
 
-            <div className="space-y-3 ml-6">
-              {/* Zařazení na čekací listinu */}
-              <div className="border-2 border-black p-3 space-y-2">
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Zařazení na čekací listinu</Label>
                     <p className="text-sm text-black mt-1">
-                      Informace pro rodiče, že je kapacita naplněna a dítě bylo zařazeno na čekací listinu.
+                      Informace pro rodiče, že je kapacita naplněna.
                     </p>
                   </div>
                   <Switch
@@ -247,13 +237,12 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              {/* Uvolněné místo */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Oznámení o volném místě</Label>
                     <p className="text-sm text-black mt-1">
-                      Email odeslaný, když se uvolní místo. Rodič má omezený čas na potvrzení.
+                      Email odeslaný, když se uvolní místo.
                     </p>
                   </div>
                   <Switch
@@ -277,13 +266,12 @@ export function NotificationsSettingsPanel() {
                 )}
               </div>
 
-              {/* Přesunutí z čekací listiny */}
-              <div className="border-2 border-black p-3 space-y-2">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení přijetí</Label>
                     <p className="text-sm text-black mt-1">
-                      Potvrzení, že dítě bylo přesunuto z čekací listiny na hlavní seznam účastníků.
+                      Potvrzení, že dítě bylo přesunuto z čekací listiny.
                     </p>
                   </div>
                   <Switch
@@ -296,14 +284,13 @@ export function NotificationsSettingsPanel() {
           </div>
 
           {/* Kategorie: Před akcí */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               Před akcí
             </h3>
 
-            <div className="space-y-3 ml-6">
-              {/* Připomínka akce */}
+            <div className="space-y-2 ml-6">
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -319,7 +306,7 @@ export function NotificationsSettingsPanel() {
                 </div>
 
                 {formData.parentEventReminder && (
-                  <div className="pt-2 border-t-2 border-black space-y-3">
+                  <div className="pt-2 border-t-2 border-black space-y-2">
                     <div>
                       <Label htmlFor="parentEventReminderDays">Počet dní před akcí</Label>
                       <Input
@@ -349,20 +336,19 @@ export function NotificationsSettingsPanel() {
           </div>
 
           {/* Kategorie: Změny akce */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
               Změny akce
             </h3>
 
-            <div className="space-y-3 ml-6">
-              {/* Změna detailů akce */}
-              <div className="border-2 border-black p-3 space-y-2">
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Oznámení o změně</Label>
                     <p className="text-sm text-black mt-1">
-                      Automatický email při změně času, místa nebo jiných důležitých detailů akce.
+                      Automatický email při změně času, místa nebo jiných detailů.
                     </p>
                   </div>
                   <Switch
@@ -372,8 +358,7 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              {/* Storno akce */}
-              <div className="border-2 border-black p-3 space-y-2 bg-red-50">
+              <div className="border-2 border-black p-3 bg-red-50">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Oznámení o zrušení</Label>
@@ -381,7 +366,7 @@ export function NotificationsSettingsPanel() {
                       Hromadný email všem registrovaným při zrušení akce.
                     </p>
                     <p className="text-xs text-red-600 mt-2 font-medium">
-                      ⚠️ Tento email nelze vypnout, pokud dojde ke zrušení akce.
+                      ⚠️ Tento email nelze vypnout.
                     </p>
                   </div>
                   <Switch
@@ -392,31 +377,30 @@ export function NotificationsSettingsPanel() {
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Upozornění organizátorovi */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      {/* KROK 2: Upozornění organizátorovi */}
+      <div className="bg-white border-2 border-black">
+        <div className="p-4 border-b-2 border-black">
+          <h2 className="font-semibold leading-none flex items-center gap-2 text-black">
             <Bell className="h-5 w-5" />
             Upozornění organizátorovi
-          </CardTitle>
-          <CardDescription>
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">
             Notifikace pro vás o důležitých událostech týkajících se akce
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </p>
+        </div>
+        <div className="p-4 space-y-3">
           {/* Kategorie: Registrace */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <UserCheck className="h-4 w-4" />
               Registrace
             </h3>
 
-            <div className="space-y-3 ml-6">
-              {/* Nová registrace */}
-              <div className="border-2 border-black p-3 space-y-2">
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Nová přihláška</Label>
@@ -431,8 +415,7 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              {/* Registrace z čekací listiny */}
-              <div className="border-2 border-black p-3 space-y-2">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení z čekací listiny</Label>
@@ -450,15 +433,14 @@ export function NotificationsSettingsPanel() {
           </div>
 
           {/* Kategorie: Platby */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Wallet className="h-4 w-4" />
               Platby
             </h3>
 
-            <div className="space-y-3 ml-6">
-              {/* Evidovaná platba */}
-              <div className="border-2 border-black p-3 space-y-2">
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Nová platba zaznamenána</Label>
@@ -476,14 +458,13 @@ export function NotificationsSettingsPanel() {
           </div>
 
           {/* Kategorie: Kapacita */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
               Kapacita
             </h3>
 
-            <div className="space-y-3 ml-6">
-              {/* Kapacita téměř naplněna */}
+            <div className="space-y-2 ml-6">
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -514,8 +495,7 @@ export function NotificationsSettingsPanel() {
                 )}
               </div>
 
-              {/* Kapacita naplněna */}
-              <div className="border-2 border-black p-3 space-y-2">
+              <div className="border-2 border-black p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Kapacita naplněna</Label>
@@ -533,14 +513,13 @@ export function NotificationsSettingsPanel() {
           </div>
 
           {/* Kategorie: Před akcí */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               Před akcí
             </h3>
 
-            <div className="space-y-3 ml-6">
-              {/* Připomínka před začátkem */}
+            <div className="space-y-2 ml-6">
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -556,7 +535,7 @@ export function NotificationsSettingsPanel() {
                 </div>
 
                 {formData.organizerEventReminder && (
-                  <div className="pt-2 border-t-2 border-black space-y-3">
+                  <div className="pt-2 border-t-2 border-black space-y-2">
                     <div>
                       <Label htmlFor="organizerEventReminderDays">Počet dní před akcí</Label>
                       <Input
@@ -584,16 +563,16 @@ export function NotificationsSettingsPanel() {
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Save Button - Bottom */}
       <div className="flex justify-end">
-        <Button type="submit" size="lg" className="gap-2">
+        <Button type="submit" size="lg" className="gap-2" onClick={handleSubmit}>
           <Save className="h-4 w-4" />
           Uložit změny
         </Button>
       </div>
-    </form>
+    </div>
   )
 }

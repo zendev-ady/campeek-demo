@@ -49,7 +49,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen bg-white">
+    <div className="flex h-screen overflow-hidden bg-white">
       {/* Sidebar */}
       <aside className="w-64 border-r-2 border-black bg-black flex flex-col">
         <div className="p-6 border-b-2 border-white">

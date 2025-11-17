@@ -177,7 +177,7 @@ export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanel
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="startDate">Datum zahájení sběru přihlášek</Label>
               <Input

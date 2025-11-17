@@ -50,9 +50,9 @@ export function SettingsTabsCard({ activeTab, onTabChange, children }: SettingsT
       </nav>
 
       {/* Tab Content */}
-      <div className="bg-white border-2 border-black p-6">
+      <div className="bg-white border-2 border-black">
         {children ? (
-          <div className="text-black">{children}</div>
+          children
         ) : (
           <div className="text-center py-12 text-black">
             Modul {activeLabel.toLowerCase()} je zatím v přípravě.

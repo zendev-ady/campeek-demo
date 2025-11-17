@@ -108,7 +108,7 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="p-6 space-y-4">
       {/* Save Button - Top */}
       <div className="flex justify-end">
         <Button type="submit" size="lg" className="gap-2">

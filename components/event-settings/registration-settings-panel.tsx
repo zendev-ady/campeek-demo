@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
-import { ExternalLink, Info, Loader2, Save, ClipboardList, User, Users, FileText, Settings } from "lucide-react"
+import { ExternalLink, Link, Info, Loader2, Save, ClipboardList, User, Users, FileText, Settings } from "lucide-react"
 import {
   ADDITIONAL_REGISTRATION_OPTIONS,
   PARTICIPANT_SECTION_OPTIONS,
@@ -85,14 +85,54 @@ export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanel
     window.open(registrationUrl, "_blank", "noopener,noreferrer")
   }
 
+  const handleCopyLink = async () => {
+    if (!eventId) {
+      toast.error("ID akce není dostupné")
+      return
+    }
+    const registrationUrl =
+      typeof window !== "undefined"
+        ? `${window.location.origin}/register/${eventId}`
+        : `/register/${eventId}`
+
+    try {
+      await navigator.clipboard.writeText(registrationUrl)
+      toast.success("Odkaz zkopírován do schránky ✓")
+    } catch (err) {
+      toast.error("Nepodařilo se zkopírovat odkaz")
+    }
+  }
+
   const participantFields = settings.fields.filter((f) => f.category === "Účastník")
   const parentFields = settings.fields.filter((f) => f.category === "Rodič")
   const otherFields = settings.fields.filter((f) => f.category === "Ostatní")
 
   return (
     <div className="space-y-6">
-      {/* Save Button - Top */}
-      <div className="flex justify-end">
+      {/* Action Buttons - Top */}
+      <div className="flex justify-end gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          onClick={handlePreview}
+          disabled={!eventId}
+          aria-label="Zobrazit náhled formuláře"
+          title="Zobrazit náhled formuláře"
+        >
+          <ExternalLink className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          onClick={handleCopyLink}
+          disabled={!eventId}
+          aria-label="Zkopírovat odkaz na registraci"
+          title="Zkopírovat odkaz na registraci"
+        >
+          <Link className="h-4 w-4" />
+        </Button>
         <Button
           onClick={handleSave}
           disabled={isSaving || !hasChanges}
@@ -371,8 +411,30 @@ export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanel
         </CardContent>
       </Card>
 
-      {/* Save Button */}
-      <div className="flex justify-end">
+      {/* Action Buttons - Bottom */}
+      <div className="flex justify-end gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          onClick={handlePreview}
+          disabled={!eventId}
+          aria-label="Zobrazit náhled formuláře"
+          title="Zobrazit náhled formuláře"
+        >
+          <ExternalLink className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          onClick={handleCopyLink}
+          disabled={!eventId}
+          aria-label="Zkopírovat odkaz na registraci"
+          title="Zkopírovat odkaz na registraci"
+        >
+          <Link className="h-4 w-4" />
+        </Button>
         <Button
           onClick={handleSave}
           disabled={isSaving || !hasChanges}

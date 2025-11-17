@@ -4,7 +4,7 @@ import { useState } from "react"
 import { RegistrationSettingsPanel } from "./registration-settings-panel"
 import { BasicSettingsPanel } from "./basic-settings-panel"
 import { FinanceSettingsPanel } from "./finance-settings-panel"
-import { NotificationsSettingsPanel } from "./notifications-settings-panel"
+import { NotificationsSettingsPanelV2 } from "./notifications-settings-panel-v2"
 import { SettingsTabsCard } from "./settings-tabs-card"
 import type { EventSettingsTabId } from "./types"
 
@@ -21,7 +21,7 @@ export function EventSettingsShell({ eventId }: EventSettingsShellProps = {}) {
         {activeTab === "basic" ? <BasicSettingsPanel /> : null}
         {activeTab === "finance" ? <FinanceSettingsPanel /> : null}
         {activeTab === "registrations" ? <RegistrationSettingsPanel eventId={eventId} /> : null}
-        {activeTab === "notifications" ? <NotificationsSettingsPanel /> : null}
+        {activeTab === "notifications" ? <NotificationsSettingsPanelV2 /> : null}
       </SettingsTabsCard>
     </div>
   )

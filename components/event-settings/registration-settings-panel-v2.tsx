@@ -385,6 +385,192 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
         </div>
       </div>
 
+      {/* KROK 2: Upozornění organizátorovi */}
+      <div className="bg-white border-2 border-black">
+        <div className="p-4 border-b-2 border-black">
+          <h2 className="font-semibold leading-none flex items-center gap-2 text-black">
+            <Bell className="h-5 w-5" />
+            Upozornění organizátorovi
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">
+            Notifikace pro vás o důležitých událostech týkajících se akce
+          </p>
+        </div>
+        <div className="p-4 space-y-3">
+          {/* Kategorie: Registrace */}
+          <div className="space-y-2">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <UserCheck className="h-4 w-4" />
+              Registrace
+            </h3>
+
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Nová přihláška</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email okamžitě po podání nové registrace.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerNewRegistration}
+                    onCheckedChange={(checked) => updateField("organizerNewRegistration", checked)}
+                  />
+                </div>
+              </div>
+
+              <div className="border-2 border-black p-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Potvrzení z čekací listiny</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email, když rodič potvrdí uvolněné místo z čekací listiny.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerWaitlistConfirmed}
+                    onCheckedChange={(checked) => updateField("organizerWaitlistConfirmed", checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Kategorie: Platby */}
+          <div className="space-y-2">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <Wallet className="h-4 w-4" />
+              Platby
+            </h3>
+
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Nová platba zaznamenána</Label>
+                    <p className="text-sm text-black mt-1">
+                      Potvrzení po manuálním zaznamenání platby v systému.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerPaymentRecorded}
+                    onCheckedChange={(checked) => updateField("organizerPaymentRecorded", checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Kategorie: Kapacita */}
+          <div className="space-y-2">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4" />
+              Kapacita
+            </h3>
+
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Upozornění před naplněním</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email, když se kapacita blíží limitu.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerCapacityWarning}
+                    onCheckedChange={(checked) => updateField("organizerCapacityWarning", checked)}
+                  />
+                </div>
+
+                {formData.organizerCapacityWarning && (
+                  <div className="pt-2 border-t-2 border-black">
+                    <Label htmlFor="organizerCapacityWarningPercent">Procento zaplnění (%)</Label>
+                    <Input
+                      id="organizerCapacityWarningPercent"
+                      type="number"
+                      min="50"
+                      max="99"
+                      value={formData.organizerCapacityWarningPercent}
+                      onChange={(e) => updateField("organizerCapacityWarningPercent", parseInt(e.target.value) || 90)}
+                      className="mt-2"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="border-2 border-black p-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Kapacita naplněna</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email, když akce dosáhne maximální kapacity.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerCapacityFull}
+                    onCheckedChange={(checked) => updateField("organizerCapacityFull", checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Kategorie: Před akcí */}
+          <div className="space-y-2">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Před akcí
+            </h3>
+
+            <div className="space-y-2 ml-6">
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Připomínka organizátorovi</Label>
+                    <p className="text-sm text-black mt-1">
+                      Připomínka pro vás před konáním akce (checklist, příprava materiálů...).
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerEventReminder}
+                    onCheckedChange={(checked) => updateField("organizerEventReminder", checked)}
+                  />
+                </div>
+
+                {formData.organizerEventReminder && (
+                  <div className="pt-2 border-t-2 border-black space-y-2">
+                    <div>
+                      <Label htmlFor="organizerEventReminderDays">Počet dní před akcí</Label>
+                      <Input
+                        id="organizerEventReminderDays"
+                        type="number"
+                        min="1"
+                        value={formData.organizerEventReminderDays}
+                        onChange={(e) => updateField("organizerEventReminderDays", parseInt(e.target.value) || 3)}
+                        className="mt-2"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="organizerEventReminderNote">Vlastní poznámka</Label>
+                      <Textarea
+                        id="organizerEventReminderNote"
+                        value={formData.organizerEventReminderNote}
+                        onChange={(e) => updateField("organizerEventReminderNote", e.target.value)}
+                        placeholder="Připravit seznam materiálů..."
+                        rows={3}
+                        className="mt-2"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Save Button - Bottom */}
       <div className="flex justify-end">
         <Button type="submit" size="lg" className="gap-2" onClick={handleSubmit}>
@@ -394,7 +580,7 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
       </div>
 
       <p className="text-sm text-gray-600 mt-4">
-        ✅ Krok 1/2: Sekce "Upozornění rodičům" přidána. Zkontroluj scrollování.
+        ✅ Krok 2/2: Obě sekce přidány. Zkontroluj scrollování s plným obsahem.
       </p>
     </div>
   )

@@ -1,477 +1,604 @@
 "use client"
 
-import { Fragment, useEffect, useRef, useState } from "react"
-import { toast } from "sonner"
+import { useState, useEffect } from "react"
+import { useEvents } from "@/lib/event-context"
+import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
-import { cn } from "@/lib/utils"
-import { ExternalLink, Link, Info, Loader2, Save, ClipboardList, User, Users, FileText, Settings } from "lucide-react"
-import {
-  ADDITIONAL_REGISTRATION_OPTIONS,
-  PARTICIPANT_SECTION_OPTIONS,
-  PARENT_SECTION_OPTIONS,
-  REGISTRATION_FIELDS_TEMPLATE,
-} from "./constants"
-import type { RegistrationField, RegistrationSettings, FieldState } from "./types"
-import { FieldStateToggle } from "./field-state-toggle"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Save, Bell, UserCheck, Wallet, Clock, Calendar, AlertTriangle } from "lucide-react"
+import { toast } from "sonner"
+import type { NotificationSettings } from "@/lib/types"
 
 interface RegistrationSettingsPanelProps {
   eventId?: string
 }
 
 export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPanelProps = {}) {
-  const [settings, setSettings] = useState<RegistrationSettings>(() => ({
-    isEnabled: true,
-    startDate: "",
-    endDate: "",
-    requireAdminApproval: true,
-    allowWaitlist: true,
-    fields: REGISTRATION_FIELDS_TEMPLATE.map((field) => ({ ...field })),
-    sectionNames: {
-      participant: "Účastník",
-      parent: "Rodič",
-    },
-    allowMultipleParents: false,
-  }))
-  const [hasChanges, setHasChanges] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
-  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const params = useParams()
+  const paramEventId = params?.id as string
+  const finalEventId = eventId || paramEventId
+  const { getEventById, updateEvent } = useEvents()
+  const event = getEventById(finalEventId)
+
+  const [formData, setFormData] = useState<NotificationSettings>({
+    // Defaults based on specification
+    parentRegistrationConfirm: true,
+    parentRegistrationCancel: true,
+    parentPaymentConfirm: true,
+    parentPaymentReminder: false,
+    parentPaymentReminderDays: 7,
+    parentWaitlistAdded: true,
+    parentWaitlistSpotAvailable: true,
+    parentWaitlistSpotHours: 24,
+    parentWaitlistMoved: true,
+    parentEventReminder: false,
+    parentEventReminderDays: 7,
+    parentEventReminderText: "",
+    parentEventChanged: true,
+    parentEventCancelled: true,
+    organizerNewRegistration: true,
+    organizerWaitlistConfirmed: true,
+    organizerPaymentRecorded: false,
+    organizerCapacityWarning: true,
+    organizerCapacityWarningPercent: 90,
+    organizerCapacityFull: true,
+    organizerEventReminder: false,
+    organizerEventReminderDays: 3,
+    organizerEventReminderNote: "",
+  })
 
   useEffect(() => {
-    return () => {
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current)
+    if (event && event.notificationSettings) {
+      setFormData({ ...formData, ...event.notificationSettings })
+    }
+  }, [event])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    // Validace
+    if (formData.parentPaymentReminder && formData.parentPaymentReminderDays < 1) {
+      toast.error("Počet dní před splatností musí být alespoň 1")
+      return
+    }
+    if (formData.parentWaitlistSpotAvailable && formData.parentWaitlistSpotHours < 1) {
+      toast.error("Počet hodin na potvrzení musí být alespoň 1")
+      return
+    }
+    if (formData.parentEventReminder && formData.parentEventReminderDays < 1) {
+      toast.error("Počet dní před akcí musí být alespoň 1")
+      return
+    }
+    if (formData.organizerCapacityWarning) {
+      if (formData.organizerCapacityWarningPercent < 50 || formData.organizerCapacityWarningPercent > 99) {
+        toast.error("Procento zaplnění musí být mezi 50 a 99")
+        return
       }
     }
-  }, [])
-
-  const sectionsDisabled = !settings.isEnabled
-
-  const markAsDirty = () => setHasChanges(true)
-
-  const handleFieldStateChange = (fieldId: string, state: FieldState) => {
-    setSettings((prev) => ({
-      ...prev,
-      fields: prev.fields.map((field) =>
-        field.id === fieldId ? { ...field, state } : field
-      ),
-    }))
-    markAsDirty()
-  }
-
-  const handleSave = () => {
-    setIsSaving(true)
-    saveTimeoutRef.current = setTimeout(() => {
-      setIsSaving(false)
-      setHasChanges(false)
-      toast.success("Nastavení přihlášek bylo uloženo.")
-      saveTimeoutRef.current = null
-    }, 1200)
-  }
-
-  const handlePreview = () => {
-    if (!eventId) {
-      toast.error("ID akce není dostupné")
+    if (formData.organizerEventReminder && formData.organizerEventReminderDays < 1) {
+      toast.error("Počet dní před akcí musí být alespoň 1")
       return
     }
-    const registrationUrl =
-      typeof window !== "undefined"
-        ? `${window.location.origin}/register/${eventId}`
-        : `/register/${eventId}`
-    window.open(registrationUrl, "_blank", "noopener,noreferrer")
-  }
-
-  const handleCopyLink = async () => {
-    if (!eventId) {
-      toast.error("ID akce není dostupné")
-      return
-    }
-    const registrationUrl =
-      typeof window !== "undefined"
-        ? `${window.location.origin}/register/${eventId}`
-        : `/register/${eventId}`
 
     try {
-      await navigator.clipboard.writeText(registrationUrl)
-      toast.success("Odkaz zkopírován do schránky ✓")
-    } catch (err) {
-      toast.error("Nepodařilo se zkopírovat odkaz")
+      await updateEvent(finalEventId, {
+        notificationSettings: formData,
+        updatedAt: new Date().toISOString(),
+      })
+      toast.success("Nastavení notifikací bylo uloženo")
+    } catch (error) {
+      console.error("Failed to save notification settings:", error)
+      toast.error("Chyba při ukládání nastavení")
     }
   }
 
-  const participantFields = settings.fields.filter((f) => f.category === "Účastník")
-  const parentFields = settings.fields.filter((f) => f.category === "Rodič")
-  const otherFields = settings.fields.filter((f) => f.category === "Ostatní")
+  const updateField = (field: keyof NotificationSettings, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  if (!event) {
+    return (
+      <div className="text-center py-12 text-black">
+        <p>Akce nebyla nalezena</p>
+      </div>
+    )
+  }
 
   return (
-    <div className="space-y-6">
-      {/* Action Buttons - Top */}
-      <div className="flex justify-end gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="lg"
-          onClick={handlePreview}
-          disabled={!eventId}
-          aria-label="Zobrazit náhled formuláře"
-          title="Zobrazit náhled formuláře"
-        >
-          <ExternalLink className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="lg"
-          onClick={handleCopyLink}
-          disabled={!eventId}
-          aria-label="Zkopírovat odkaz na registraci"
-          title="Zkopírovat odkaz na registraci"
-        >
-          <Link className="h-4 w-4" />
-        </Button>
-        <Button
-          onClick={handleSave}
-          disabled={isSaving || !hasChanges}
-          size="lg"
-          className="gap-2"
-        >
-          {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-          {isSaving ? "Ukládám..." : "Uložit změny"}
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Save Button - Top */}
+      <div className="flex justify-end">
+        <Button type="submit" size="lg" className="gap-2">
+          <Save className="h-4 w-4" />
+          Uložit změny
         </Button>
       </div>
 
-      {/* Aktivace přihlášek */}
+      {/* Upozornění rodičům */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <ClipboardList className="h-5 w-5" />
-            Aktivace přihlášek
+            <Bell className="h-5 w-5" />
+            Upozornění rodičům
           </CardTitle>
           <CardDescription>
-            Zapněte sběr přihlášek a nastavte časové období
+            Automatické emaily odeslané rodičům při různých událostech
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="p-4 border-2 border-black bg-gray-50">
-            <div className="flex flex-wrap items-start gap-3">
-              <Checkbox
-                id="enable-registrations"
-                checked={settings.isEnabled}
-                onCheckedChange={(checked) => {
-                  setSettings((prev) => ({ ...prev, isEnabled: checked === true }))
-                  markAsDirty()
-                }}
-              />
-              <div className="space-y-1">
-                <Label htmlFor="enable-registrations" className="font-medium cursor-pointer">
-                  Povolit sběr přihlášek
-                </Label>
-                <p className="text-sm text-black">
-                  Pokud je vypnuto, formulář nebude dostupný a rodiče se nemohou přihlašovat.
-                </p>
+        <CardContent className="space-y-4">
+          {/* Kategorie: Registrace */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <UserCheck className="h-4 w-4" />
+              Registrace
+            </h3>
+
+            <div className="space-y-3 ml-6">
+              {/* Potvrzení registrace */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Potvrzení registrace</Label>
+                    <p className="text-sm text-black mt-1">
+                      Automatický email okamžitě po úspěšném podání přihlášky. Obsahuje shrnutí registrace a platební údaje.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentRegistrationConfirm}
+                    onCheckedChange={(checked) => updateField("parentRegistrationConfirm", checked)}
+                  />
+                </div>
+              </div>
+
+              {/* Zrušení registrace */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Potvrzení zrušení</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email potvrzující storno registrace.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentRegistrationCancel}
+                    onCheckedChange={(checked) => updateField("parentRegistrationCancel", checked)}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <Label htmlFor="startDate">Datum zahájení sběru přihlášek</Label>
-              <Input
-                id="startDate"
-                type="date"
-                value={settings.startDate}
-                disabled={!settings.isEnabled}
-                onChange={(event) => {
-                  setSettings((prev) => ({ ...prev, startDate: event.target.value }))
-                  markAsDirty()
-                }}
-              />
-              <p className="text-sm text-black mt-1">
-                Od tohoto data se přihláškový formulář automaticky zpřístupní rodičům.
-              </p>
-            </div>
-            <div>
-              <Label htmlFor="endDate">Datum ukončení sběru přihlášek</Label>
-              <Input
-                id="endDate"
-                type="date"
-                value={settings.endDate}
-                disabled={!settings.isEnabled}
-                onChange={(event) => {
-                  setSettings((prev) => ({ ...prev, endDate: event.target.value }))
-                  markAsDirty()
-                }}
-              />
-              <p className="text-sm text-black mt-1">
-                Po tomto datu se formulář automaticky uzavře.
-              </p>
-            </div>
-          </div>
-
-          {!settings.isEnabled && (
-            <div className="rounded-lg border-2 border-amber-600 bg-amber-50 p-3 text-sm text-amber-900">
-              ⚠️ Přihlášky jsou momentálně pozastavené – ostatní sekce jsou uzamčené.
-            </div>
-          )}
-
-          <div className="pt-4 border-t-2 border-black">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handlePreview}
-              disabled={!eventId}
-              className="gap-2"
-            >
-              <ExternalLink className="h-4 w-4" />
-              Náhled registračního formuláře
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Sekce Účastník */}
-      <Card className={cn(sectionsDisabled && "opacity-60")}>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
-            Sekce „{settings.sectionNames.participant}"
-          </CardTitle>
-          <CardDescription>
-            Informace o dětech, které se účastní akce
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div>
-            <Label htmlFor="participant-section-name">Přejmenovat sekci</Label>
-            <select
-              id="participant-section-name"
-              value={settings.sectionNames.participant}
-              disabled={sectionsDisabled}
-              onChange={(e) => {
-                setSettings((prev) => ({
-                  ...prev,
-                  sectionNames: { ...prev.sectionNames, participant: e.target.value },
-                }))
-                markAsDirty()
-              }}
-              className="h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm mt-2"
-            >
-              {PARTICIPANT_SECTION_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
+          {/* Kategorie: Platby */}
           <div className="space-y-3">
-            <h4 className="font-medium text-black">Sbíraná pole</h4>
-            <div className="space-y-2">
-              {participantFields.map((field) => (
-                <FieldRow
-                  key={field.id}
-                  field={field}
-                  disabled={sectionsDisabled}
-                  onStateChange={handleFieldStateChange}
-                />
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <Wallet className="h-4 w-4" />
+              Platby
+            </h3>
 
-      {/* Sekce Rodič */}
-      <Card className={cn(sectionsDisabled && "opacity-60")}>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Sekce „{settings.sectionNames.parent}"
-          </CardTitle>
-          <CardDescription>
-            Kontaktní údaje zákonných zástupců
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div>
-            <Label htmlFor="parent-section-name">Přejmenovat sekci</Label>
-            <select
-              id="parent-section-name"
-              value={settings.sectionNames.parent}
-              disabled={sectionsDisabled}
-              onChange={(e) => {
-                setSettings((prev) => ({
-                  ...prev,
-                  sectionNames: { ...prev.sectionNames, parent: e.target.value },
-                }))
-                markAsDirty()
-              }}
-              className="h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm mt-2"
-            >
-              {PARENT_SECTION_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="allow-multiple-parents"
-              checked={settings.allowMultipleParents}
-              disabled={sectionsDisabled}
-              onCheckedChange={(checked) => {
-                setSettings((prev) => ({ ...prev, allowMultipleParents: checked === true }))
-                markAsDirty()
-              }}
-            />
-            <Label htmlFor="allow-multiple-parents" className="font-medium cursor-pointer">
-              Povolit sběr údajů o více rodičích
-            </Label>
-          </div>
-
-          <div className="space-y-3">
-            <h4 className="font-medium text-black">Sbíraná pole</h4>
-            <div className="space-y-2">
-              {parentFields.map((field) => (
-                <FieldRow
-                  key={field.id}
-                  field={field}
-                  disabled={sectionsDisabled}
-                  onStateChange={handleFieldStateChange}
-                />
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Sekce Ostatní */}
-      <Card className={cn(sectionsDisabled && "opacity-60")}>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5" />
-            Sekce „Ostatní"
-          </CardTitle>
-          <CardDescription>
-            Doplňkové informace a právní souhlasy
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <h4 className="font-medium text-black">Právní a doplňková pole</h4>
-          <div className="space-y-2">
-            {otherFields.map((field) => (
-              <FieldRow
-                key={field.id}
-                field={field}
-                disabled={sectionsDisabled}
-                onStateChange={handleFieldStateChange}
-              />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Doplňková nastavení */}
-      <Card className={cn(sectionsDisabled && "opacity-60")}>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5" />
-            Doplňková nastavení přihlášek
-          </CardTitle>
-          <CardDescription>
-            Doladění logiky schvalování a čekací listiny
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {ADDITIONAL_REGISTRATION_OPTIONS.map((option) => (
-            <div
-              key={option.id}
-              className="flex flex-wrap items-center justify-between gap-4 border-2 border-black px-4 py-3"
-            >
-              <div className="space-y-1">
-                <p className="font-medium">{option.label}</p>
-                <p className="text-sm text-black">{option.helper}</p>
+            <div className="space-y-3 ml-6">
+              {/* Potvrzení platby */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Potvrzení platby</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email odeslaný po zaznamenání platby organizátorem. Slouží jako elektronická účtenka.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentPaymentConfirm}
+                    onCheckedChange={(checked) => updateField("parentPaymentConfirm", checked)}
+                  />
+                </div>
               </div>
-              <Switch
-                aria-label={option.label}
-                checked={settings[option.id]}
-                disabled={sectionsDisabled}
-                onCheckedChange={(checked) => {
-                  setSettings((prev) => ({ ...prev, [option.id]: checked === true }))
-                  markAsDirty()
-                }}
-              />
+
+              {/* Připomínka splatnosti */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Připomínka splatnosti</Label>
+                    <p className="text-sm text-black mt-1">
+                      Automatická upomínka před datem splatnosti zálohy nebo doplatku.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentPaymentReminder}
+                    onCheckedChange={(checked) => updateField("parentPaymentReminder", checked)}
+                  />
+                </div>
+
+                {formData.parentPaymentReminder && (
+                  <div className="pt-2 border-t-2 border-black">
+                    <Label htmlFor="parentPaymentReminderDays">Počet dní před splatností</Label>
+                    <Input
+                      id="parentPaymentReminderDays"
+                      type="number"
+                      min="1"
+                      value={formData.parentPaymentReminderDays}
+                      onChange={(e) => updateField("parentPaymentReminderDays", parseInt(e.target.value) || 7)}
+                      className="mt-2"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-          ))}
+          </div>
+
+          {/* Kategorie: Čekací listina */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              Čekací listina
+            </h3>
+
+            <div className="space-y-3 ml-6">
+              {/* Zařazení na čekací listinu */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Zařazení na čekací listinu</Label>
+                    <p className="text-sm text-black mt-1">
+                      Informace pro rodiče, že je kapacita naplněna a dítě bylo zařazeno na čekací listinu.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentWaitlistAdded}
+                    onCheckedChange={(checked) => updateField("parentWaitlistAdded", checked)}
+                  />
+                </div>
+              </div>
+
+              {/* Uvolněné místo */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Oznámení o volném místě</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email odeslaný, když se uvolní místo. Rodič má omezený čas na potvrzení.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentWaitlistSpotAvailable}
+                    onCheckedChange={(checked) => updateField("parentWaitlistSpotAvailable", checked)}
+                  />
+                </div>
+
+                {formData.parentWaitlistSpotAvailable && (
+                  <div className="pt-2 border-t-2 border-black">
+                    <Label htmlFor="parentWaitlistSpotHours">Počet hodin na potvrzení</Label>
+                    <Input
+                      id="parentWaitlistSpotHours"
+                      type="number"
+                      min="1"
+                      value={formData.parentWaitlistSpotHours}
+                      onChange={(e) => updateField("parentWaitlistSpotHours", parseInt(e.target.value) || 24)}
+                      className="mt-2"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Přesunutí z čekací listiny */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Potvrzení přijetí</Label>
+                    <p className="text-sm text-black mt-1">
+                      Potvrzení, že dítě bylo přesunuto z čekací listiny na hlavní seznam účastníků.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentWaitlistMoved}
+                    onCheckedChange={(checked) => updateField("parentWaitlistMoved", checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Kategorie: Před akcí */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Před akcí
+            </h3>
+
+            <div className="space-y-3 ml-6">
+              {/* Připomínka akce */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Připomínka před začátkem</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email s důležitými informacemi před konáním akce.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentEventReminder}
+                    onCheckedChange={(checked) => updateField("parentEventReminder", checked)}
+                  />
+                </div>
+
+                {formData.parentEventReminder && (
+                  <div className="pt-2 border-t-2 border-black space-y-3">
+                    <div>
+                      <Label htmlFor="parentEventReminderDays">Počet dní před akcí</Label>
+                      <Input
+                        id="parentEventReminderDays"
+                        type="number"
+                        min="1"
+                        value={formData.parentEventReminderDays}
+                        onChange={(e) => updateField("parentEventReminderDays", parseInt(e.target.value) || 7)}
+                        className="mt-2"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="parentEventReminderText">Vlastní text</Label>
+                      <Textarea
+                        id="parentEventReminderText"
+                        value={formData.parentEventReminderText}
+                        onChange={(e) => updateField("parentEventReminderText", e.target.value)}
+                        placeholder="Nezapomeňte si vzít..."
+                        rows={3}
+                        className="mt-2"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Kategorie: Změny akce */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4" />
+              Změny akce
+            </h3>
+
+            <div className="space-y-3 ml-6">
+              {/* Změna detailů akce */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Oznámení o změně</Label>
+                    <p className="text-sm text-black mt-1">
+                      Automatický email při změně času, místa nebo jiných důležitých detailů akce.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentEventChanged}
+                    onCheckedChange={(checked) => updateField("parentEventChanged", checked)}
+                  />
+                </div>
+              </div>
+
+              {/* Storno akce */}
+              <div className="border-2 border-black p-3 space-y-2 bg-red-50">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Oznámení o zrušení</Label>
+                    <p className="text-sm text-black mt-1">
+                      Hromadný email všem registrovaným při zrušení akce.
+                    </p>
+                    <p className="text-xs text-red-600 mt-2 font-medium">
+                      ⚠️ Tento email nelze vypnout, pokud dojde ke zrušení akce.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.parentEventCancelled}
+                    onCheckedChange={(checked) => updateField("parentEventCancelled", checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
-      {/* Action Buttons - Bottom */}
-      <div className="flex justify-end gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="lg"
-          onClick={handlePreview}
-          disabled={!eventId}
-          aria-label="Zobrazit náhled formuláře"
-          title="Zobrazit náhled formuláře"
-        >
-          <ExternalLink className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="lg"
-          onClick={handleCopyLink}
-          disabled={!eventId}
-          aria-label="Zkopírovat odkaz na registraci"
-          title="Zkopírovat odkaz na registraci"
-        >
-          <Link className="h-4 w-4" />
-        </Button>
-        <Button
-          onClick={handleSave}
-          disabled={isSaving || !hasChanges}
-          size="lg"
-          className="gap-2"
-        >
-          {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-          {isSaving ? "Ukládám..." : "Uložit změny"}
-        </Button>
-      </div>
-    </div>
-  )
-}
+      {/* Upozornění organizátorovi */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Bell className="h-5 w-5" />
+            Upozornění organizátorovi
+          </CardTitle>
+          <CardDescription>
+            Notifikace pro vás o důležitých událostech týkajících se akce
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Kategorie: Registrace */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <UserCheck className="h-4 w-4" />
+              Registrace
+            </h3>
 
-function FieldRow({
-  field,
-  disabled,
-  onStateChange,
-}: {
-  field: RegistrationField
-  disabled: boolean
-  onStateChange: (fieldId: string, state: FieldState) => void
-}) {
-  return (
-    <div className="flex items-center justify-between gap-4 border-2 border-black bg-white px-4 py-3">
-      <div className="flex items-center gap-2">
-        <span className="font-medium text-black">{field.label}</span>
-        {field.isSystem && (
-          <span className="text-xs text-black">(systémové)</span>
-        )}
+            <div className="space-y-3 ml-6">
+              {/* Nová registrace */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Nová přihláška</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email okamžitě po podání nové registrace.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerNewRegistration}
+                    onCheckedChange={(checked) => updateField("organizerNewRegistration", checked)}
+                  />
+                </div>
+              </div>
+
+              {/* Registrace z čekací listiny */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Potvrzení z čekací listiny</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email, když rodič potvrdí uvolněné místo z čekací listiny.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerWaitlistConfirmed}
+                    onCheckedChange={(checked) => updateField("organizerWaitlistConfirmed", checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Kategorie: Platby */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <Wallet className="h-4 w-4" />
+              Platby
+            </h3>
+
+            <div className="space-y-3 ml-6">
+              {/* Evidovaná platba */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Nová platba zaznamenána</Label>
+                    <p className="text-sm text-black mt-1">
+                      Potvrzení po manuálním zaznamenání platby v systému.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerPaymentRecorded}
+                    onCheckedChange={(checked) => updateField("organizerPaymentRecorded", checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Kategorie: Kapacita */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4" />
+              Kapacita
+            </h3>
+
+            <div className="space-y-3 ml-6">
+              {/* Kapacita téměř naplněna */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Upozornění před naplněním</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email, když se kapacita blíží limitu.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerCapacityWarning}
+                    onCheckedChange={(checked) => updateField("organizerCapacityWarning", checked)}
+                  />
+                </div>
+
+                {formData.organizerCapacityWarning && (
+                  <div className="pt-2 border-t-2 border-black">
+                    <Label htmlFor="organizerCapacityWarningPercent">Procento zaplnění (%)</Label>
+                    <Input
+                      id="organizerCapacityWarningPercent"
+                      type="number"
+                      min="50"
+                      max="99"
+                      value={formData.organizerCapacityWarningPercent}
+                      onChange={(e) => updateField("organizerCapacityWarningPercent", parseInt(e.target.value) || 90)}
+                      className="mt-2"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Kapacita naplněna */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Kapacita naplněna</Label>
+                    <p className="text-sm text-black mt-1">
+                      Email, když akce dosáhne maximální kapacity.
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerCapacityFull}
+                    onCheckedChange={(checked) => updateField("organizerCapacityFull", checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Kategorie: Před akcí */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-black flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Před akcí
+            </h3>
+
+            <div className="space-y-3 ml-6">
+              {/* Připomínka před začátkem */}
+              <div className="border-2 border-black p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <Label className="font-medium">Připomínka organizátorovi</Label>
+                    <p className="text-sm text-black mt-1">
+                      Připomínka pro vás před konáním akce (checklist, příprava materiálů...).
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.organizerEventReminder}
+                    onCheckedChange={(checked) => updateField("organizerEventReminder", checked)}
+                  />
+                </div>
+
+                {formData.organizerEventReminder && (
+                  <div className="pt-2 border-t-2 border-black space-y-3">
+                    <div>
+                      <Label htmlFor="organizerEventReminderDays">Počet dní před akcí</Label>
+                      <Input
+                        id="organizerEventReminderDays"
+                        type="number"
+                        min="1"
+                        value={formData.organizerEventReminderDays}
+                        onChange={(e) => updateField("organizerEventReminderDays", parseInt(e.target.value) || 3)}
+                        className="mt-2"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="organizerEventReminderNote">Vlastní poznámka</Label>
+                      <Textarea
+                        id="organizerEventReminderNote"
+                        value={formData.organizerEventReminderNote}
+                        onChange={(e) => updateField("organizerEventReminderNote", e.target.value)}
+                        placeholder="Připravit seznam materiálů..."
+                        rows={3}
+                        className="mt-2"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Save Button - Bottom */}
+      <div className="flex justify-end">
+        <Button type="submit" size="lg" className="gap-2">
+          <Save className="h-4 w-4" />
+          Uložit změny
+        </Button>
       </div>
-      <FieldStateToggle
-        value={field.state}
-        onChange={(state) => onStateChange(field.id, state)}
-        disabled={disabled || field.isSystem}
-        fieldLabel={field.label}
-      />
-    </div>
+    </form>
   )
 }

@@ -11,7 +11,6 @@ export const EVENT_SETTINGS_TABS: EventSettingsTab[] = [
   { id: "registrations", label: "Přihlášky", icon: Users },
   { id: "registrations-v2", label: "Přihlášky V2", icon: Users },
   { id: "notifications", label: "Notifikace", icon: Bell },
-  { id: "notifications-v2", label: "Notifikace V2", icon: Bell },
 ]
 
 export const REGISTRATION_FIELDS_TEMPLATE: RegistrationField[] = [

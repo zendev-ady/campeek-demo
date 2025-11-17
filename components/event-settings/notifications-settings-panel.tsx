@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Save, Bell, UserCheck, Wallet, Clock, Calendar, AlertTriangle } from "lucide-react"
 import { toast } from "sonner"
 import type { NotificationSettings } from "@/lib/types"
@@ -101,7 +102,7 @@ export function NotificationsSettingsPanel() {
   }
 
   return (
-    <div className="p-6 space-y-4">
+    <div className="space-y-6">
       {/* Save Button - Top */}
       <div className="flex justify-end">
         <Button type="submit" size="lg" className="gap-2" onClick={handleSubmit}>
@@ -111,17 +112,17 @@ export function NotificationsSettingsPanel() {
       </div>
 
       {/* KROK 1: Upozornění rodičům */}
-      <div className="bg-white border-2 border-black">
-        <div className="p-4 border-b-2 border-black">
-          <h2 className="font-semibold leading-none flex items-center gap-2 text-black">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5" />
             Upozornění rodičům
-          </h2>
-          <p className="text-sm text-muted-foreground mt-2">
+          </CardTitle>
+          <CardDescription>
             Automatické emaily odeslané rodičům při různých událostech
-          </p>
-        </div>
-        <div className="p-4 space-y-3">
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
           {/* Kategorie: Registrace */}
           <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
@@ -130,7 +131,7 @@ export function NotificationsSettingsPanel() {
             </h3>
 
             <div className="space-y-2 ml-6">
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení registrace</Label>
@@ -145,7 +146,7 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení zrušení</Label>
@@ -168,7 +169,7 @@ export function NotificationsSettingsPanel() {
             </h3>
 
             <div className="space-y-2 ml-6">
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení platby</Label>
@@ -183,7 +184,7 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              <div className="border-2 border-black p-3 space-y-2">
+              <div className="border-2 border-black p-4 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Připomínka splatnosti</Label>
@@ -222,7 +223,7 @@ export function NotificationsSettingsPanel() {
             </h3>
 
             <div className="space-y-2 ml-6">
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Zařazení na čekací listinu</Label>
@@ -237,7 +238,7 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              <div className="border-2 border-black p-3 space-y-2">
+              <div className="border-2 border-black p-4 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Oznámení o volném místě</Label>
@@ -266,7 +267,7 @@ export function NotificationsSettingsPanel() {
                 )}
               </div>
 
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení přijetí</Label>
@@ -291,7 +292,7 @@ export function NotificationsSettingsPanel() {
             </h3>
 
             <div className="space-y-2 ml-6">
-              <div className="border-2 border-black p-3 space-y-2">
+              <div className="border-2 border-black p-4 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Připomínka před začátkem</Label>
@@ -343,7 +344,7 @@ export function NotificationsSettingsPanel() {
             </h3>
 
             <div className="space-y-2 ml-6">
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Oznámení o změně</Label>
@@ -358,7 +359,7 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              <div className="border-2 border-black p-3 bg-red-50">
+              <div className="border-2 border-black p-4 bg-red-50">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Oznámení o zrušení</Label>
@@ -377,21 +378,21 @@ export function NotificationsSettingsPanel() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* KROK 2: Upozornění organizátorovi */}
-      <div className="bg-white border-2 border-black">
-        <div className="p-4 border-b-2 border-black">
-          <h2 className="font-semibold leading-none flex items-center gap-2 text-black">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5" />
             Upozornění organizátorovi
-          </h2>
-          <p className="text-sm text-muted-foreground mt-2">
+          </CardTitle>
+          <CardDescription>
             Notifikace pro vás o důležitých událostech týkajících se akce
-          </p>
-        </div>
-        <div className="p-4 space-y-3">
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
           {/* Kategorie: Registrace */}
           <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
@@ -400,7 +401,7 @@ export function NotificationsSettingsPanel() {
             </h3>
 
             <div className="space-y-2 ml-6">
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Nová přihláška</Label>
@@ -415,7 +416,7 @@ export function NotificationsSettingsPanel() {
                 </div>
               </div>
 
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Potvrzení z čekací listiny</Label>
@@ -440,7 +441,7 @@ export function NotificationsSettingsPanel() {
             </h3>
 
             <div className="space-y-2 ml-6">
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Nová platba zaznamenána</Label>
@@ -465,7 +466,7 @@ export function NotificationsSettingsPanel() {
             </h3>
 
             <div className="space-y-2 ml-6">
-              <div className="border-2 border-black p-3 space-y-2">
+              <div className="border-2 border-black p-4 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Upozornění před naplněním</Label>
@@ -495,7 +496,7 @@ export function NotificationsSettingsPanel() {
                 )}
               </div>
 
-              <div className="border-2 border-black p-3">
+              <div className="border-2 border-black p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Kapacita naplněna</Label>
@@ -520,7 +521,7 @@ export function NotificationsSettingsPanel() {
             </h3>
 
             <div className="space-y-2 ml-6">
-              <div className="border-2 border-black p-3 space-y-2">
+              <div className="border-2 border-black p-4 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <Label className="font-medium">Připomínka organizátorovi</Label>
@@ -563,8 +564,8 @@ export function NotificationsSettingsPanel() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Save Button - Bottom */}
       <div className="flex justify-end">

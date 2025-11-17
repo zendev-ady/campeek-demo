@@ -1,623 +1,369 @@
 "use client"
 
-import { useMemo, useRef, useState } from "react"
-import { toast } from "sonner"
+import { useState, useEffect } from "react"
+import { useEvents } from "@/lib/event-context"
+import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Separator } from "@/components/ui/separator"
-import { Save, Loader2, Info } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { SectionBlock } from "./section-block"
-
-type EventMode = "prezencni" | "online" | "hybrid"
-
-type BasicSettings = {
-  name: string
-  slug: string
-  summary: string
-  description: string
-  mode: EventMode
-  startDate: string
-  endDate: string
-  timezone: string
-  recurrence: "none" | "weekly" | "monthly"
-  recurrenceUntil: string
-  // venue
-  venueName: string
-  venueAddress: string
-  venueHall: string
-  mapUrl: string
-  // online
-  meetingUrl: string
-  accessCode: string
-  techNotes: string
-  // capacity & registration
-  capacity: number | ""
-  perPersonLimit: number | ""
-  enableWaitlist: boolean
-  allowSubstitutions: boolean
-  // visibility
-  visibility: "public" | "unlisted" | "private"
-  requireAccessCode: boolean
-  allowIndexing: boolean
-  // media & classification
-  coverUrl: string
-  category: string
-  tags: string
-  language: string
-  ageRestriction: string
-}
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Save, Info, Calendar, MapPin, Users, Globe, Image } from "lucide-react"
+import { toast } from "sonner"
+import type { Event } from "@/lib/types"
 
 export function BasicSettingsPanel() {
-  const [values, setValues] = useState<BasicSettings>({
+  const params = useParams()
+  const eventId = params?.id as string
+  const { getEventById, updateEvent } = useEvents()
+  const event = getEventById(eventId)
+
+  const [formData, setFormData] = useState({
     name: "",
-    slug: "",
-    summary: "",
     description: "",
-    mode: "prezencni",
     startDate: "",
+    startTime: "",
     endDate: "",
-    timezone: "Europe/Prague",
-    recurrence: "none",
-    recurrenceUntil: "",
-    venueName: "",
-    venueAddress: "",
-    venueHall: "",
-    mapUrl: "",
-    meetingUrl: "",
-    accessCode: "",
-    techNotes: "",
-    capacity: "",
-    perPersonLimit: "",
-    enableWaitlist: true,
-    allowSubstitutions: false,
-    visibility: "public",
-    requireAccessCode: false,
-    allowIndexing: true,
-    coverUrl: "",
-    category: "",
-    tags: "",
-    language: "cs",
-    ageRestriction: "",
+    endTime: "",
+    ageMin: "",
+    ageMax: "",
+    location: "",
+    logoUrl: "",
+    websiteUrl: "",
+    instagramUrl: "",
+    facebookUrl: "",
+    termsUrl: "",
   })
 
-  const [isSaving, setIsSaving] = useState(false)
-  const [hasChanges, setHasChanges] = useState(false)
-  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => {
+    if (event) {
+      setFormData({
+        name: event.name || "",
+        description: event.description || "",
+        startDate: event.startDate ? event.startDate.split("T")[0] : "",
+        startTime: event.startTime || "",
+        endDate: event.endDate ? event.endDate.split("T")[0] : "",
+        endTime: event.endTime || "",
+        ageMin: event.ageMin?.toString() || "",
+        ageMax: event.ageMax?.toString() || "",
+        location: event.location || "",
+        logoUrl: event.logoUrl || "",
+        websiteUrl: event.websiteUrl || "",
+        instagramUrl: event.instagramUrl || "",
+        facebookUrl: event.facebookUrl || "",
+        termsUrl: event.termsUrl || "",
+      })
+    }
+  }, [event])
 
-  const markDirty = () => setHasChanges(true)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
 
-  const dateError = useMemo(() => {
-    if (!values.startDate || !values.endDate) return ""
-    if (values.endDate < values.startDate) return "Datum ukončení nesmí být dříve než datum začátku."
-    return ""
-  }, [values.startDate, values.endDate])
-
-  const handleSave = () => {
-    if (!values.name.trim()) {
-      toast.error("Název akce je povinný.")
+    if (!formData.name || !formData.startDate || !formData.endDate) {
+      toast.error("Vyplňte prosím všechna povinná pole")
       return
     }
-    if (dateError) {
-      toast.error("Opravte prosím datum a čas akce.")
-      return
+
+    try {
+      const updatedEvent: Partial<Event> = {
+        name: formData.name,
+        description: formData.description,
+        startDate: formData.startDate,
+        startTime: formData.startTime || undefined,
+        endDate: formData.endDate,
+        endTime: formData.endTime || undefined,
+        ageMin: formData.ageMin ? parseInt(formData.ageMin) : undefined,
+        ageMax: formData.ageMax ? parseInt(formData.ageMax) : undefined,
+        location: formData.location,
+        logoUrl: formData.logoUrl || undefined,
+        websiteUrl: formData.websiteUrl || undefined,
+        instagramUrl: formData.instagramUrl || undefined,
+        facebookUrl: formData.facebookUrl || undefined,
+        termsUrl: formData.termsUrl || undefined,
+        updatedAt: new Date().toISOString(),
+      }
+
+      await updateEvent(eventId, updatedEvent)
+      toast.success("Základní nastavení bylo uloženo")
+    } catch (error) {
+      console.error("Failed to save settings:", error)
+      toast.error("Chyba při ukládání nastavení")
     }
-    setIsSaving(true)
-    saveTimeoutRef.current = setTimeout(() => {
-      setIsSaving(false)
-      setHasChanges(false)
-      toast.success("Základní nastavení uloženo.")
-      saveTimeoutRef.current = null
-    }, 1000)
   }
 
-  const showVenue = values.mode === "prezencni" || values.mode === "hybrid"
-  const showOnline = values.mode === "online" || values.mode === "hybrid"
+  const updateField = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  if (!event) {
+    return (
+      <div className="text-center py-12 text-black">
+        <p>Akce nebyla nalezena</p>
+      </div>
+    )
+  }
 
   return (
-    <div className="space-y-10">
-      {/* Simple Header */}
-      <div className="flex items-center justify-between pb-4 border-b">
-        <div className="flex items-center gap-3">
-          <h2 className="text-xl font-semibold text-foreground">Základní informace</h2>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span className={cn("h-2 w-2 rounded-full", hasChanges ? "bg-amber-500" : "bg-emerald-500")} />
-            <span className="text-xs">{hasChanges ? "Neuloženo" : "Uloženo"}</span>
-          </div>
-        </div>
-        <Button
-          onClick={handleSave}
-          disabled={isSaving}
-          className="gap-2 bg-emerald-600 text-white hover:bg-emerald-500"
-          size="sm"
-        >
-          {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-          {isSaving ? "Ukládám..." : "Uložit"}
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Save Button - Top */}
+      <div className="flex justify-end">
+        <Button type="submit" size="lg" className="gap-2">
+          <Save className="h-4 w-4" />
+          Uložit změny
         </Button>
       </div>
-      {dateError && (
-        <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-800">{dateError}</div>
-      )}
 
-      <div className="space-y-10">
-        <SectionBlock
-          title="Základní údaje"
-          description="Název a popis akce. Slug se generuje automaticky z názvu (lze upravit)."
-        >
-          <div className="grid gap-4 lg:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="name">Název akce</Label>
-              <Input
-                id="name"
-                placeholder="Např. Letní tábor Junior 2025"
-                value={values.name}
-                onChange={(e) => {
-                  const name = e.target.value
-                  setValues((v) => ({
-                    ...v,
-                    name,
-                    slug: v.slug || name.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
-                  }))
-                  markDirty()
-                }}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="slug">Slug (URL)</Label>
-              <Input
-                id="slug"
-                placeholder="letni-tabor-junior-2025"
-                value={values.slug}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, slug: e.target.value }))
-                  markDirty()
-                }}
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="summary">Krátký perex</Label>
+      {/* Základní informace */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Info className="h-5 w-5" />
+            Základní údaje
+          </CardTitle>
+          <CardDescription>Hlavní informace o akci</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label htmlFor="name">
+              Název akce <span className="text-red-600">*</span>
+            </Label>
             <Input
-              id="summary"
-              placeholder="Stručný popis do 280 znaků"
-              value={values.summary}
-              onChange={(e) => {
-                setValues((v) => ({ ...v, summary: e.target.value }))
-                markDirty()
-              }}
+              id="name"
+              value={formData.name}
+              onChange={(e) => updateField("name", e.target.value)}
+              placeholder="Například: Letní tábor 2025"
+              required
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="description">Detailní popis</Label>
+
+          <div>
+            <Label htmlFor="description">Popis</Label>
             <Textarea
               id="description"
-              placeholder="Detail programu, ubytování, strava, co s sebou..."
-              className="min-h-32"
-              value={values.description}
-              onChange={(e) => {
-                setValues((v) => ({ ...v, description: e.target.value }))
-                markDirty()
-              }}
+              value={formData.description}
+              onChange={(e) => updateField("description", e.target.value)}
+              placeholder="Krátký popis akce, který se zobrazí na registračním formuláři..."
+              rows={4}
+            />
+            <p className="text-sm text-black mt-1">
+              Tento popis se zobrazí rodičům při registraci
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Datum a čas */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Calendar className="h-5 w-5" />
+            Termín konání
+          </CardTitle>
+          <CardDescription>Kdy akce začíná a končí</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="startDate">
+                Datum začátku <span className="text-red-600">*</span>
+              </Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={formData.startDate}
+                onChange={(e) => updateField("startDate", e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="startTime">Čas začátku</Label>
+              <Input
+                id="startTime"
+                type="time"
+                value={formData.startTime}
+                onChange={(e) => updateField("startTime", e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="endDate">
+                Datum konce <span className="text-red-600">*</span>
+              </Label>
+              <Input
+                id="endDate"
+                type="date"
+                value={formData.endDate}
+                onChange={(e) => updateField("endDate", e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="endTime">Čas konce</Label>
+              <Input
+                id="endTime"
+                type="time"
+                value={formData.endTime}
+                onChange={(e) => updateField("endTime", e.target.value)}
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Věková kategorie a místo */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            Účastníci a místo konání
+          </CardTitle>
+          <CardDescription>Omezení a lokace</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="ageMin">Minimální věk</Label>
+              <Input
+                id="ageMin"
+                type="number"
+                value={formData.ageMin}
+                onChange={(e) => updateField("ageMin", e.target.value)}
+                placeholder="Například: 6"
+                min="0"
+              />
+            </div>
+            <div>
+              <Label htmlFor="ageMax">Maximální věk</Label>
+              <Input
+                id="ageMax"
+                type="number"
+                value={formData.ageMax}
+                onChange={(e) => updateField("ageMax", e.target.value)}
+                placeholder="Například: 15"
+                min="0"
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="location">
+              <MapPin className="h-4 w-4 inline mr-1" />
+              Místo konání
+            </Label>
+            <Input
+              id="location"
+              value={formData.location}
+              onChange={(e) => updateField("location", e.target.value)}
+              placeholder="Například: Borovan, Jižní Čechy"
             />
           </div>
-        </SectionBlock>
+        </CardContent>
+      </Card>
 
-        <Separator className="bg-slate-200" />
-
-        <SectionBlock
-          title="Termín a režim"
-          description="Zadejte časové údaje akce a zvolte režim konání."
-        >
-          <div className="grid gap-4 lg:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="start">Začátek</Label>
-              <Input
-                id="start"
-                type="datetime-local"
-                value={values.startDate}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, startDate: e.target.value }))
-                  markDirty()
-                }}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="end">Konec</Label>
-              <Input
-                id="end"
-                type="datetime-local"
-                value={values.endDate}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, endDate: e.target.value }))
-                  markDirty()
-                }}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="tz">Časové pásmo</Label>
-              <select
-                id="tz"
-                className="h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm"
-                value={values.timezone}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, timezone: e.target.value }))
-                  markDirty()
-                }}
-              >
-                <option value="Europe/Prague">Europe/Prague (GMT+1)</option>
-                <option value="UTC">UTC</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="mode">Mód akce</Label>
-              <select
-                id="mode"
-                className="h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm"
-                value={values.mode}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, mode: e.target.value as EventMode }))
-                  markDirty()
-                }}
-              >
-                <option value="prezencni">Prezenční</option>
-                <option value="online">Online</option>
-                <option value="hybrid">Hybrid</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="recurrence">Opakování</Label>
-              <select
-                id="recurrence"
-                className="h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm"
-                value={values.recurrence}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, recurrence: e.target.value as BasicSettings["recurrence"] }))
-                  markDirty()
-                }}
-              >
-                <option value="none">Žádné</option>
-                <option value="weekly">Týdenní</option>
-                <option value="monthly">Měsíční</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="rec-until">Opakovat do</Label>
-              <Input
-                id="rec-until"
-                type="date"
-                disabled={values.recurrence === "none"}
-                value={values.recurrenceUntil}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, recurrenceUntil: e.target.value }))
-                  markDirty()
-                }}
-              />
-            </div>
-          </div>
-          <div className="flex items-start gap-2 rounded-lg border border-dashed border-emerald-200 bg-emerald-50/60 p-3 text-sm text-emerald-900">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-            Pole se dynamicky mění dle zvoleného módu akce.
-          </div>
-        </SectionBlock>
-
-        <Separator className="bg-slate-200" />
-
-        {showVenue && (
-          <SectionBlock
-            title="Místo konání"
-            description="Detaily o místě, kde se akce koná."
-          >
-            <div className="grid gap-4 lg:grid-cols-3">
-              <div className="space-y-2">
-                <Label htmlFor="venueName">Název místa</Label>
-                <Input
-                  id="venueName"
-                  value={values.venueName}
-                  onChange={(e) => {
-                    setValues((v) => ({ ...v, venueName: e.target.value }))
-                    markDirty()
+      {/* Vizuální identita */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Image className="h-5 w-5" />
+            Logo a obrázek
+          </CardTitle>
+          <CardDescription>Vizuální identita akce</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label htmlFor="logoUrl">URL loga/obrázku akce</Label>
+            <Input
+              id="logoUrl"
+              type="url"
+              value={formData.logoUrl}
+              onChange={(e) => updateField("logoUrl", e.target.value)}
+              placeholder="https://example.com/logo.png"
+            />
+            <p className="text-sm text-black mt-1">
+              V demo verzi zadejte URL obrázku
+            </p>
+            {formData.logoUrl && (
+              <div className="mt-2 p-3 border-2 border-black bg-gray-50">
+                <p className="text-xs text-black mb-2">Náhled:</p>
+                <img
+                  src={formData.logoUrl}
+                  alt="Logo preview"
+                  className="max-h-32 object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none"
                   }}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="venueHall">Sál / místnost</Label>
-                <Input
-                  id="venueHall"
-                  value={values.venueHall}
-                  onChange={(e) => {
-                    setValues((v) => ({ ...v, venueHall: e.target.value }))
-                    markDirty()
-                  }}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="mapUrl">URL mapy</Label>
-                <Input
-                  id="mapUrl"
-                  placeholder="https://maps.google.com/..."
-                  value={values.mapUrl}
-                  onChange={(e) => {
-                    setValues((v) => ({ ...v, mapUrl: e.target.value }))
-                    markDirty()
-                  }}
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="venueAddress">Adresa</Label>
-              <Input
-                id="venueAddress"
-                placeholder="Ulice, č.p., město"
-                value={values.venueAddress}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, venueAddress: e.target.value }))
-                  markDirty()
-                }}
-              />
-            </div>
-          </SectionBlock>
-        )}
-
-        {showOnline && (
-          <>
-            <Separator className="bg-slate-200" />
-            <SectionBlock
-              title="Online přístup"
-              description="Detaily pro online připojení účastníků."
-            >
-              <div className="grid gap-4 lg:grid-cols-3">
-                <div className="space-y-2">
-                  <Label htmlFor="meetingUrl">Přístupová URL</Label>
-                  <Input
-                    id="meetingUrl"
-                    placeholder="https://..."
-                    value={values.meetingUrl}
-                    onChange={(e) => {
-                      setValues((v) => ({ ...v, meetingUrl: e.target.value }))
-                      markDirty()
-                    }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="accessCode">Přístupový kód</Label>
-                  <Input
-                    id="accessCode"
-                    value={values.accessCode}
-                    onChange={(e) => {
-                      setValues((v) => ({ ...v, accessCode: e.target.value }))
-                      markDirty()
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="techNotes">Technické instrukce</Label>
-                <Textarea
-                  id="techNotes"
-                  placeholder="Požadavky na prohlížeč, test připojení, mikrofon..."
-                  className="min-h-24"
-                  value={values.techNotes}
-                  onChange={(e) => {
-                    setValues((v) => ({ ...v, techNotes: e.target.value }))
-                    markDirty()
-                  }}
-                />
-              </div>
-            </SectionBlock>
-          </>
-        )}
-
-        <Separator className="bg-slate-200" />
-
-        <SectionBlock
-          title="Kapacita a registrace"
-          description="Nastavte kapacitu akce a limity na osobu. Detailní logiku najdete v sekci Přihlášky."
-        >
-          <div className="grid gap-4 lg:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="capacity">Celková kapacita</Label>
-              <Input
-                id="capacity"
-                type="number"
-                min={0}
-                value={values.capacity}
-                onChange={(e) => {
-                  const val = e.target.value
-                  setValues((v) => ({ ...v, capacity: val === "" ? "" : Number(val) }))
-                  markDirty()
-                }}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="perPerson">Limit na osobu</Label>
-              <Input
-                id="perPerson"
-                type="number"
-                min={0}
-                value={values.perPersonLimit}
-                onChange={(e) => {
-                  const val = e.target.value
-                  setValues((v) => ({ ...v, perPersonLimit: val === "" ? "" : Number(val) }))
-                  markDirty()
-                }}
-              />
-            </div>
+            )}
           </div>
-          <div className="flex flex-col gap-3">
-            <label className="flex items-start gap-3">
-              <Checkbox
-                checked={values.enableWaitlist}
-                onCheckedChange={(c) => {
-                  setValues((v) => ({ ...v, enableWaitlist: c === true }))
-                  markDirty()
-                }}
-              />
-              <span>
-                <span className="font-medium">Zapnout čekací listinu</span>
-                <p className="text-sm text-muted-foreground">Pokud je kapacita plná, nové přihlášky se zařadí na čekací listinu.</p>
-              </span>
-            </label>
-            <label className="flex items-start gap-3">
-              <Checkbox
-                checked={values.allowSubstitutions}
-                onCheckedChange={(c) => {
-                  setValues((v) => ({ ...v, allowSubstitutions: c === true }))
-                  markDirty()
-                }}
-              />
-              <span>
-                <span className="font-medium">Povolit přepis účastníků</span>
-                <p className="text-sm text-muted-foreground">Umožní nahradit účastníka jinou osobou před zahájením akce.</p>
-              </span>
-            </label>
-          </div>
-        </SectionBlock>
+        </CardContent>
+      </Card>
 
-        <Separator className="bg-slate-200" />
-
-        <SectionBlock
-          title="Viditelnost a publikace"
-          description="Určete, kdo akci uvidí a zda bude zařazena do vyhledávání."
-        >
-          <div className="grid gap-4 lg:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="visibility">Viditelnost</Label>
-              <select
-                id="visibility"
-                className="h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm"
-                value={values.visibility}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, visibility: e.target.value as BasicSettings["visibility"] }))
-                  markDirty()
-                }}
-              >
-                <option value="public">Veřejná</option>
-                <option value="unlisted">Nezveřejněná</option>
-                <option value="private">Soukromá</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="requireAccess">Přístupový kód</Label>
-              <div className="flex items-center gap-3">
-                <Checkbox
-                  id="requireAccess"
-                  checked={values.requireAccessCode}
-                  onCheckedChange={(c) => {
-                    setValues((v) => ({ ...v, requireAccessCode: c === true }))
-                    markDirty()
-                  }}
-                />
-                <Input
-                  placeholder="volitelný kód"
-                  value={values.accessCode}
-                  onChange={(e) => {
-                    setValues((v) => ({ ...v, accessCode: e.target.value }))
-                    markDirty()
-                  }}
-                  disabled={!values.requireAccessCode}
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="indexing">Indexace ve vyhledávání</Label>
-              <div className="flex items-center gap-3">
-                <Checkbox
-                  id="indexing"
-                  checked={values.allowIndexing}
-                  onCheckedChange={(c) => {
-                    setValues((v) => ({ ...v, allowIndexing: c === true }))
-                    markDirty()
-                  }}
-                />
-                <span className="text-sm text-muted-foreground">Povolit zobrazení v katalozích a vyhledávačích</span>
-              </div>
-            </div>
+      {/* Online prezence */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Globe className="h-5 w-5" />
+            Online prezence
+          </CardTitle>
+          <CardDescription>Webové stránky a sociální sítě</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label htmlFor="websiteUrl">Web URL</Label>
+            <Input
+              id="websiteUrl"
+              type="url"
+              value={formData.websiteUrl}
+              onChange={(e) => updateField("websiteUrl", e.target.value)}
+              placeholder="https://vaseweby.cz"
+            />
           </div>
-        </SectionBlock>
 
-        <Separator className="bg-slate-200" />
+          <div>
+            <Label htmlFor="instagramUrl">Instagram URL</Label>
+            <Input
+              id="instagramUrl"
+              type="url"
+              value={formData.instagramUrl}
+              onChange={(e) => updateField("instagramUrl", e.target.value)}
+              placeholder="https://instagram.com/vaseprofil"
+            />
+          </div>
 
-        <SectionBlock
-          title="Média a klasifikace"
-          description="Volitelné — použijte ke snadnějšímu vyhledání a prezentaci akce."
-        >
-          <div className="grid gap-4 lg:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="cover">URL cover obrázku (16:9)</Label>
-              <Input
-                id="cover"
-                placeholder="https://..."
-                value={values.coverUrl}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, coverUrl: e.target.value }))
-                  markDirty()
-                }}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="category">Kategorie</Label>
-              <Input
-                id="category"
-                placeholder="Např. Tábory"
-                value={values.category}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, category: e.target.value }))
-                  markDirty()
-                }}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="tags">Štítky</Label>
-              <Input
-                id="tags"
-                placeholder="oddělujte čárkou (např. sport, příroda)"
-                value={values.tags}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, tags: e.target.value }))
-                  markDirty()
-                }}
-              />
-            </div>
+          <div>
+            <Label htmlFor="facebookUrl">Facebook URL</Label>
+            <Input
+              id="facebookUrl"
+              type="url"
+              value={formData.facebookUrl}
+              onChange={(e) => updateField("facebookUrl", e.target.value)}
+              placeholder="https://facebook.com/vasestranka"
+            />
           </div>
-          <div className="grid gap-4 lg:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="language">Jazyk akce</Label>
-              <select
-                id="language"
-                className="h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm"
-                value={values.language}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, language: e.target.value }))
-                  markDirty()
-                }}
-              >
-                <option value="cs">Čeština</option>
-                <option value="en">Angličtina</option>
-                <option value="sk">Slovenština</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="ageRestriction">Věkové omezení</Label>
-              <Input
-                id="ageRestriction"
-                placeholder="např. 8+ nebo 8–15"
-                value={values.ageRestriction}
-                onChange={(e) => {
-                  setValues((v) => ({ ...v, ageRestriction: e.target.value }))
-                  markDirty()
-                }}
-              />
-            </div>
+
+          <div>
+            <Label htmlFor="termsUrl">Obchodní podmínky URL</Label>
+            <Input
+              id="termsUrl"
+              type="url"
+              value={formData.termsUrl}
+              onChange={(e) => updateField("termsUrl", e.target.value)}
+              placeholder="https://vaseweby.cz/podminky"
+            />
           </div>
-        </SectionBlock>
+        </CardContent>
+      </Card>
+
+      {/* Save Button */}
+      <div className="flex justify-end">
+        <Button type="submit" size="lg" className="gap-2">
+          <Save className="h-4 w-4" />
+          Uložit změny
+        </Button>
       </div>
-    </div>
+    </form>
   )
 }
-

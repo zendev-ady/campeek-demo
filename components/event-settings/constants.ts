@@ -1,4 +1,4 @@
-import { Bell, Info, MessageSquare, PiggyBank, Users } from "lucide-react"
+import { Bell, Info, PiggyBank, Users } from "lucide-react"
 import type {
   AdditionalRegistrationOption,
   EventSettingsTab,
@@ -9,7 +9,6 @@ export const EVENT_SETTINGS_TABS: EventSettingsTab[] = [
   { id: "basic", label: "Základní informace", icon: Info },
   { id: "finance", label: "Finance", icon: PiggyBank },
   { id: "registrations", label: "Přihlášky", icon: Users },
-  { id: "communication", label: "Komunikace", icon: MessageSquare },
   { id: "notifications", label: "Notifikace", icon: Bell },
 ]
 

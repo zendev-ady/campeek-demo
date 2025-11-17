@@ -1,7 +1,6 @@
 "use client"
 
 import type { ReactNode } from "react"
-import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { EVENT_SETTINGS_TABS } from "./constants"
 import type { EventSettingsTabId } from "./types"
@@ -51,17 +50,15 @@ export function SettingsTabsCard({ activeTab, onTabChange, children }: SettingsT
       </nav>
 
       {/* Tab Content */}
-      <Card>
-        <CardContent className="p-6">
-          {children ? (
-            <div className="space-y-10 text-black">{children}</div>
-          ) : (
-            <div className="text-center py-12 text-black">
-              Modul {activeLabel.toLowerCase()} je zatím v přípravě.
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <div className="bg-white border-2 border-black p-6">
+        {children ? (
+          <div className="text-black">{children}</div>
+        ) : (
+          <div className="text-center py-12 text-black">
+            Modul {activeLabel.toLowerCase()} je zatím v přípravě.
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -50,7 +50,7 @@ export function SettingsTabsCard({ activeTab, onTabChange, children }: SettingsT
       </nav>
 
       {/* Tab Content */}
-      <div className="bg-white border-2 border-black">
+      <div className="bg-white border-2 border-black p-6">
         {children ? (
           children
         ) : (

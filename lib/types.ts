@@ -21,6 +21,49 @@ export interface OrganizationMember {
   joinedAt: string
 }
 
+export interface NotificationSettings {
+  // Upozornění rodičům - Registrace
+  parentRegistrationConfirm: boolean
+  parentRegistrationCancel: boolean
+
+  // Upozornění rodičům - Platby
+  parentPaymentConfirm: boolean
+  parentPaymentReminder: boolean
+  parentPaymentReminderDays: number
+
+  // Upozornění rodičům - Čekací listina
+  parentWaitlistAdded: boolean
+  parentWaitlistSpotAvailable: boolean
+  parentWaitlistSpotHours: number
+  parentWaitlistMoved: boolean
+
+  // Upozornění rodičům - Před akcí
+  parentEventReminder: boolean
+  parentEventReminderDays: number
+  parentEventReminderText: string
+
+  // Upozornění rodičům - Změny akce
+  parentEventChanged: boolean
+  parentEventCancelled: boolean
+
+  // Upozornění organizátorovi - Registrace
+  organizerNewRegistration: boolean
+  organizerWaitlistConfirmed: boolean
+
+  // Upozornění organizátorovi - Platby
+  organizerPaymentRecorded: boolean
+
+  // Upozornění organizátorovi - Kapacita
+  organizerCapacityWarning: boolean
+  organizerCapacityWarningPercent: number
+  organizerCapacityFull: boolean
+
+  // Upozornění organizátorovi - Před akcí
+  organizerEventReminder: boolean
+  organizerEventReminderDays: number
+  organizerEventReminderNote: string
+}
+
 export interface Event {
   id: string
   organizationId: string
@@ -61,6 +104,7 @@ export interface Event {
   contactPhone?: string
   allowWaitlist?: boolean
   requiresAdminApproval?: boolean
+  notificationSettings?: NotificationSettings
 }
 
 export interface Registration {

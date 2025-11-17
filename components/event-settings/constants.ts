@@ -9,6 +9,7 @@ export const EVENT_SETTINGS_TABS: EventSettingsTab[] = [
   { id: "basic", label: "Základní informace", icon: Info },
   { id: "finance", label: "Finance", icon: PiggyBank },
   { id: "registrations", label: "Přihlášky", icon: Users },
+  { id: "registrations-v2", label: "Přihlášky V2", icon: Users },
   { id: "notifications", label: "Notifikace", icon: Bell },
 ]
 

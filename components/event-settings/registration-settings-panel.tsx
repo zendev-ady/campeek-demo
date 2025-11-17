@@ -91,6 +91,19 @@ export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanel
 
   return (
     <div className="space-y-6">
+      {/* Save Button - Top */}
+      <div className="flex justify-end">
+        <Button
+          onClick={handleSave}
+          disabled={isSaving || !hasChanges}
+          size="lg"
+          className="gap-2"
+        >
+          {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+          {isSaving ? "Ukládám..." : "Uložit změny"}
+        </Button>
+      </div>
+
       {/* Aktivace přihlášek */}
       <Card>
         <CardHeader>

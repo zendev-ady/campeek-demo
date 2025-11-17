@@ -256,6 +256,14 @@ export function FinanceSettingsPanel() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Save Button - Top */}
+      <div className="flex justify-end">
+        <Button type="submit" size="lg" className="gap-2">
+          <Save className="h-4 w-4" />
+          Uložit změny
+        </Button>
+      </div>
+
       {/* Cena a platba */}
       <Card>
         <CardHeader>

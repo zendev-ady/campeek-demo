@@ -124,7 +124,7 @@ export function NotificationsSettingsPanel() {
             Automatické emaily odeslané rodičům při různých událostech
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8">
+        <CardContent className="space-y-6">
           {/* Kategorie: Registrace */}
           <div className="space-y-4">
             <h3 className="font-semibold text-black flex items-center gap-2">
@@ -406,7 +406,7 @@ export function NotificationsSettingsPanel() {
             Notifikace pro vás o důležitých událostech týkajících se akce
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8">
+        <CardContent className="space-y-6">
           {/* Kategorie: Registrace */}
           <div className="space-y-4">
             <h3 className="font-semibold text-black flex items-center gap-2">

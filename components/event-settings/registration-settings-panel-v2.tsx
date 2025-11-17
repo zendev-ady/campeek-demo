@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Save, Bell, UserCheck, Wallet, Clock, Calendar, AlertTriangle } from "lucide-react"
 import { toast } from "sonner"
 import type { NotificationSettings } from "@/lib/types"
@@ -109,7 +108,7 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {/* Save Button - Top */}
       <div className="flex justify-end">
         <Button type="submit" size="lg" className="gap-2">
@@ -119,25 +118,25 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
       </div>
 
       {/* Upozornění rodičům */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <div className="bg-white border-2 border-black">
+        <div className="p-4 border-b-2 border-black">
+          <h2 className="font-semibold leading-none flex items-center gap-2 text-black">
             <Bell className="h-5 w-5" />
             Upozornění rodičům
-          </CardTitle>
-          <CardDescription>
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">
             Automatické emaily odeslané rodičům při různých událostech
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </p>
+        </div>
+        <div className="p-4 space-y-3">
           {/* Kategorie: Registrace */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <UserCheck className="h-4 w-4" />
               Registrace
             </h3>
 
-            <div className="space-y-3 ml-6">
+            <div className="space-y-2 ml-6">
               {/* Potvrzení registrace */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
@@ -173,13 +172,13 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
           </div>
 
           {/* Kategorie: Platby */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Wallet className="h-4 w-4" />
               Platby
             </h3>
 
-            <div className="space-y-3 ml-6">
+            <div className="space-y-2 ml-6">
               {/* Potvrzení platby */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
@@ -229,13 +228,13 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
           </div>
 
           {/* Kategorie: Čekací listina */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Clock className="h-4 w-4" />
               Čekací listina
             </h3>
 
-            <div className="space-y-3 ml-6">
+            <div className="space-y-2 ml-6">
               {/* Zařazení na čekací listinu */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
@@ -301,13 +300,13 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
           </div>
 
           {/* Kategorie: Před akcí */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               Před akcí
             </h3>
 
-            <div className="space-y-3 ml-6">
+            <div className="space-y-2 ml-6">
               {/* Připomínka akce */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
@@ -324,7 +323,7 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
                 </div>
 
                 {formData.parentEventReminder && (
-                  <div className="pt-2 border-t-2 border-black space-y-3">
+                  <div className="pt-2 border-t-2 border-black space-y-2">
                     <div>
                       <Label htmlFor="parentEventReminderDays">Počet dní před akcí</Label>
                       <Input
@@ -354,13 +353,13 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
           </div>
 
           {/* Kategorie: Změny akce */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
               Změny akce
             </h3>
 
-            <div className="space-y-3 ml-6">
+            <div className="space-y-2 ml-6">
               {/* Změna detailů akce */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
@@ -397,29 +396,29 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Upozornění organizátorovi */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <div className="bg-white border-2 border-black">
+        <div className="p-4 border-b-2 border-black">
+          <h2 className="font-semibold leading-none flex items-center gap-2 text-black">
             <Bell className="h-5 w-5" />
             Upozornění organizátorovi
-          </CardTitle>
-          <CardDescription>
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">
             Notifikace pro vás o důležitých událostech týkajících se akce
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </p>
+        </div>
+        <div className="p-4 space-y-3">
           {/* Kategorie: Registrace */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <UserCheck className="h-4 w-4" />
               Registrace
             </h3>
 
-            <div className="space-y-3 ml-6">
+            <div className="space-y-2 ml-6">
               {/* Nová registrace */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
@@ -455,13 +454,13 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
           </div>
 
           {/* Kategorie: Platby */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Wallet className="h-4 w-4" />
               Platby
             </h3>
 
-            <div className="space-y-3 ml-6">
+            <div className="space-y-2 ml-6">
               {/* Evidovaná platba */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
@@ -481,13 +480,13 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
           </div>
 
           {/* Kategorie: Kapacita */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
               Kapacita
             </h3>
 
-            <div className="space-y-3 ml-6">
+            <div className="space-y-2 ml-6">
               {/* Kapacita téměř naplněna */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
@@ -538,13 +537,13 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
           </div>
 
           {/* Kategorie: Před akcí */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <h3 className="font-semibold text-black flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               Před akcí
             </h3>
 
-            <div className="space-y-3 ml-6">
+            <div className="space-y-2 ml-6">
               {/* Připomínka před začátkem */}
               <div className="border-2 border-black p-3 space-y-2">
                 <div className="flex items-center justify-between">
@@ -561,7 +560,7 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
                 </div>
 
                 {formData.organizerEventReminder && (
-                  <div className="pt-2 border-t-2 border-black space-y-3">
+                  <div className="pt-2 border-t-2 border-black space-y-2">
                     <div>
                       <Label htmlFor="organizerEventReminderDays">Počet dní před akcí</Label>
                       <Input
@@ -589,8 +588,8 @@ export function RegistrationSettingsPanelV2({ eventId }: RegistrationSettingsPan
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Save Button - Bottom */}
       <div className="flex justify-end">

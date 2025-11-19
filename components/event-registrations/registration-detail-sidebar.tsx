@@ -72,8 +72,8 @@ export function RegistrationDetailSidebar({
     : null
 
   // Calculate payment totals
-  const totalPrice = registration.totalPrice
-  const amountPaid = registration.amountPaid
+  const totalPrice = registration.totalPrice || 0
+  const amountPaid = registration.amountPaid || 0
   const remaining = totalPrice - amountPaid
 
   // Get status badge
@@ -336,7 +336,7 @@ export function RegistrationDetailSidebar({
                             : "Jiná částka"}
                       </div>
                       <div className="text-[#37352f] font-semibold">
-                        {payment.amount.toLocaleString("cs-CZ")} Kč
+                        {(payment.amount || 0).toLocaleString("cs-CZ")} Kč
                       </div>
 
                       {payment.dueDate && (

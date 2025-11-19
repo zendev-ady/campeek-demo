@@ -61,8 +61,8 @@ export function RegistrationsTable({
 
   // Helper to format payment status
   const getPaymentStatus = (reg: Registration) => {
-    const paid = reg.amountPaid
-    const total = reg.totalPrice
+    const paid = reg.amountPaid || 0
+    const total = reg.totalPrice || 0
 
     if (paid >= total) {
       return {

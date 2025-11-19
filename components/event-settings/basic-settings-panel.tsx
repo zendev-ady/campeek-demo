@@ -122,7 +122,7 @@ export function BasicSettingsPanel() {
           </CardTitle>
           <CardDescription>Hlavní informace o akci</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div>
             <Label htmlFor="name">
               Název akce <span className="text-red-600">*</span>
@@ -161,7 +161,7 @@ export function BasicSettingsPanel() {
           </CardTitle>
           <CardDescription>Kdy akce začíná a končí</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="startDate">
@@ -221,7 +221,7 @@ export function BasicSettingsPanel() {
           </CardTitle>
           <CardDescription>Omezení a lokace</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="ageMin">Minimální věk</Label>
@@ -271,7 +271,7 @@ export function BasicSettingsPanel() {
           </CardTitle>
           <CardDescription>Vizuální identita akce</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div>
             <Label htmlFor="logoUrl">URL loga/obrázku akce</Label>
             <Input
@@ -310,7 +310,7 @@ export function BasicSettingsPanel() {
           </CardTitle>
           <CardDescription>Webové stránky a sociální sítě</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div>
             <Label htmlFor="websiteUrl">Web URL</Label>
             <Input

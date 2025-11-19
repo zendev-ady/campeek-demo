@@ -35,13 +35,13 @@ export function SettingsTabsCard({ activeTab, onTabChange, children }: SettingsT
                 type="button"
                 onClick={() => onTabChange(tab.id)}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2",
+                  "flex items-center gap-2 px-4 py-3 text-sm transition-colors border-b-2",
                   isActive
-                    ? "text-black border-black bg-white"
-                    : "text-black border-black bg-white",
+                    ? "text-black border-white bg-white font-bold"
+                    : "text-gray-600 border-black bg-gray-100 font-medium hover:bg-gray-200",
                 )}
               >
-                <Icon className={cn("h-4 w-4", isActive ? "text-black" : "text-black")} />
+                <Icon className={cn("h-4 w-4")} />
                 <span>{tab.label}</span>
               </button>
             )
@@ -50,7 +50,7 @@ export function SettingsTabsCard({ activeTab, onTabChange, children }: SettingsT
       </nav>
 
       {/* Tab Content */}
-      <div className="bg-white border-2 border-black">
+      <div className="bg-white border-2 border-black p-6">
         {children ? (
           children
         ) : (

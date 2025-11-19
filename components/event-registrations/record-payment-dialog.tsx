@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { X } from "lucide-react"
 import { format } from "date-fns"
 import { cs } from "date-fns/locale"
@@ -96,11 +96,11 @@ export function RecordPaymentDialog({
   }
 
   // Initialize amount on open
-  useState(() => {
+  useEffect(() => {
     if (open && registration) {
       setAmount(getSuggestedAmount(paymentType).toString())
     }
-  })
+  }, [open, registration, paymentType])
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

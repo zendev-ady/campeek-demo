@@ -107,17 +107,54 @@ export interface Event {
   notificationSettings?: NotificationSettings
 }
 
+export interface Payment {
+  id: string
+  type: "deposit" | "final" | "other"
+  amount: number
+  dueDate: string | null // ISO
+  paidDate: string | null // ISO
+  status: "paid" | "unpaid"
+  note?: string
+}
+
+export interface ChangeHistoryEntry {
+  id: string
+  timestamp: string // ISO
+  action: string // "Přihláška vytvořena", "Záloha zaplacena", etc.
+  actor: string // "Systém" or user name
+  note?: string
+}
+
 export interface Registration {
   id: string
   eventId: string
+  participantId: string
+  parentId: string // primary contact
+  secondaryParentId?: string
+
+  // Legacy fields (for compatibility)
   parentName: string
   parentEmail: string
   parentPhone: string
   children: Child[]
+
+  status: "confirmed" | "waitlist" | "cancelled"
+
   totalPrice: number
-  status?: "pending" | "confirmed" | "cancelled"
+  amountPaid: number
+
+  payments: Payment[]
+
+  registeredAt: string // ISO
+  registrationNumber: string // e.g. "#2025-042"
+
+  parentNote?: string // from registration form
+  internalNote: string
+
+  changeHistory: ChangeHistoryEntry[]
+
   createdAt: string
-  notes?: string
+  notes?: string // legacy
 }
 
 export interface Child {
@@ -200,4 +237,55 @@ export interface OrganizationBranding {
     username: string
     domainVerified: boolean
   }
+}
+
+// Contacts Domain Types
+
+export interface Address {
+  street: string
+  city: string
+  zip: string
+}
+
+export interface Parent {
+  id: string
+  name: string
+  surname: string
+  email: string
+  phone: string
+  address: Address
+  billingInfo?: {
+    companyName: string
+    ico: string
+    dic: string
+    billingAddress: Address
+  }
+  internalNote: string
+  organizationId: string
+  children: string[] // participant IDs
+  registrations: string[] // registration IDs
+  status: 'active' | 'inactive'
+  createdAt: string
+}
+
+export interface Participant {
+  id: string
+  name: string
+  surname: string
+  birthDate: string // ISO
+  address?: Address
+  rodneCislo?: string
+  email?: string
+  phone?: string
+  healthInfo: {
+    allergies: string
+    healthRestrictions: string
+    healthInsurance: string
+    swimmer: boolean
+  }
+  internalNote: string
+  organizationId: string
+  parents: string[] // parent IDs
+  registrations: string[] // registration IDs
+  createdAt: string
 }

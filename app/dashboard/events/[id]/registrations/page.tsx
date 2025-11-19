@@ -13,7 +13,7 @@ import { RecordPaymentDialog } from "@/components/event-registrations/record-pay
 import { CancelRegistrationDialog } from "@/components/event-registrations/cancel-registration-dialog"
 import { SendEmailDialog } from "@/components/event-registrations/send-email-dialog"
 import type { Registration, Parent, Participant, Payment, ChangeHistoryEntry } from "@/lib/types"
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 
 export default function EventRegistrationsPage({
   params,
@@ -45,7 +45,6 @@ export default function EventRegistrationsPage({
 
 function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
   const { getEventById } = useEvents()
-  const { toast } = useToast()
   const event = getEventById(eventId)
 
   // State
@@ -175,8 +174,7 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
       setSelectedRegistration(updatedReg)
     }
 
-    toast({
-      title: "✓ Platba zaznamenána",
+    toast.success("Platba zaznamenána", {
       description: `Platba ${payment.amount.toLocaleString("cs-CZ")} Kč byla úspěšně zaznamenána.`,
     })
   }
@@ -210,8 +208,7 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
       setSelectedRegistration(updatedReg)
     }
 
-    toast({
-      title: "Přihláška zrušena",
+    toast.success("Přihláška zrušena", {
       description: "Rodič bude informován emailem.",
     })
   }
@@ -247,8 +244,7 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
       setSelectedRegistration(updatedReg)
     }
 
-    toast({
-      title: "✓ Email odeslán",
+    toast.success("Email odeslán", {
       description: "Zpráva byla úspěšně odeslána rodiči.",
     })
   }

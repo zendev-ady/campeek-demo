@@ -38,10 +38,10 @@ export function RecordPaymentDialog({
   )
   const [note, setNote] = useState("")
 
-  if (!registration) return null
-
   // Calculate suggested amount based on payment type
   const getSuggestedAmount = (type: "deposit" | "final" | "other"): number => {
+    if (!registration) return 0
+
     const remaining = registration.totalPrice - registration.amountPaid
 
     if (type === "deposit") {
@@ -70,6 +70,8 @@ export function RecordPaymentDialog({
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!registration) return
 
     const paymentAmount = parseFloat(amount)
     if (isNaN(paymentAmount) || paymentAmount <= 0) {
@@ -101,6 +103,8 @@ export function RecordPaymentDialog({
       setAmount(getSuggestedAmount(paymentType).toString())
     }
   }, [open, registration, paymentType])
+
+  if (!registration) return null
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

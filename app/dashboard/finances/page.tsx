@@ -379,14 +379,14 @@ export default function FinancesPage() {
           {/* Desktop Table - hidden on mobile */}
           <div className="hidden md:block border-2 border-black rounded-lg overflow-hidden">
             {/* Table Header */}
-            <div className="bg-black text-white p-4 grid grid-cols-[2fr,2fr,1fr,1fr,1fr,1.5fr,1.5fr,auto] gap-4 font-semibold text-sm">
-              <div>Účastník</div>
-              <div>Akce</div>
-              <div>Částka</div>
-              <div>Zaplaceno</div>
-              <div>Zbývá</div>
-              <div>Splatnost</div>
-              <div>Stav</div>
+            <div className="bg-black text-white p-4 flex items-center gap-4 font-semibold text-sm">
+              <div className="flex-[2] min-w-0">Účastník</div>
+              <div className="flex-[2] min-w-0">Akce</div>
+              <div className="w-24">Částka</div>
+              <div className="w-24">Zaplaceno</div>
+              <div className="w-24">Zbývá</div>
+              <div className="w-32">Splatnost</div>
+              <div className="w-36">Stav</div>
               <div className="w-10"></div>
             </div>
 
@@ -399,48 +399,48 @@ export default function FinancesPage() {
                 return (
                   <div
                     key={payment.id}
-                    className="p-4 grid grid-cols-[2fr,2fr,1fr,1fr,1fr,1.5fr,1.5fr,auto] gap-4 items-center hover:bg-gray-50 transition-colors"
+                    className="p-4 flex items-center gap-4 hover:bg-gray-50 transition-colors"
                   >
                     {/* Participant */}
-                    <div>
-                      <div className="font-medium">{payment.participantName}</div>
-                      <div className="text-sm text-muted-foreground">
+                    <div className="flex-[2] min-w-0">
+                      <div className="font-medium truncate">{payment.participantName}</div>
+                      <div className="text-sm text-muted-foreground truncate">
                         {payment.parentName}
                       </div>
                     </div>
 
                     {/* Event */}
-                    <div>
-                      <button className="text-sm font-medium hover:underline text-left">
+                    <div className="flex-[2] min-w-0">
+                      <button className="text-sm font-medium hover:underline text-left truncate w-full">
                         {payment.eventName}
                       </button>
                     </div>
 
                     {/* Total Amount */}
-                    <div className="font-medium">{formatCurrency(payment.totalAmount)}</div>
+                    <div className="w-24 font-medium">{formatCurrency(payment.totalAmount)}</div>
 
                     {/* Paid Amount */}
                     <div
                       className={
                         payment.paidAmount === 0
-                          ? "text-gray-500"
+                          ? "w-24 text-gray-500"
                           : payment.paidAmount === payment.totalAmount
-                            ? "text-green-600 font-medium"
-                            : "text-orange-600 font-medium"
+                            ? "w-24 text-green-600 font-medium"
+                            : "w-24 text-orange-600 font-medium"
                       }
                     >
                       {formatCurrency(payment.paidAmount)}
                     </div>
 
                     {/* Remaining */}
-                    <div className="font-medium">
+                    <div className="w-24 font-medium">
                       {payment.remainingAmount > 0
                         ? formatCurrency(payment.remainingAmount)
                         : "—"}
                     </div>
 
                     {/* Due Date */}
-                    <div>
+                    <div className="w-32">
                       <div className="text-sm">
                         {format(new Date(payment.dueDate), "dd.MM.yyyy")}
                       </div>
@@ -455,10 +455,10 @@ export default function FinancesPage() {
                     </div>
 
                     {/* Status */}
-                    <div>{getStatusBadge(payment)}</div>
+                    <div className="w-36">{getStatusBadge(payment)}</div>
 
                     {/* Actions */}
-                    <div>
+                    <div className="w-10">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon">

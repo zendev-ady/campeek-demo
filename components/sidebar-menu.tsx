@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEvents } from "@/lib/event-context"
-import { ChevronDown, Calendar, Users, MessageSquare, Settings, Eye, CreditCard, Sliders, FolderTree } from "lucide-react"
+import { ChevronDown, Calendar, Users, MessageSquare, Settings, Eye, CreditCard, Sliders, FolderTree, Wallet } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -26,6 +26,7 @@ export function SidebarMenu() {
     { id: "overview", label: "Přehled", href: "/dashboard", icon: Calendar },
     { id: "contacts", label: "Kontakty", href: "/dashboard/contacts", icon: Users },
     { id: "communication", label: "Komunikace", href: "/dashboard/communication", icon: MessageSquare },
+    { id: "finances", label: "Finance", href: "/dashboard/finances", icon: Wallet },
     { id: "settings", label: "Organizace", href: "/dashboard/organization", icon: Settings },
   ]
 

@@ -107,17 +107,54 @@ export interface Event {
   notificationSettings?: NotificationSettings
 }
 
+export interface Payment {
+  id: string
+  type: "deposit" | "final" | "other"
+  amount: number
+  dueDate: string | null // ISO
+  paidDate: string | null // ISO
+  status: "paid" | "unpaid"
+  note?: string
+}
+
+export interface ChangeHistoryEntry {
+  id: string
+  timestamp: string // ISO
+  action: string // "Přihláška vytvořena", "Záloha zaplacena", etc.
+  actor: string // "Systém" or user name
+  note?: string
+}
+
 export interface Registration {
   id: string
   eventId: string
+  participantId: string
+  parentId: string // primary contact
+  secondaryParentId?: string
+
+  // Legacy fields (for compatibility)
   parentName: string
   parentEmail: string
   parentPhone: string
   children: Child[]
+
+  status: "confirmed" | "waitlist" | "cancelled"
+
   totalPrice: number
-  status?: "pending" | "confirmed" | "cancelled"
+  amountPaid: number
+
+  payments: Payment[]
+
+  registeredAt: string // ISO
+  registrationNumber: string // e.g. "#2025-042"
+
+  parentNote?: string // from registration form
+  internalNote: string
+
+  changeHistory: ChangeHistoryEntry[]
+
   createdAt: string
-  notes?: string
+  notes?: string // legacy
 }
 
 export interface Child {

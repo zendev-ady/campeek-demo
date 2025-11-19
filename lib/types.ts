@@ -201,3 +201,54 @@ export interface OrganizationBranding {
     domainVerified: boolean
   }
 }
+
+// Contacts Domain Types
+
+export interface Address {
+  street: string
+  city: string
+  zip: string
+}
+
+export interface Parent {
+  id: string
+  name: string
+  surname: string
+  email: string
+  phone: string
+  address: Address
+  billingInfo?: {
+    companyName: string
+    ico: string
+    dic: string
+    billingAddress: Address
+  }
+  internalNote: string
+  organizationId: string
+  children: string[] // participant IDs
+  registrations: string[] // registration IDs
+  status: 'active' | 'inactive'
+  createdAt: string
+}
+
+export interface Participant {
+  id: string
+  name: string
+  surname: string
+  birthDate: string // ISO
+  address?: Address
+  rodneCislo?: string
+  email?: string
+  phone?: string
+  healthInfo: {
+    allergies: string
+    healthRestrictions: string
+    healthInsurance: string
+    swimmer: boolean
+  }
+  internalNote: string
+  organizationId: string
+  parents: string[] // parent IDs
+  registrations: string[] // registration IDs
+  createdAt: string
+}

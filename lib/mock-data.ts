@@ -6,7 +6,9 @@ import type {
   Registration,
   Message,
   MessageRecipient,
-  OrganizationBranding
+  OrganizationBranding,
+  Parent,
+  Participant
 } from "./types"
 
 export const DEMO_USER: User & { password: string } = {
@@ -451,6 +453,335 @@ export const DEMO_MESSAGE_RECIPIENTS: MessageRecipient[] = [
   },
 ]
 
+// Contacts Domain Mock Data
+
+export const DEMO_PARTICIPANTS: Participant[] = [
+  {
+    id: "participant-1",
+    name: "Tomáš",
+    surname: "Novák",
+    birthDate: "2012-05-15",
+    address: {
+      street: "Dlouhá 123",
+      city: "Praha 1",
+      zip: "11000"
+    },
+    rodneCislo: undefined,
+    email: undefined,
+    phone: undefined,
+    healthInfo: {
+      allergies: "Arašídy",
+      healthRestrictions: "Bez zvláštních opatření",
+      healthInsurance: "Všeobecná zdravotní pojišťovna",
+      swimmer: true
+    },
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    parents: ["parent-1"],
+    registrations: ["reg-1"],
+    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "participant-2",
+    name: "Matěj",
+    surname: "Svoboda",
+    birthDate: "2011-08-22",
+    address: {
+      street: "Krátká 45",
+      city: "Brno",
+      zip: "60200"
+    },
+    healthInfo: {
+      allergies: "",
+      healthRestrictions: "Astma - má s sebou inhalátor",
+      healthInsurance: "Zdravotní pojišťovna ministerstva vnitra",
+      swimmer: true
+    },
+    internalNote: "Bojí se psů",
+    organizationId: DEMO_ORGANIZATION.id,
+    parents: ["parent-2"],
+    registrations: ["reg-2"],
+    createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "participant-3",
+    name: "Lukáš",
+    surname: "Svoboda",
+    birthDate: "2014-03-10",
+    address: {
+      street: "Krátká 45",
+      city: "Brno",
+      zip: "60200"
+    },
+    healthInfo: {
+      allergies: "",
+      healthRestrictions: "",
+      healthInsurance: "Zdravotní pojišťovna ministerstva vnitra",
+      swimmer: false
+    },
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    parents: ["parent-2"],
+    registrations: ["reg-2"],
+    createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "participant-4",
+    name: "Kateřina",
+    surname: "Veselá",
+    birthDate: "2013-11-07",
+    address: {
+      street: "Hlavní 78",
+      city: "Ostrava",
+      zip: "70200"
+    },
+    healthInfo: {
+      allergies: "Laktóza",
+      healthRestrictions: "",
+      healthInsurance: "Česká průmyslová zdravotní pojišťovna",
+      swimmer: true
+    },
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    parents: ["parent-3"],
+    registrations: ["reg-3"],
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "participant-5",
+    name: "Filip",
+    surname: "Kučera",
+    birthDate: "2010-02-14",
+    address: {
+      street: "Nová 234",
+      city: "Plzeň",
+      zip: "30100"
+    },
+    healthInfo: {
+      allergies: "",
+      healthRestrictions: "",
+      healthInsurance: "Oborová zdravotní pojišťovna",
+      swimmer: true
+    },
+    internalNote: "Programátor nadšenec - donést složitější úkoly",
+    organizationId: DEMO_ORGANIZATION.id,
+    parents: ["parent-4"],
+    registrations: ["reg-4"],
+    createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "participant-6",
+    name: "Daniel",
+    surname: "Černý",
+    birthDate: "2009-09-05",
+    address: {
+      street: "Zahradní 12",
+      city: "Liberec",
+      zip: "46001"
+    },
+    healthInfo: {
+      allergies: "",
+      healthRestrictions: "",
+      healthInsurance: "Zaměstnanecká pojišťovna Škoda",
+      swimmer: true
+    },
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    parents: ["parent-5"],
+    registrations: ["reg-5"],
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "participant-7",
+    name: "Michaela",
+    surname: "Horáková",
+    birthDate: "2010-12-20",
+    address: {
+      street: "Školní 89",
+      city: "Olomouc",
+      zip: "77900"
+    },
+    healthInfo: {
+      allergies: "",
+      healthRestrictions: "",
+      healthInsurance: "Revírní bratrská pokladna",
+      swimmer: false
+    },
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    parents: ["parent-6"],
+    registrations: ["reg-6"],
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "participant-8",
+    name: "Vojtěch",
+    surname: "Bílý",
+    birthDate: "2011-04-15",
+    address: {
+      street: "Kostelní 56",
+      city: "České Budějovice",
+      zip: "37001"
+    },
+    healthInfo: {
+      allergies: "Kočky",
+      healthRestrictions: "",
+      healthInsurance: "Vojenská zdravotní pojišťovna",
+      swimmer: true
+    },
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    parents: ["parent-7"],
+    registrations: ["reg-7"],
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+]
+
+export const DEMO_PARENTS: Parent[] = [
+  {
+    id: "parent-1",
+    name: "Jana",
+    surname: "Nováková",
+    email: "jana.novakova@email.com",
+    phone: "+420 723 456 789",
+    address: {
+      street: "Dlouhá 123",
+      city: "Praha 1",
+      zip: "11000"
+    },
+    billingInfo: undefined,
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    children: ["participant-1"],
+    registrations: ["reg-1"],
+    status: "active",
+    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "parent-2",
+    name: "Petr",
+    surname: "Svoboda",
+    email: "petr.svoboda@email.com",
+    phone: "+420 607 123 456",
+    address: {
+      street: "Krátká 45",
+      city: "Brno",
+      zip: "60200"
+    },
+    billingInfo: {
+      companyName: "Svoboda s.r.o.",
+      ico: "12345678",
+      dic: "CZ12345678",
+      billingAddress: {
+        street: "Firemní 1",
+        city: "Brno",
+        zip: "60200"
+      }
+    },
+    internalNote: "Firma - vystavovat faktury na firmu",
+    organizationId: DEMO_ORGANIZATION.id,
+    children: ["participant-2", "participant-3"],
+    registrations: ["reg-2"],
+    status: "active",
+    createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "parent-3",
+    name: "Martina",
+    surname: "Veselá",
+    email: "martina.vesela@email.com",
+    phone: "+420 731 222 333",
+    address: {
+      street: "Hlavní 78",
+      city: "Ostrava",
+      zip: "70200"
+    },
+    billingInfo: undefined,
+    internalNote: "Čeká na zaplacení - reminder poslán",
+    organizationId: DEMO_ORGANIZATION.id,
+    children: ["participant-4"],
+    registrations: ["reg-3"],
+    status: "active",
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "parent-4",
+    name: "David",
+    surname: "Kučera",
+    email: "david.kucera@email.com",
+    phone: "+420 776 555 666",
+    address: {
+      street: "Nová 234",
+      city: "Plzeň",
+      zip: "30100"
+    },
+    billingInfo: undefined,
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    children: ["participant-5"],
+    registrations: ["reg-4"],
+    status: "active",
+    createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "parent-5",
+    name: "Klára",
+    surname: "Černá",
+    email: "klara.cerna@email.com",
+    phone: "+420 724 111 222",
+    address: {
+      street: "Zahradní 12",
+      city: "Liberec",
+      zip: "46001"
+    },
+    billingInfo: undefined,
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    children: ["participant-6"],
+    registrations: ["reg-5"],
+    status: "active",
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "parent-6",
+    name: "Pavel",
+    surname: "Horák",
+    email: "pavel.horak@email.com",
+    phone: "+420 737 333 444",
+    address: {
+      street: "Školní 89",
+      city: "Olomouc",
+      zip: "77900"
+    },
+    billingInfo: undefined,
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    children: ["participant-7"],
+    registrations: ["reg-6"],
+    status: "active",
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "parent-7",
+    name: "Eva",
+    surname: "Bílá",
+    email: "eva.bila@email.com",
+    phone: "+420 771 555 666",
+    address: {
+      street: "Kostelní 56",
+      city: "České Budějovice",
+      zip: "37001"
+    },
+    billingInfo: undefined,
+    internalNote: "",
+    organizationId: DEMO_ORGANIZATION.id,
+    children: ["participant-8"],
+    registrations: ["reg-7"],
+    status: "active",
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+]
+
 export function initializeDemoMode() {
   // Clear existing data
   localStorage.removeItem("user")
@@ -462,6 +793,8 @@ export function initializeDemoMode() {
   localStorage.removeItem("messages")
   localStorage.removeItem("messageRecipients")
   localStorage.removeItem("organizationBranding")
+  localStorage.removeItem("parents")
+  localStorage.removeItem("participants")
 
   // Set up demo user
   const users = [DEMO_USER]
@@ -487,4 +820,8 @@ export function initializeDemoMode() {
   localStorage.setItem("messages", JSON.stringify(DEMO_MESSAGES))
   localStorage.setItem("messageRecipients", JSON.stringify(DEMO_MESSAGE_RECIPIENTS))
   localStorage.setItem("organizationBranding", JSON.stringify(DEMO_BRANDING))
+
+  // Set up contacts data
+  localStorage.setItem("parents", JSON.stringify(DEMO_PARENTS))
+  localStorage.setItem("participants", JSON.stringify(DEMO_PARTICIPANTS))
 }

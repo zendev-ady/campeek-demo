@@ -106,18 +106,134 @@ const Hero = () => (
         </button>
       </motion.div>
 
-      {/* Placeholder pro Video/App Shot */}
+      {/* Hero Dashboard Mockup */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="relative mx-auto max-w-5xl rounded-2xl overflow-hidden border border-stone-200 shadow-2xl bg-white"
+        className="relative mx-auto max-w-5xl rounded-2xl overflow-hidden border border-stone-200 shadow-2xl bg-gradient-to-br from-white to-stone-50"
       >
-        <div className="aspect-[16/9] bg-stone-100 flex items-center justify-center text-stone-400">
-          {/* Zde přijde Video Loop nebo Screenshot */}
-          <div className="text-center">
-            <div className="text-6xl mb-4">📱</div>
-            <p>UI Placeholder: Video rodiče vyplňujícího přihlášku na mobilu</p>
+        <div className="aspect-[16/9] bg-gradient-to-br from-stone-50 to-white p-6 md:p-8">
+          {/* Dashboard Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg md:text-xl font-bold text-stone-900">Moje akce</h3>
+              <p className="text-sm text-stone-500">4 aktivní akce • Sezóna 2025</p>
+            </div>
+            <button className="bg-[#10b981] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#059669] transition-all">
+              + Nová akce
+            </button>
+          </div>
+
+          {/* Event Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Event Card 1 */}
+            <motion.div
+              whileHover={{ y: -4, boxShadow: "0 12px 24px rgba(0,0,0,0.1)" }}
+              className="bg-white rounded-xl p-4 border border-stone-200 cursor-pointer transition-all"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <h4 className="font-bold text-stone-900 text-sm md:text-base mb-1">Letní tábor Orlík 2025</h4>
+                  <p className="text-xs text-stone-500">15. 7. – 28. 7. 2025</p>
+                </div>
+                <span className="bg-emerald-100 text-[#059669] text-xs font-bold px-2 py-1 rounded-full">Aktivní</span>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-stone-600">
+                <div className="flex items-center gap-1">
+                  <Users size={14} />
+                  <span>28/30</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <CheckCircle2 size={14} className="text-[#10b981]" />
+                  <span>24 zaplaceno</span>
+                </div>
+              </div>
+              <div className="mt-3 h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                <div className="h-full bg-[#10b981] rounded-full" style={{ width: '93%' }}></div>
+              </div>
+            </motion.div>
+
+            {/* Event Card 2 */}
+            <motion.div
+              whileHover={{ y: -4, boxShadow: "0 12px 24px rgba(0,0,0,0.1)" }}
+              className="bg-white rounded-xl p-4 border border-stone-200 cursor-pointer transition-all"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <h4 className="font-bold text-stone-900 text-sm md:text-base mb-1">Příměstský tábor Praha</h4>
+                  <p className="text-xs text-stone-500">1. 7. – 5. 7. 2025</p>
+                </div>
+                <span className="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-1 rounded-full">Brzy plno</span>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-stone-600">
+                <div className="flex items-center gap-1">
+                  <Users size={14} />
+                  <span>19/20</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <CheckCircle2 size={14} className="text-[#10b981]" />
+                  <span>17 zaplaceno</span>
+                </div>
+              </div>
+              <div className="mt-3 h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                <div className="h-full bg-amber-500 rounded-full" style={{ width: '95%' }}></div>
+              </div>
+            </motion.div>
+
+            {/* Event Card 3 */}
+            <motion.div
+              whileHover={{ y: -4, boxShadow: "0 12px 24px rgba(0,0,0,0.1)" }}
+              className="bg-white rounded-xl p-4 border border-stone-200 cursor-pointer transition-all"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <h4 className="font-bold text-stone-900 text-sm md:text-base mb-1">Sportovní kemp Brno</h4>
+                  <p className="text-xs text-stone-500">20. 8. – 24. 8. 2025</p>
+                </div>
+                <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded-full">Otevřený</span>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-stone-600">
+                <div className="flex items-center gap-1">
+                  <Users size={14} />
+                  <span>12/25</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <CheckCircle2 size={14} className="text-[#10b981]" />
+                  <span>8 zaplaceno</span>
+                </div>
+              </div>
+              <div className="mt-3 h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-500 rounded-full" style={{ width: '48%' }}></div>
+              </div>
+            </motion.div>
+
+            {/* Event Card 4 */}
+            <motion.div
+              whileHover={{ y: -4, boxShadow: "0 12px 24px rgba(0,0,0,0.1)" }}
+              className="bg-white rounded-xl p-4 border border-stone-200 cursor-pointer transition-all"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <h4 className="font-bold text-stone-900 text-sm md:text-base mb-1">Podzimní pobyt Šumava</h4>
+                  <p className="text-xs text-stone-500">10. 10. – 13. 10. 2025</p>
+                </div>
+                <span className="bg-stone-100 text-stone-600 text-xs font-bold px-2 py-1 rounded-full">Koncept</span>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-stone-600">
+                <div className="flex items-center gap-1">
+                  <Users size={14} />
+                  <span>0/15</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Calendar size={14} />
+                  <span>Za 3 měsíce</span>
+                </div>
+              </div>
+              <div className="mt-3 h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                <div className="h-full bg-stone-300 rounded-full" style={{ width: '0%' }}></div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </motion.div>
@@ -200,12 +316,132 @@ const Solution = () => (
           viewport={{ once: true }}
           className="rounded-2xl shadow-2xl border border-stone-200 overflow-hidden bg-white"
         >
-          {/* Simplified UI Dashboard Image Placeholder */}
-          <div className="aspect-square bg-stone-50 flex items-center justify-center">
-             <div className="text-center text-stone-400">
-                <span className="text-4xl block mb-2">✨</span>
-                Clean Dashboard Screenshot
-             </div>
+          {/* Registration Stats & Payment List Mockup */}
+          <div className="aspect-square bg-gradient-to-br from-white to-stone-50 p-6">
+            {/* Stats Cards */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4">
+                <div className="text-emerald-600 text-xs font-semibold mb-1">Obsazenost</div>
+                <div className="text-2xl font-bold text-stone-900">93%</div>
+                <div className="text-xs text-stone-500 mt-1">28 z 30 míst</div>
+              </div>
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                <div className="text-blue-600 text-xs font-semibold mb-1">Platby</div>
+                <div className="text-2xl font-bold text-stone-900">86%</div>
+                <div className="text-xs text-stone-500 mt-1">24 zaplaceno</div>
+              </div>
+            </div>
+
+            {/* Payment List */}
+            <div className="bg-white rounded-xl border border-stone-200 p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="font-bold text-stone-900 text-sm">Poslední platby</h4>
+                <span className="text-xs text-[#10b981] font-semibold">Vše ✓</span>
+              </div>
+              <div className="space-y-3">
+                {/* Payment Item 1 */}
+                <motion.div
+                  whileHover={{ x: 4 }}
+                  className="flex items-center justify-between p-3 bg-stone-50 rounded-lg cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white text-xs font-bold">
+                      JN
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-stone-900">Jan Novák</div>
+                      <div className="text-xs text-stone-500">Dnes, 14:32</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-stone-900">4 500 Kč</div>
+                    <div className="flex items-center gap-1 text-xs text-[#10b981]">
+                      <CheckCircle2 size={12} />
+                      <span>Zaplaceno</span>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Payment Item 2 */}
+                <motion.div
+                  whileHover={{ x: 4 }}
+                  className="flex items-center justify-between p-3 bg-stone-50 rounded-lg cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                      PK
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-stone-900">Petra Králová</div>
+                      <div className="text-xs text-stone-500">Včera, 9:15</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-stone-900">4 500 Kč</div>
+                    <div className="flex items-center gap-1 text-xs text-[#10b981]">
+                      <CheckCircle2 size={12} />
+                      <span>Zaplaceno</span>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Payment Item 3 */}
+                <motion.div
+                  whileHover={{ x: 4 }}
+                  className="flex items-center justify-between p-3 bg-stone-50 rounded-lg cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                      MH
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-stone-900">Martin Horák</div>
+                      <div className="text-xs text-stone-500">22. 6., 16:48</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-stone-900">2 250 Kč</div>
+                    <div className="flex items-center gap-1 text-xs text-amber-600">
+                      <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                      <span>Záloha</span>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Payment Item 4 */}
+                <motion.div
+                  whileHover={{ x: 4 }}
+                  className="flex items-center justify-between p-3 bg-stone-50 rounded-lg cursor-pointer opacity-60"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-stone-400 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                      LS
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-stone-900">Lucie Svobodová</div>
+                      <div className="text-xs text-stone-500">Splatnost 30. 6.</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-stone-900">4 500 Kč</div>
+                    <div className="flex items-center gap-1 text-xs text-stone-500">
+                      <span className="w-2 h-2 bg-stone-400 rounded-full"></span>
+                      <span>Čeká se</span>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <button className="text-xs font-semibold text-stone-600 bg-white border border-stone-200 px-3 py-2 rounded-lg hover:bg-stone-50 transition-all">
+                📧 Poslat upomínku
+              </button>
+              <button className="text-xs font-semibold text-[#10b981] bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-lg hover:bg-emerald-100 transition-all">
+                💾 Exportovat
+              </button>
+            </div>
           </div>
         </motion.div>
       </div>

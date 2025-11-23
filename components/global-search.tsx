@@ -54,7 +54,7 @@ export function GlobalSearch() {
     setSearch("")
 
     if (type === "event") {
-      router.push(`/dashboard/events/${id}`)
+      router.push(`/events/${id}`)
     }
   }
 

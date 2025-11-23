@@ -20,10 +20,15 @@ Campeek is a Next.js PROTOTYPE for an app for organizing children’s camps and 
 
 ## Project Layout
 
-- `app/` – All routes, layouts, and pages (landing page, auth routes, dashboard, public registration).
-- `components/` – Reusable UI, dialogs, forms, and shadcn-based primitives.
-- `lib/` – Domain types, contexts, mock/demo data seeding helpers, and utilities.
-- `styles/` – Global Tailwind layer configuration.
+- `app/` – All routes and pages using Next.js App Router with semantic route groups:
+  - `(marketing)/` – Public landing page
+  - `(auth)/` – Authentication routes (login, register, password reset)
+  - `(public-registration)/` – Public event registration forms for parents
+  - `(app)/` – Protected admin dashboard (events, communication, contacts, finances)
+  - `demo/` – Email preview and development utilities
+- `components/` – Reusable UI, dialogs, forms, and shadcn-based primitives
+- `lib/` – Domain types, contexts, mock/demo data seeding helpers, and utilities
+- `styles/` – Global Tailwind layer configuration
 
 ## Local Development
 

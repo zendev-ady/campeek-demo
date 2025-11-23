@@ -15,7 +15,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { SidebarMenu } from "@/components/sidebar-menu" // Import the new SidebarMenu component
 
-export default function DashboardLayout({
+export default function AppLayout({
   children,
 }: {
   children: React.ReactNode
@@ -53,7 +53,7 @@ export default function DashboardLayout({
       {/* Sidebar */}
       <aside className="w-64 border-r-2 border-black bg-black flex flex-col">
         <div className="p-6 border-b-2 border-white">
-          <Link href="/dashboard">
+          <Link href="/prehled">
             <Brand />
           </Link>
         </div>

@@ -28,7 +28,7 @@ export default function LoginPage() {
 
     try {
       await login(email, password)
-      router.push("/dashboard")
+      router.push("/prehled")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Přihlášení se nezdařilo")
     } finally {

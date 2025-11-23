@@ -253,7 +253,7 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard">
+          <Link href="/">
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -269,14 +269,14 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link
-          href="/dashboard"
+          href="/"
           className="hover:text-foreground transition-colors"
         >
           Dashboard
         </Link>
         <ChevronRight className="h-4 w-4" />
         <Link
-          href="/dashboard/events"
+          href="/events"
           className="hover:text-foreground transition-colors"
         >
           Akce
@@ -288,7 +288,7 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">{event.name}</h1>
-        <Link href={`/dashboard/events/${event.id}`}>
+        <Link href={`/events/${event.id}`}>
           <Button variant="ghost" className="gap-2">
             <ArrowLeft className="h-4 w-4" />
             Zpět na přehled
@@ -298,7 +298,7 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
 
       {/* Tabs */}
       <div className="flex flex-wrap items-center gap-2">
-        <Link href={`/dashboard/events/${event.id}`}>
+        <Link href={`/events/${event.id}`}>
           <button className="border-2 px-4 py-1.5 text-sm border-black bg-white text-black">
             Přehled
           </button>
@@ -306,12 +306,12 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
         <button className="border-2 px-4 py-1.5 text-sm border-black bg-black text-white">
           Přihlášky
         </button>
-        <Link href={`/dashboard/events/${event.id}/payments`}>
+        <Link href={`/events/${event.id}/payments`}>
           <button className="border-2 px-4 py-1.5 text-sm border-black bg-white text-black">
             Platby
           </button>
         </Link>
-        <Link href={`/dashboard/events/${event.id}/settings`}>
+        <Link href={`/events/${event.id}/settings`}>
           <button className="border-2 px-4 py-1.5 text-sm border-black bg-white text-black">
             Nastavení
           </button>

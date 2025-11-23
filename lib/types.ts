@@ -66,6 +66,7 @@ export interface NotificationSettings {
 
 export interface Event {
   id: string
+  slug: string // URL-friendly verze názvu, např. "letni-tabor-2025"
   organizationId: string
   name: string
   description: string

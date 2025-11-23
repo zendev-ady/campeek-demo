@@ -55,9 +55,9 @@ export function EventCard({ event }: EventCardProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => router.push(`/dashboard/events/${event.id}`)}>
+              <DropdownMenuItem onClick={() => router.push(`/events/${event.id}`)}>
                 <Eye className="h-4 w-4 mr-2" />
-                Zobrazit detail
+                Detail
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleDuplicate}>
                 <Copy className="h-4 w-4 mr-2" />
@@ -88,7 +88,7 @@ export function EventCard({ event }: EventCardProps) {
       </CardContent>
       <CardFooter className="flex items-center justify-between">
         <div className="text-lg font-bold">{event.price.toLocaleString("cs-CZ")} Kč</div>
-        <Button onClick={() => router.push(`/dashboard/events/${event.id}`)}>Spravovat</Button>
+        <Button onClick={() => router.push(`/events/${event.id}`)}>Spravovat</Button>
       </CardFooter>
     </Card>
   )

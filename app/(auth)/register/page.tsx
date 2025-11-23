@@ -41,7 +41,7 @@ export default function RegisterPage() {
 
     try {
       await register(email, password, name)
-      router.push("/dashboard")
+      router.push("/prehled")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registrace se nezdařila")
     } finally {

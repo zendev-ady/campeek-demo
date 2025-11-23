@@ -241,7 +241,7 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard">
+          <Link href="/">
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -265,7 +265,7 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
             Správa plateb ({mockEventPayments.length})
           </h1>
         </div>
-        <Link href={`/dashboard/events/${event.id}`}>
+        <Link href={`/events/${event.id}`}>
           <Button variant="ghost" className="gap-2">
             <ArrowLeft className="h-4 w-4" />
             Zpět na přehled akce

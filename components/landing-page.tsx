@@ -37,7 +37,7 @@ export default function LandingPage() {
       setIsLoadingDemo(true)
       initializeDemoMode()
       await login(DEMO_CREDENTIALS.email, DEMO_CREDENTIALS.password)
-      router.push("/dashboard")
+      router.push("/prehled")
     } catch (error) {
       console.error("Failed to start demo mode", error)
       router.push("/login")
@@ -320,11 +320,10 @@ export default function LandingPage() {
             ].map((plan, idx) => (
               <div
                 key={idx}
-                className={`p-6 sm:p-8 border-2 border-black ${
-                  plan.highlighted
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
-                }`}
+                className={`p-6 sm:p-8 border-2 border-black ${plan.highlighted
+                  ? "bg-black text-white"
+                  : "bg-white text-black"
+                  }`}
               >
                 {plan.highlighted && (
                   <div className="bg-white text-black text-xs sm:text-sm font-bold px-3 py-1 border-2 border-white inline-block mb-4">
@@ -346,11 +345,10 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <button
-                  className={`w-full py-3 font-semibold text-sm sm:text-base border-2 ${
-                    plan.highlighted
-                      ? "bg-white text-black border-white"
-                      : "bg-white text-black border-black"
-                  }`}
+                  className={`w-full py-3 font-semibold text-sm sm:text-base border-2 ${plan.highlighted
+                    ? "bg-white text-black border-white"
+                    : "bg-white text-black border-black"
+                    }`}
                 >
                   {plan.cta}
                 </button>

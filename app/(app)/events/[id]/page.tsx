@@ -82,7 +82,7 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard">
+          <Link href="/">
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -127,7 +127,7 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
     if (confirm("Opravdu chcete smazat tuto akci?")) {
       try {
         await deleteEvent(event.id)
-        router.push("/dashboard")
+        router.push("/")
       } catch (error) {
         console.error("Failed to delete event:", error)
       }
@@ -164,7 +164,7 @@ function EventDetailPageClient({ eventId }: { eventId: string }) {
       {/* Header Section */}
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard">
+          <Link href="/">
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-5 w-5" />
             </Button>

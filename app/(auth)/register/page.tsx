@@ -109,7 +109,7 @@ export default function RegisterPage() {
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
+          <CardFooter className="flex flex-col space-y-4 mt-6">
             <Button
               type="submit"
               className="w-full bg-black text-white border-2 border-black"
@@ -123,6 +123,14 @@ export default function RegisterPage() {
                 Přihlaste se
               </Link>
             </p>
+            <Link href="/">
+              <Button
+                variant="outline"
+                className="w-full border-2 border-black text-black hover:bg-gray-100"
+              >
+                Zpět na hlavní stránku
+              </Button>
+            </Link>
           </CardFooter>
         </form>
       </Card>

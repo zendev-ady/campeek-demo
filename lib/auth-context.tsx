@@ -10,6 +10,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>
   register: (email: string, password: string, name: string) => Promise<void>
   logout: () => void
+  requestPasswordReset: (email: string) => Promise<string>
+  resetPassword: (token: string, newPassword: string) => Promise<void>
   isLoading: boolean
 }
 
@@ -78,7 +80,65 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem("user")
   }
 
-  return <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>{children}</AuthContext.Provider>
+  const requestPasswordReset = async (email: string): Promise<string> => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    const users = JSON.parse(localStorage.getItem("users") || "[]")
+    const user = users.find((u: User) => u.email === email)
+
+    if (!user) {
+      throw new Error("Uživatel s tímto emailem nebyl nalezen")
+    }
+
+    // Generate mock reset token
+    const token = `mock-reset-token-${Date.now()}`
+
+    // Store token with email in localStorage for validation
+    const resetTokens = JSON.parse(localStorage.getItem("resetTokens") || "{}")
+    resetTokens[token] = { email, expiresAt: Date.now() + 3600000 } // 1 hour expiry
+    localStorage.setItem("resetTokens", JSON.stringify(resetTokens))
+
+    return token
+  }
+
+  const resetPassword = async (token: string, newPassword: string): Promise<void> => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    // Validate token
+    const resetTokens = JSON.parse(localStorage.getItem("resetTokens") || "{}")
+    const tokenData = resetTokens[token]
+
+    if (!tokenData) {
+      throw new Error("Neplatný nebo použitý reset token")
+    }
+
+    if (Date.now() > tokenData.expiresAt) {
+      throw new Error("Reset token vypršel")
+    }
+
+    // Update password in localStorage
+    const users = JSON.parse(localStorage.getItem("users") || "[]")
+    const userIndex = users.findIndex((u: User) => u.email === tokenData.email)
+
+    if (userIndex === -1) {
+      throw new Error("Uživatel nenalezen")
+    }
+
+    users[userIndex].password = newPassword
+    localStorage.setItem("users", JSON.stringify(users))
+
+    // Delete used token
+    delete resetTokens[token]
+    localStorage.setItem("resetTokens", JSON.stringify(resetTokens))
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, login, register, logout, requestPasswordReset, resetPassword, isLoading }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {

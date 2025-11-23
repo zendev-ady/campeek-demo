@@ -37,7 +37,7 @@ export default function MessagePreviewPage() {
     } catch (error) {
       console.error("Failed to load draft message:", error)
       toast.error("Chyba při načítání zprávy")
-      router.push("/dashboard/communication")
+      router.push("/communication")
     }
   }
 
@@ -124,7 +124,7 @@ export default function MessagePreviewPage() {
       toast.success(successMessage)
 
       // Redirect to communication dashboard
-      router.push("/dashboard/communication")
+      router.push("/communication")
     } catch (error) {
       console.error("Failed to save message:", error)
       toast.error("Chyba při ukládání zprávy")
@@ -134,7 +134,7 @@ export default function MessagePreviewPage() {
   const handleBack = () => {
     if (confirm("Opravdu chcete opustit tuto stránku? Neuložené změny budou ztraceny.")) {
       sessionStorage.removeItem("draftMessage")
-      router.push("/dashboard/communication")
+      router.push("/communication")
     }
   }
 

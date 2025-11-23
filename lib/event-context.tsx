@@ -6,14 +6,16 @@ import { createContext, useContext, useEffect, useState } from "react"
 import type { Event } from "./types"
 import { useAuth } from "./auth-context"
 import { useOrganization } from "./organization-context"
+import { generateEventSlug } from "./slugify"
 
 interface EventContextType {
   events: Event[]
-  createEvent: (event: Omit<Event, "id" | "createdAt" | "updatedAt" | "createdBy" | "organizationId">) => Promise<Event>
+  createEvent: (event: Omit<Event, "id" | "slug" | "createdAt" | "updatedAt" | "createdBy" | "organizationId">) => Promise<Event>
   updateEvent: (id: string, updates: Partial<Event>) => Promise<void>
   deleteEvent: (id: string) => Promise<void>
   duplicateEvent: (id: string) => Promise<Event>
   getEventById: (id: string) => Event | undefined
+  getEventBySlug: (slug: string) => Event | undefined
   getRegistrationsByEventId: (eventId: string) => any[]
   isLoading: boolean
 }
@@ -41,22 +43,29 @@ export function EventProvider({ children }: { children: React.ReactNode }) {
   }, [currentOrganization])
 
   const createEvent = async (
-    eventData: Omit<Event, "id" | "createdAt" | "updatedAt" | "createdBy" | "organizationId">,
+    eventData: Omit<Event, "id" | "slug" | "createdAt" | "updatedAt" | "createdBy" | "organizationId">,
   ): Promise<Event> => {
     if (!user || !currentOrganization) throw new Error("Musíte být přihlášeni")
 
     await new Promise((resolve) => setTimeout(resolve, 300))
 
+    // Get existing slugs for uniqueness check
+    const allEvents = JSON.parse(localStorage.getItem("events") || "[]")
+    const existingSlugs = allEvents.map((e: Event) => e.slug).filter(Boolean)
+
+    // Generate unique slug from event name
+    const slug = generateEventSlug(eventData.name, existingSlugs)
+
     const newEvent: Event = {
       ...eventData,
       id: crypto.randomUUID(),
+      slug,
       organizationId: currentOrganization.id,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       createdBy: user.id,
     }
 
-    const allEvents = JSON.parse(localStorage.getItem("events") || "[]")
     allEvents.push(newEvent)
     localStorage.setItem("events", JSON.stringify(allEvents))
 
@@ -117,6 +126,10 @@ export function EventProvider({ children }: { children: React.ReactNode }) {
     return events.find((e) => e.id === id)
   }
 
+  const getEventBySlug = (slug: string) => {
+    return events.find((e) => e.slug === slug)
+  }
+
   const getRegistrationsByEventId = (eventId: string) => {
     const allRegistrations = JSON.parse(localStorage.getItem("registrations") || "[]")
     return allRegistrations.filter((reg: any) => reg.eventId === eventId)
@@ -131,6 +144,7 @@ export function EventProvider({ children }: { children: React.ReactNode }) {
         deleteEvent,
         duplicateEvent,
         getEventById,
+        getEventBySlug,
         getRegistrationsByEventId,
         isLoading,
       }}

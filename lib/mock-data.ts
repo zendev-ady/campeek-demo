@@ -38,6 +38,7 @@ export const DEMO_MEMBER: OrganizationMember = {
 export const DEMO_EVENTS: Event[] = [
   {
     id: "event-1",
+    slug: "letni-tabor-jizni-cechy",
     organizationId: DEMO_ORGANIZATION.id,
     name: "Letní tábor - Jižní Čechy",
     description: "Týdenní intenzivní program s vodními aktivitami v Borovanech",
@@ -54,6 +55,7 @@ export const DEMO_EVENTS: Event[] = [
   },
   {
     id: "event-2",
+    slug: "primestsky-tabor-programovani",
     organizationId: DEMO_ORGANIZATION.id,
     name: "Příměstský tábor - Programování",
     description: "Třídenní intenzív věnovaný tvorbě her v Pythonu",
@@ -70,6 +72,7 @@ export const DEMO_EVENTS: Event[] = [
   },
   {
     id: "event-3",
+    slug: "raftingovy-tabor-dunaj",
     organizationId: DEMO_ORGANIZATION.id,
     name: "Raftingový tábor - Dunaj",
     description: "Dobrodružný rafting s profesionálními průvodci",

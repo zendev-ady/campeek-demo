@@ -13,8 +13,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 import { Plus, Trash2, Calendar, MapPin, Users, CheckCircle2 } from "lucide-react"
 
-export default function RegisterPage({ params }: { params: Promise<{ eventId: string }> }) {
-  const [resolvedParams, setResolvedParams] = useState<{ eventId: string } | null>(null)
+export default function RegisterPage({ params }: { params: Promise<{ id: string }> }) {
+  const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null)
   const [event, setEvent] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -46,12 +46,12 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
   }, [params])
 
   useEffect(() => {
-    if (!resolvedParams?.eventId) return
+    if (!resolvedParams?.id) return
     // Load event from localStorage
     const allEvents = JSON.parse(localStorage.getItem("events") || "[]")
-    const foundEvent = allEvents.find((e: any) => e.id === resolvedParams.eventId)
+    const foundEvent = allEvents.find((e: any) => e.id === resolvedParams.id)
     setEvent(foundEvent)
-  }, [resolvedParams?.eventId])
+  }, [resolvedParams?.id])
 
   const addChild = () => {
     setChildren([
@@ -100,7 +100,7 @@ export default function RegisterPage({ params }: { params: Promise<{ eventId: st
       }
 
       const registration = {
-        eventId: resolvedParams.eventId,
+        eventId: resolvedParams.id,
         parentName,
         parentEmail,
         parentPhone,

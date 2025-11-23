@@ -39,7 +39,7 @@ function EventSettingsPageClient({ eventId }: { eventId: string }) {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard">
+          <Link href="/">
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -56,21 +56,21 @@ function EventSettingsPageClient({ eventId }: { eventId: string }) {
       <div className="space-y-3">
         {/* Back Button + Breadcrumb */}
         <div className="flex items-center gap-4">
-          <Link href={`/dashboard/events/${event.id}`}>
+          <Link href={`/events/${event.id}`}>
             <Button variant="ghost" size="icon" className="h-9 w-9">
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
           <div className="flex items-center gap-2 text-sm">
-            <Link href="/dashboard" className="text-black hover:text-black transition-colors font-medium">
+            <Link href="/" className="text-black hover:text-black transition-colors font-medium">
               Dashboard
             </Link>
             <ChevronRight className="h-4 w-4 text-black" />
-            <Link href="/dashboard/events" className="text-black hover:text-black transition-colors font-medium">
+            <Link href="/events" className="text-black hover:text-black transition-colors font-medium">
               Akce
             </Link>
             <ChevronRight className="h-4 w-4 text-black" />
-            <Link href={`/dashboard/events/${event.id}`} className="text-black hover:text-black transition-colors font-medium">
+            <Link href={`/events/${event.id}`} className="text-black hover:text-black transition-colors font-medium">
               {event.name}
             </Link>
             <ChevronRight className="h-4 w-4 text-black" />

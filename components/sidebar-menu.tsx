@@ -14,7 +14,7 @@ export function SidebarMenu() {
   const [expandedEvent, setExpandedEvent] = useState<string | null>(null)
 
   // Get current event ID from pathname
-  const currentEventId = pathname.includes("/dashboard/events/") ? pathname.split("/")[3] : null
+  const currentEventId = pathname.includes("/events/") ? pathname.split("/")[2] : null
 
   // Auto-expand current event when navigating directly to its page
   useEffect(() => {
@@ -23,37 +23,37 @@ export function SidebarMenu() {
   }, [currentEventId])
 
   const globalMenuItems = [
-    { id: "overview", label: "Přehled", href: "/dashboard", icon: Calendar },
-    { id: "contacts", label: "Kontakty", href: "/dashboard/contacts", icon: Users },
-    { id: "communication", label: "Komunikace", href: "/dashboard/communication", icon: MessageSquare },
-    { id: "finances", label: "Finance", href: "/dashboard/finances", icon: Wallet },
-    { id: "settings", label: "Organizace", href: "/dashboard/organization", icon: Settings },
+    { id: "overview", label: "Přehled", href: "/prehled", icon: Calendar },
+    { id: "contacts", label: "Kontakty", href: "/kontakty", icon: Users },
+    { id: "communication", label: "Komunikace", href: "/komunikace", icon: MessageSquare },
+    { id: "finances", label: "Finance", href: "/finance", icon: Wallet },
+    { id: "settings", label: "Organizace", href: "/organizace", icon: Settings },
   ]
 
   const eventMenuItems = [
     {
       label: "Přehled",
-      href: (id: string) => `/dashboard/events/${id}`,
+      href: (id: string) => `/akce/${id}`,
       icon: Eye,
       match: (currentPath: string, basePath: string) => currentPath === basePath,
     },
     {
       label: "Přihlášky",
-      href: (id: string) => `/dashboard/events/${id}/registrations`,
+      href: (id: string) => `/akce/${id}/prihlasky`,
       icon: Users,
-      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/registrations`,
+      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/prihlasky`,
     },
     {
       label: "Platby",
-      href: (id: string) => `/dashboard/events/${id}/payments`,
+      href: (id: string) => `/akce/${id}/platby`,
       icon: CreditCard,
-      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/payments`,
+      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/platby`,
     },
     {
       label: "Nastavení",
-      href: (id: string) => `/dashboard/events/${id}/settings`,
+      href: (id: string) => `/akce/${id}/nastaveni`,
       icon: Sliders,
-      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/settings`,
+      match: (currentPath: string, basePath: string) => currentPath === `${basePath}/nastaveni`,
     },
   ]
 
@@ -88,7 +88,7 @@ export function SidebarMenu() {
         </div>
 
         {/* Create New Event */}
-        <Link href="/dashboard/events">
+        <Link href="/akce">
           <Button variant="ghost" className="w-full justify-start gap-3 text-white">
             <FolderTree className="h-4 w-4" />
             Správa akcí
@@ -125,7 +125,7 @@ export function SidebarMenu() {
                 <div className="ml-2 space-y-1 border-l-2 border-white pl-2">
                   {eventMenuItems.map((subitem) => {
                     const subHref = subitem.href(event.id)
-                    const baseEventPath = `/dashboard/events/${event.id}`
+                    const baseEventPath = `/akce/${event.id}`
                     const isSubActive = subitem.match(pathname, baseEventPath)
                     const SubIcon = subitem.icon
                     return (

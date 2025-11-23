@@ -115,7 +115,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Nedávné akce</h2>
           <Button variant="ghost" asChild>
-            <a href="/dashboard/events">Zobrazit vše</a>
+            <a href="/events">Zobrazit vše</a>
           </Button>
         </div>
 

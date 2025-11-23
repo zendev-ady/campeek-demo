@@ -80,8 +80,8 @@ export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanel
     }
     const registrationUrl =
       typeof window !== "undefined"
-        ? `${window.location.origin}/register/${eventId}`
-        : `/register/${eventId}`
+        ? `${window.location.origin}/registrace/${eventId}`
+        : `/registrace/${eventId}`
     window.open(registrationUrl, "_blank", "noopener,noreferrer")
   }
 
@@ -92,8 +92,8 @@ export function RegistrationSettingsPanel({ eventId }: RegistrationSettingsPanel
     }
     const registrationUrl =
       typeof window !== "undefined"
-        ? `${window.location.origin}/register/${eventId}`
-        : `/register/${eventId}`
+        ? `${window.location.origin}/registrace/${eventId}`
+        : `/registrace/${eventId}`
 
     try {
       await navigator.clipboard.writeText(registrationUrl)

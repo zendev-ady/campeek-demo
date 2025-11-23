@@ -45,7 +45,7 @@ export function EventListRow({ event }: EventListRowProps) {
           </div>
         </div>
 
-        <Button variant="outline" onClick={() => router.push(`/dashboard/events/${event.id}`)} className="ml-auto">
+        <Button variant="outline" onClick={() => router.push(`/events/${event.id}`)} className="ml-auto">
           Spravovat
           <ArrowUpRight className="h-4 w-4 ml-2" />
         </Button>

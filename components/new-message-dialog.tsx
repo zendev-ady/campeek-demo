@@ -213,9 +213,9 @@ export function NewMessageDialog({ open, onOpenChange, prefillData }: NewMessage
       recipientFilter:
         selectedEventId !== "all"
           ? {
-              type: "event",
-              eventId: selectedEventId,
-            }
+            type: "event",
+            eventId: selectedEventId,
+          }
           : undefined,
       recipientIds: Array.from(selectedRecipients),
       attachments: attachments.length > 0 ? attachments : undefined,
@@ -227,7 +227,7 @@ export function NewMessageDialog({ open, onOpenChange, prefillData }: NewMessage
     sessionStorage.setItem("draftMessage", JSON.stringify(newMessage))
 
     // Navigate to preview page
-    router.push(`/dashboard/communication/preview/${messageId}`)
+    router.push(`/communication/preview/${messageId}`)
     onOpenChange(false)
   }
 

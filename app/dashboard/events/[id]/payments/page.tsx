@@ -190,11 +190,11 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
     switch (type) {
       case "deposit":
         return (
-          <Badge className="bg-blue-100 text-blue-800 border-blue-200">Záloha</Badge>
+          <Badge className="bg-gray-100 text-gray-800 border-gray-200">Záloha</Badge>
         )
       case "balance":
         return (
-          <Badge className="bg-purple-100 text-purple-800 border-purple-200">Doplatek</Badge>
+          <Badge className="bg-gray-100 text-gray-800 border-gray-200">Doplatek</Badge>
         )
       case "full":
         return (
@@ -208,14 +208,14 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
     switch (payment.status) {
       case "paid":
         return (
-          <Badge className="bg-green-100 text-green-800 border-green-200">
+          <Badge className="bg-gray-100 text-gray-800 border-gray-200">
             <CheckCircle className="h-3 w-3 mr-1" />
             Zaplaceno
           </Badge>
         )
       case "partial":
         return (
-          <Badge className="bg-orange-100 text-orange-800 border-orange-200">
+          <Badge className="bg-gray-100 text-gray-800 border-gray-200">
             <Clock className="h-3 w-3 mr-1" />
             Částečně
           </Badge>
@@ -235,13 +235,6 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
           </Badge>
         )
     }
-  }
-
-  // Get progress bar color
-  const getProgressColor = (percentage: number) => {
-    if (percentage === 0) return "bg-red-500"
-    if (percentage === 100) return "bg-green-500"
-    return "bg-orange-500"
   }
 
   if (!event) {
@@ -282,16 +275,16 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
 
       {/* Info Banner for Split Payments */}
       {hasSplitPayment && showInfoBanner && (
-        <Alert className="border-blue-200 bg-blue-50">
-          <Info className="h-4 w-4 text-blue-600" />
+        <Alert>
+          <Info className="h-4 w-4" />
           <AlertDescription className="flex items-start justify-between gap-4">
-            <span className="text-blue-900">
+            <span>
               Tato akce má nastavenou platbu na zálohu a doplatek. Každý účastník má 2
               samostatné platby.
             </span>
             <button
               onClick={() => setShowInfoBanner(false)}
-              className="text-blue-600 hover:text-blue-800"
+              className="text-muted-foreground hover:text-foreground"
             >
               <X className="h-4 w-4" />
             </button>
@@ -323,10 +316,10 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Zaplaceno
             </CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">
+            <div className="text-3xl font-bold">
               {formatCurrency(statistics.paid)}
             </div>
             <Progress value={statistics.paidPercentage} className="mt-2" />
@@ -342,10 +335,10 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Zbývá doplatit
             </CardTitle>
-            <Clock className="h-4 w-4 text-orange-600" />
+            <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-orange-600">
+            <div className="text-3xl font-bold">
               {formatCurrency(statistics.remaining)}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -454,9 +447,9 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
       ) : (
         <>
           {/* Desktop Table */}
-          <div className="hidden md:block border-2 border-black rounded-lg overflow-hidden">
+          <div className="hidden md:block border border-gray-200 rounded-lg overflow-hidden">
             {/* Table Header */}
-            <div className="bg-black text-white p-4 flex items-center gap-4 font-semibold text-sm">
+            <div className="bg-gray-50 p-4 flex items-center gap-4 font-semibold text-sm">
               <div className="flex-[2] min-w-0">Účastník</div>
               <div className="w-32">Typ platby</div>
               <div className="w-24">Částka</div>
@@ -467,7 +460,7 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
             </div>
 
             {/* Table Rows */}
-            <div className="divide-y-2 divide-gray-100">
+            <div className="divide-y divide-gray-200">
               {filteredPayments.map((payment) => {
                 const daysOverdue = getDaysOverdue(payment.dueDate)
                 const isOverdue = payment.status === "overdue"
@@ -499,15 +492,7 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
                     {/* Paid Amount with Progress */}
                     <div className="flex-[2] min-w-0 space-y-1">
                       <div className="flex items-center justify-between gap-2">
-                        <span
-                          className={
-                            percentage === 0
-                              ? "text-gray-500 font-medium"
-                              : percentage === 100
-                                ? "text-green-600 font-medium"
-                                : "text-orange-600 font-medium"
-                          }
-                        >
+                        <span className="font-medium">
                           {formatCurrency(payment.paidAmount)}
                         </span>
                         <span className="text-xs text-muted-foreground">{percentage}%</span>
@@ -596,15 +581,7 @@ function EventPaymentsPageClient({ eventId }: { eventId: string }) {
                         <span className="text-xs font-medium">{percentage}%</span>
                       </div>
                       <Progress value={percentage} className="h-2 mb-1" />
-                      <div
-                        className={
-                          percentage === 0
-                            ? "text-sm text-gray-500 font-medium"
-                            : percentage === 100
-                              ? "text-sm text-green-600 font-medium"
-                              : "text-sm text-orange-600 font-medium"
-                        }
-                      >
+                      <div className="text-sm font-medium">
                         {formatCurrency(payment.paidAmount)}
                       </div>
                     </div>

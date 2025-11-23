@@ -66,21 +66,21 @@ export function RegistrationsTable({
 
     if (paid >= total) {
       return {
-        icon: <Check className="h-3.5 w-3.5 text-green-600" />,
+        icon: <Check className="h-3.5 w-3.5 text-muted-foreground" />,
         text: `${total.toLocaleString("cs-CZ")} Kč`,
-        color: "text-green-700",
+        color: "text-foreground",
       }
     } else if (paid > 0) {
       return {
-        icon: <AlertTriangle className="h-3.5 w-3.5 text-orange-500" />,
+        icon: <AlertTriangle className="h-3.5 w-3.5 text-muted-foreground" />,
         text: `${paid.toLocaleString("cs-CZ")} / ${total.toLocaleString("cs-CZ")} Kč`,
-        color: "text-orange-700",
+        color: "text-muted-foreground",
       }
     } else {
       return {
-        icon: <X className="h-3.5 w-3.5 text-red-600" />,
+        icon: <X className="h-3.5 w-3.5 text-muted-foreground" />,
         text: `0 / ${total.toLocaleString("cs-CZ")} Kč`,
-        color: "text-red-700",
+        color: "text-muted-foreground",
       }
     }
   }
@@ -89,7 +89,7 @@ export function RegistrationsTable({
   const getStatusBadge = (status: Registration["status"]) => {
     if (status === "waitlist") {
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-50 text-orange-700 border border-orange-200">
+        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-200">
           Na čekací listině
         </span>
       )
@@ -109,17 +109,17 @@ export function RegistrationsTable({
       <table className="w-full" style={{ borderCollapse: "collapse" }}>
         {/* Header */}
         <thead>
-          <tr className="border-b border-[#e9e9e7]">
-            <th className="text-left py-2 px-3 text-xs font-medium text-[#9b9a97]">
+          <tr className="border-b border-gray-200">
+            <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">
               Účastník
             </th>
-            <th className="text-left py-2 px-3 text-xs font-medium text-[#9b9a97]">
+            <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">
               Rodič
             </th>
-            <th className="text-left py-2 px-3 text-xs font-medium text-[#9b9a97]">
+            <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">
               Přihláška
             </th>
-            <th className="text-left py-2 px-3 text-xs font-medium text-[#9b9a97]">
+            <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">
               Zaplaceno
             </th>
             <th className="w-8"></th>
@@ -137,15 +137,14 @@ export function RegistrationsTable({
             return (
               <tr
                 key={reg.id}
-                className="cursor-pointer transition-colors duration-50"
-                style={{
-                  backgroundColor: isHovered ? "#f7f6f5" : "transparent",
-                }}
+                className={`cursor-pointer transition-colors ${
+                  isHovered ? "bg-gray-50" : ""
+                }`}
                 onMouseEnter={() => setHoveredRow(reg.id)}
                 onMouseLeave={() => setHoveredRow(null)}
                 onClick={() => onRowClick(reg)}
               >
-                <td className="py-3 px-3 text-sm text-[#37352f]">
+                <td className="py-3 px-3 text-sm">
                   <div className="flex items-center gap-2">
                     <span className={isCancelled ? "line-through" : ""}>
                       {getParticipantName(reg)}
@@ -154,12 +153,12 @@ export function RegistrationsTable({
                   </div>
                 </td>
                 <td
-                  className={`py-3 px-3 text-sm text-[#37352f] ${isCancelled ? "line-through" : ""}`}
+                  className={`py-3 px-3 text-sm ${isCancelled ? "line-through" : ""}`}
                 >
                   {getParentName(reg)}
                 </td>
                 <td
-                  className={`py-3 px-3 text-sm text-[#73726e] ${isCancelled ? "line-through" : ""}`}
+                  className={`py-3 px-3 text-sm text-muted-foreground ${isCancelled ? "line-through" : ""}`}
                 >
                   {getRegistrationDate(reg)}
                 </td>
@@ -180,7 +179,7 @@ export function RegistrationsTable({
                       className={`transition-opacity ${isHovered ? "opacity-100" : "opacity-0"}`}
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <MoreHorizontal className="h-4 w-4 text-[#9b9a97] hover:text-[#37352f]" />
+                      <MoreHorizontal className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={(e) => {
@@ -213,10 +212,10 @@ export function RegistrationsTable({
       {registrations.length === 0 && (
         <div className="text-center py-16">
           <div className="text-4xl mb-4">📋</div>
-          <h3 className="text-base font-medium text-[#73726e] mb-1">
+          <h3 className="text-base font-medium mb-1">
             Zatím nemáte žádné přihlášky
           </h3>
-          <p className="text-sm text-[#9b9a97]">
+          <p className="text-sm text-muted-foreground">
             Sdílejte přihlašovací odkaz s rodiči
           </p>
         </div>

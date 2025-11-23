@@ -82,11 +82,11 @@ export function NotionTable<T>({
       <table className="w-full" style={{ borderCollapse: "collapse" }}>
         {/* Header */}
         <thead>
-          <tr className="border-b border-[#e9e9e7]">
+          <tr className="border-b border-gray-200">
             {columns.map((column) => (
               <th
                 key={column.key}
-                className={`text-left py-2 px-3 text-xs font-medium text-[#9b9a97] ${
+                className={`text-left py-2 px-3 text-xs font-medium text-muted-foreground ${
                   column.sortable ? "cursor-pointer group" : ""
                 }`}
                 style={{ width: column.width }}
@@ -124,10 +124,9 @@ export function NotionTable<T>({
             return (
               <tr
                 key={rowKey}
-                className="cursor-pointer transition-colors duration-50"
-                style={{
-                  backgroundColor: isHovered ? "#f7f6f5" : "transparent",
-                }}
+                className={`cursor-pointer transition-colors ${
+                  isHovered ? "bg-gray-50" : ""
+                }`}
                 onMouseEnter={() => setHoveredRow(rowKey)}
                 onMouseLeave={() => setHoveredRow(null)}
                 onClick={() => onRowClick(item)}
@@ -135,7 +134,7 @@ export function NotionTable<T>({
                 {columns.map((column) => (
                   <td
                     key={column.key}
-                    className="py-3 px-3 text-sm text-[#37352f]"
+                    className="py-3 px-3 text-sm"
                   >
                     {column.render(item)}
                   </td>
@@ -151,7 +150,7 @@ export function NotionTable<T>({
                         }`}
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <MoreHorizontal className="h-4 w-4 text-[#9b9a97] hover:text-[#37352f]" />
+                        <MoreHorizontal className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         {onEdit && (
@@ -179,7 +178,7 @@ export function NotionTable<T>({
 
       {/* Empty state */}
       {data.length === 0 && (
-        <div className="text-center py-12 text-[#9b9a97]">
+        <div className="text-center py-12 text-muted-foreground">
           <p className="text-sm">Žádné záznamy</p>
         </div>
       )}

@@ -23,13 +23,13 @@ export function StatsRow({ registrations, event }: StatsRowProps) {
   const waitlist = waitlistRegs.length
 
   return (
-    <div className="flex items-center gap-6 pb-4 text-sm text-[#73726e]">
+    <div className="flex items-center gap-6 pb-4 text-sm text-muted-foreground">
       {/* Obsazenost */}
       <div className="flex items-center gap-2">
-        <BarChart3 className="h-4 w-4 text-[#9b9a97]" />
-        <span className="font-semibold text-[#37352f]">{confirmed}</span>
+        <BarChart3 className="h-4 w-4 text-muted-foreground" />
+        <span className="font-semibold text-foreground">{confirmed}</span>
         <span>/</span>
-        <span className="font-semibold text-[#37352f]">
+        <span className="font-semibold text-foreground">
           {capacity === Infinity ? "∞" : capacity}
         </span>
         <span>obsazeno</span>
@@ -37,23 +37,23 @@ export function StatsRow({ registrations, event }: StatsRowProps) {
 
       {/* Zaplaceno */}
       <div className="flex items-center gap-2">
-        <DollarSign className="h-4 w-4 text-[#9b9a97]" />
-        <span className="font-semibold text-[#37352f]">{fullyPaid}</span>
+        <DollarSign className="h-4 w-4 text-muted-foreground" />
+        <span className="font-semibold text-foreground">{fullyPaid}</span>
         <span>zaplaceno</span>
       </div>
 
       {/* Nezaplaceno */}
       <div className="flex items-center gap-2">
-        <Clock className="h-4 w-4 text-[#9b9a97]" />
-        <span className="font-semibold text-[#37352f]">{unpaid}</span>
+        <Clock className="h-4 w-4 text-muted-foreground" />
+        <span className="font-semibold text-foreground">{unpaid}</span>
         <span>nezaplaceno</span>
       </div>
 
       {/* Čekací listina */}
       {waitlist > 0 && (
         <div className="flex items-center gap-2">
-          <Users className="h-4 w-4 text-[#9b9a97]" />
-          <span className="font-semibold text-[#37352f]">{waitlist}</span>
+          <Users className="h-4 w-4 text-muted-foreground" />
+          <span className="font-semibold text-foreground">{waitlist}</span>
           <span>na čekací listině</span>
         </div>
       )}

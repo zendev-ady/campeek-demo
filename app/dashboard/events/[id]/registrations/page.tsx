@@ -265,29 +265,29 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-[#73726e]">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link
           href="/dashboard"
-          className="hover:text-[#37352f] transition-colors"
+          className="hover:text-foreground transition-colors"
         >
           Dashboard
         </Link>
         <ChevronRight className="h-4 w-4" />
         <Link
           href="/dashboard/events"
-          className="hover:text-[#37352f] transition-colors"
+          className="hover:text-foreground transition-colors"
         >
           Akce
         </Link>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-[#37352f]">{event.name}</span>
+        <span className="text-foreground">{event.name}</span>
       </div>
 
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-[#37352f]">{event.name}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{event.name}</h1>
         <Link href={`/dashboard/events/${event.id}`}>
           <Button variant="ghost" className="gap-2">
             <ArrowLeft className="h-4 w-4" />
@@ -297,28 +297,24 @@ function EventRegistrationsPageClient({ eventId }: { eventId: string }) {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-6 border-b border-[#e9e9e7]">
-        <Link
-          href={`/dashboard/events/${event.id}`}
-          className="pb-2 text-sm font-medium text-[#73726e] hover:text-[#37352f] transition-colors relative"
-        >
-          Přehled
+      <div className="flex flex-wrap items-center gap-2">
+        <Link href={`/dashboard/events/${event.id}`}>
+          <button className="border-2 px-4 py-1.5 text-sm border-black bg-white text-black">
+            Přehled
+          </button>
         </Link>
-        <div className="pb-2 text-sm font-medium text-[#37352f] transition-colors relative">
+        <button className="border-2 px-4 py-1.5 text-sm border-black bg-black text-white">
           Přihlášky
-          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#37352f]" />
-        </div>
-        <Link
-          href={`/dashboard/events/${event.id}/payments`}
-          className="pb-2 text-sm font-medium text-[#73726e] hover:text-[#37352f] transition-colors relative"
-        >
-          Platby
+        </button>
+        <Link href={`/dashboard/events/${event.id}/payments`}>
+          <button className="border-2 px-4 py-1.5 text-sm border-black bg-white text-black">
+            Platby
+          </button>
         </Link>
-        <Link
-          href={`/dashboard/events/${event.id}/settings`}
-          className="pb-2 text-sm font-medium text-[#73726e] hover:text-[#37352f] transition-colors relative"
-        >
-          Nastavení
+        <Link href={`/dashboard/events/${event.id}/settings`}>
+          <button className="border-2 px-4 py-1.5 text-sm border-black bg-white text-black">
+            Nastavení
+          </button>
         </Link>
       </div>
 

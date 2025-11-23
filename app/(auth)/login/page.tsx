@@ -73,9 +73,14 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <div className="text-right">
+                <Link href="/forgot-password" className="text-sm text-black underline hover:no-underline">
+                  Zapomněli jste heslo?
+                </Link>
+              </div>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
+          <CardFooter className="flex flex-col space-y-4 mt-6">
             <Button
               type="submit"
               className="w-full bg-black text-white border-2 border-black"
@@ -89,6 +94,14 @@ export default function LoginPage() {
                 Zaregistrujte se
               </Link>
             </p>
+            <Link href="/">
+              <Button
+                variant="outline"
+                className="w-full border-2 border-black text-black hover:bg-gray-100"
+              >
+                Zpět na hlavní stránku
+              </Button>
+            </Link>
           </CardFooter>
         </form>
       </Card>

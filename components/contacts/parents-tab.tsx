@@ -118,11 +118,11 @@ export function ParentsTab({
   if (parents.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
-        <Users className="h-12 w-12 text-[#9b9a97] mb-4" />
-        <h3 className="text-base font-medium text-[#73726e] mb-1">
+        <Users className="h-12 w-12 text-muted-foreground mb-4" />
+        <h3 className="text-base font-medium mb-1">
           Zatím nemáte žádné kontakty
         </h3>
-        <p className="text-sm text-[#9b9a97]">
+        <p className="text-sm text-muted-foreground">
           Kontakty se vytvoří automaticky z přihlášek
         </p>
       </div>
@@ -143,7 +143,7 @@ export function ParentsTab({
       />
 
       {filteredParents.length === 0 ? (
-        <div className="text-center py-12 text-[#9b9a97]">
+        <div className="text-center py-12 text-muted-foreground">
           <p className="text-sm">Žádné výsledky</p>
         </div>
       ) : (

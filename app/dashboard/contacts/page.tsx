@@ -61,44 +61,39 @@ export default function ContactsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-semibold text-[#37352f]">Kontakty</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Kontakty</h1>
+        <p className="text-muted-foreground mt-1">Spravujte rodiče a účastníky na jednom místě</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-6 border-b border-[#e9e9e7]">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           onClick={() => setActiveTab("parents")}
-          className={`pb-2 text-sm font-medium transition-colors relative ${
+          className={`border-2 px-4 py-1.5 text-sm ${
             activeTab === "parents"
-              ? "text-[#37352f]"
-              : "text-[#73726e] hover:text-[#37352f]"
+              ? "border-black bg-black text-white"
+              : "border-black bg-white text-black"
           }`}
         >
           Rodiče
-          {activeTab === "parents" && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#37352f]" />
-          )}
         </button>
         <button
           onClick={() => setActiveTab("participants")}
-          className={`pb-2 text-sm font-medium transition-colors relative ${
+          className={`border-2 px-4 py-1.5 text-sm ${
             activeTab === "participants"
-              ? "text-[#37352f]"
-              : "text-[#73726e] hover:text-[#37352f]"
+              ? "border-black bg-black text-white"
+              : "border-black bg-white text-black"
           }`}
         >
           Účastníci
-          {activeTab === "participants" && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#37352f]" />
-          )}
         </button>
       </div>
 
       {/* Tab Content */}
-      <div className="bg-white">
+      <div>
         {activeTab === "parents" ? (
           <ParentsTab
             parents={parents}

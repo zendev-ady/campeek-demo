@@ -150,14 +150,14 @@ export default function FinancesPage() {
     switch (payment.status) {
       case "paid":
         return (
-          <Badge className="bg-green-100 text-green-800 border-green-200">
+          <Badge className="bg-gray-100 text-gray-800 border-gray-200">
             <CheckCircle className="h-3 w-3 mr-1" />
             Zaplaceno
           </Badge>
         )
       case "partial":
         return (
-          <Badge className="bg-orange-100 text-orange-800 border-orange-200">
+          <Badge className="bg-gray-100 text-gray-800 border-gray-200">
             <Clock className="h-3 w-3 mr-1" />
             Částečně zaplaceno
           </Badge>
@@ -184,40 +184,6 @@ export default function FinancesPage() {
   const resetFilters = () => {
     setSelectedEvent("all")
     setSelectedStatus("all")
-  }
-
-  if (eventsLoading) {
-    return (
-      <div className="space-y-8">
-        {/* Header Skeleton */}
-        <div className="flex items-center justify-between">
-          <div className="h-10 w-48 bg-gray-200 rounded animate-pulse" />
-          <div className="h-10 w-48 bg-gray-200 rounded animate-pulse" />
-        </div>
-
-        {/* Statistics Cards Skeleton */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {[1, 2, 3, 4].map((i) => (
-            <Card key={i}>
-              <CardHeader className="pb-2">
-                <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
-              </CardHeader>
-              <CardContent>
-                <div className="h-8 w-24 bg-gray-200 rounded animate-pulse mb-2" />
-                <div className="h-3 w-16 bg-gray-200 rounded animate-pulse" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Table Skeleton */}
-        <div className="space-y-2">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-16 bg-gray-100 rounded animate-pulse" />
-          ))}
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -260,10 +226,10 @@ export default function FinancesPage() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Zaplaceno
             </CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">
+            <div className="text-3xl font-bold">
               {formatCurrency(statistics.paid)}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -278,10 +244,10 @@ export default function FinancesPage() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Zbývá doplatit
             </CardTitle>
-            <Clock className="h-4 w-4 text-orange-600" />
+            <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-orange-600">
+            <div className="text-3xl font-bold">
               {formatCurrency(statistics.remaining)}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -296,10 +262,10 @@ export default function FinancesPage() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Po splatnosti
             </CardTitle>
-            <AlertCircle className="h-4 w-4 text-red-600" />
+            <AlertCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-red-600">
+            <div className="text-3xl font-bold">
               {formatCurrency(statistics.overdue)}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -377,9 +343,9 @@ export default function FinancesPage() {
       ) : (
         <>
           {/* Desktop Table - hidden on mobile */}
-          <div className="hidden md:block border-2 border-black rounded-lg overflow-hidden">
+          <div className="hidden md:block border border-gray-200 rounded-lg overflow-hidden">
             {/* Table Header */}
-            <div className="bg-black text-white p-4 flex items-center gap-4 font-semibold text-sm">
+            <div className="bg-gray-50 p-4 flex items-center gap-4 font-semibold text-sm">
               <div className="flex-[2] min-w-0">Účastník</div>
               <div className="flex-[2] min-w-0">Akce</div>
               <div className="w-24">Částka</div>
@@ -391,7 +357,7 @@ export default function FinancesPage() {
             </div>
 
             {/* Table Rows */}
-            <div className="divide-y-2 divide-gray-100">
+            <div className="divide-y divide-gray-200">
               {filteredPayments.map((payment) => {
                 const daysOverdue = getDaysOverdue(payment.dueDate)
                 const isOverdue = payment.status === "overdue"
@@ -420,15 +386,7 @@ export default function FinancesPage() {
                     <div className="w-24 font-medium">{formatCurrency(payment.totalAmount)}</div>
 
                     {/* Paid Amount */}
-                    <div
-                      className={
-                        payment.paidAmount === 0
-                          ? "w-24 text-gray-500"
-                          : payment.paidAmount === payment.totalAmount
-                            ? "w-24 text-green-600 font-medium"
-                            : "w-24 text-orange-600 font-medium"
-                      }
-                    >
+                    <div className="w-24 font-medium">
                       {formatCurrency(payment.paidAmount)}
                     </div>
 
@@ -513,15 +471,7 @@ export default function FinancesPage() {
                       </div>
                       <div>
                         <div className="text-xs text-muted-foreground mb-1">Zaplaceno</div>
-                        <div
-                          className={
-                            payment.paidAmount === 0
-                              ? "text-gray-500 font-medium"
-                              : payment.paidAmount === payment.totalAmount
-                                ? "text-green-600 font-medium"
-                                : "text-orange-600 font-medium"
-                          }
-                        >
+                        <div className="font-medium">
                           {formatCurrency(payment.paidAmount)}
                         </div>
                       </div>

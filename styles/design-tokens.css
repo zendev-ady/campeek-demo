@@ -1,0 +1,272 @@
+/* ========================================
+   CAMPEEK DESIGN TOKENS v2.0
+   Enhanced Brand Identity Stylesheet
+   Three Themes: Light, Dark, Emerald
+   ======================================== */
+
+:root {
+  /* ========================================
+     COLOR SYSTEM - Emerald Based Palette
+     ======================================== */
+
+  /* Primary Emerald Colors */
+  --color-emerald-300: #6ee7b7;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+  --color-emerald-800: #065f46;
+  --color-emerald-900: #064e3b;
+  --color-emerald-950: #022c22;
+
+  /* Semantic Color Mappings */
+  --color-primary: var(--color-emerald-600);
+  --color-primary-light: var(--color-emerald-400);
+  --color-primary-dark: var(--color-emerald-900);
+  --color-accent: var(--color-emerald-500);
+  --color-highlight: var(--color-emerald-300);
+
+  /* Status Colors */
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+
+  /* Status Color Variants */
+  --color-success-light: #34d399;
+  --color-error-light: #f87171;
+  --color-warning-light: #fbbf24;
+  --color-info-light: #60a5fa;
+
+  /* ========================================
+     GLASS EFFECTS - Glassmorphism System
+     ======================================== */
+
+  /* Glass Backgrounds - Light Theme (default) */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-hover: rgba(255, 255, 255, 0.85);
+  --glass-bg-light: rgba(255, 255, 255, 0.5);
+  --glass-bg-strong: rgba(255, 255, 255, 0.9);
+
+  /* Glass Borders - Light Theme */
+  --glass-border: rgba(5, 150, 105, 0.15);
+  --glass-border-hover: rgba(5, 150, 105, 0.3);
+  --glass-border-light: rgba(0, 0, 0, 0.1);
+  --glass-border-strong: rgba(5, 150, 105, 0.4);
+
+  /* Blur Amounts */
+  --blur-amount: 16px;
+  --blur-amount-sm: 8px;
+  --blur-amount-lg: 24px;
+  --blur-amount-xl: 32px;
+
+  /* ========================================
+     SPACING SYSTEM - 8px Grid
+     ======================================== */
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 40px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* ========================================
+     TYPOGRAPHY SCALE
+     ======================================== */
+
+  /* Font Family */
+  --font-family-base: 'Outfit', sans-serif;
+
+  /* Font Sizes */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+  --font-size-4xl: 40px;
+  --font-size-5xl: 48px;
+  --font-size-6xl: 56px;
+  --font-size-7xl: 72px;
+
+  /* Line Heights */
+  --line-height-tight: 1.1;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  --line-height-loose: 1.8;
+
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* ========================================
+     BORDER RADIUS SYSTEM
+     ======================================== */
+
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 20px;
+  --border-radius-2xl: 24px;
+  --border-radius-full: 9999px;
+
+  /* ========================================
+     SHADOW SYSTEM - Light Theme
+     ======================================== */
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 25px 60px rgba(0, 0, 0, 0.2);
+  --shadow-focus: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  --shadow-emerald-sm: 0 4px 16px rgba(5, 150, 105, 0.1);
+  --shadow-emerald-md: 0 10px 30px rgba(5, 150, 105, 0.15);
+  --shadow-emerald-lg: 0 20px 50px rgba(5, 150, 105, 0.2);
+
+  /* Inner Shadows */
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+
+  /* ========================================
+     TRANSITIONS & ANIMATIONS
+     ======================================== */
+
+  /* Transition Speeds */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.35s ease;
+  --transition-slower: 0.5s ease;
+
+  /* Transition Properties */
+  --transition-all: all var(--transition-base);
+  --transition-colors: color, background-color, border-color var(--transition-base);
+  --transition-transform: transform var(--transition-base);
+  --transition-opacity: opacity var(--transition-base);
+
+  /* ========================================
+     GRADIENTS - Light Theme
+     ======================================== */
+
+  /* Primary Gradients */
+  --gradient-primary: linear-gradient(135deg, #34d399 0%, #059669 100%);
+  --gradient-primary-dark: linear-gradient(135deg, #059669 0%, #064e3b 100%);
+  --gradient-text: linear-gradient(180deg, #059669 10%, #064e3b 100%);
+
+  /* Glass Gradients */
+  --gradient-glass-emerald: linear-gradient(135deg, rgba(5, 150, 105, 0.15) 0%, rgba(6, 78, 59, 0.15) 100%);
+  --gradient-glass-light: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+
+  /* Background Gradients */
+  --gradient-bg-light: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  --gradient-bg-emerald: linear-gradient(135deg, #059669 0%, #064e3b 100%);
+
+  /* ========================================
+     Z-INDEX SCALE
+     ======================================== */
+
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+
+  /* ========================================
+     COMPONENT-SPECIFIC TOKENS
+     ======================================== */
+
+  /* Buttons */
+  --button-height-sm: 32px;
+  --button-height-md: 40px;
+  --button-height-lg: 48px;
+
+  /* Inputs */
+  --input-height-sm: 32px;
+  --input-height-md: 40px;
+  --input-height-lg: 48px;
+
+  /* Cards */
+  --card-padding: var(--space-lg);
+  --card-padding-sm: var(--space-md);
+
+  /* Tables */
+  --table-row-height: 56px;
+  --table-cell-padding-x: var(--space-lg);
+  --table-cell-padding-y: var(--space-md);
+}
+
+/* ========================================
+   DARK THEME OVERRIDES
+   ======================================== */
+
+.dark {
+  /* Glass Effects - Dark Mode */
+  --glass-bg: rgba(0, 0, 0, 0.4);
+  --glass-bg-hover: rgba(0, 0, 0, 0.5);
+  --glass-bg-light: rgba(255, 255, 255, 0.05);
+  --glass-bg-strong: rgba(0, 0, 0, 0.6);
+
+  /* Glass Borders - Dark Mode */
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(255, 255, 255, 0.2);
+  --glass-border-light: rgba(255, 255, 255, 0.05);
+  --glass-border-strong: rgba(255, 255, 255, 0.25);
+
+  /* Shadows - Dark Mode */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 25px 60px rgba(0, 0, 0, 0.7);
+  --shadow-focus: 0 0 0 3px rgba(52, 211, 153, 0.3);
+  --shadow-emerald-sm: 0 4px 16px rgba(52, 211, 153, 0.1);
+  --shadow-emerald-md: 0 10px 30px rgba(52, 211, 153, 0.15);
+  --shadow-emerald-lg: 0 20px 50px rgba(52, 211, 153, 0.2);
+
+  /* Gradients - Dark Mode */
+  --gradient-bg-light: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  --gradient-glass-emerald: linear-gradient(135deg, rgba(52, 211, 153, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+}
+
+/* ========================================
+   EMERALD THEME OVERRIDES
+   Premium dark theme with emerald accents
+   ======================================== */
+
+.emerald {
+  /* Glass Effects - Emerald Theme */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-hover: rgba(255, 255, 255, 0.06);
+  --glass-bg-light: rgba(255, 255, 255, 0.1);
+  --glass-bg-strong: rgba(255, 255, 255, 0.15);
+
+  /* Glass Borders - Emerald Theme */
+  --glass-border: rgba(5, 150, 105, 0.2);
+  --glass-border-hover: rgba(5, 150, 105, 0.4);
+  --glass-border-light: rgba(255, 255, 255, 0.1);
+  --glass-border-strong: rgba(5, 150, 105, 0.6);
+
+  /* Shadows - Emerald Theme */
+  --shadow-xs: 0 1px 2px rgba(5, 150, 105, 0.05);
+  --shadow-sm: 0 4px 16px rgba(5, 150, 105, 0.1);
+  --shadow-md: 0 10px 30px rgba(5, 150, 105, 0.2);
+  --shadow-lg: 0 20px 50px rgba(5, 150, 105, 0.3);
+  --shadow-xl: 0 25px 60px rgba(5, 150, 105, 0.4);
+  --shadow-focus: 0 0 0 3px rgba(52, 211, 153, 0.3);
+  --shadow-emerald-sm: 0 4px 16px rgba(5, 150, 105, 0.15);
+  --shadow-emerald-md: 0 10px 30px rgba(5, 150, 105, 0.25);
+  --shadow-emerald-lg: 0 20px 50px rgba(5, 150, 105, 0.35);
+
+  /* Gradients - Emerald Theme */
+  --gradient-bg-light: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+  --gradient-glass-emerald: linear-gradient(135deg, rgba(5, 150, 105, 0.3) 0%, rgba(6, 78, 59, 0.3) 100%);
+  --gradient-text: linear-gradient(180deg, #ffffff 10%, #059669 100%);
+}

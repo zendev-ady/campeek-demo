@@ -12,8 +12,8 @@ import { Brand } from "@/components/brand"
 import { Button } from "@/components/ui/button"
 import { LogOut } from "lucide-react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { SidebarMenu } from "@/components/sidebar-menu" // Import the new SidebarMenu component
+import { SidebarMenu } from "@/components/sidebar-menu"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 export default function AppLayout({
   children,
@@ -21,7 +21,6 @@ export default function AppLayout({
   children: React.ReactNode
 }) {
   const router = useRouter()
-  const pathname = usePathname()
   const { user, logout, isLoading: authLoading } = useAuth()
   const { currentOrganization, isLoading: orgLoading } = useOrganization()
 
@@ -33,8 +32,12 @@ export default function AppLayout({
 
   if (authLoading || orgLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-muted-foreground">Načítání...</div>
+      <div className="min-h-screen flex items-center justify-center bg-background relative">
+        <div className="emerald-grid-bg" />
+        <div className="glass-card p-8 rounded-2xl flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          <div className="text-muted-foreground">Načítání...</div>
+        </div>
       </div>
     )
   }
@@ -49,37 +52,44 @@ export default function AppLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-white">
+    <div className="flex h-screen overflow-hidden bg-background relative">
+      {/* Grid background for emerald theme */}
+      <div className="emerald-grid-bg" />
+
       {/* Sidebar */}
-      <aside className="w-64 border-r-2 border-black bg-black flex flex-col">
-        <div className="p-6 border-b-2 border-white">
-          <Link href="/prehled">
+      <aside className="w-64 sidebar-campeek flex flex-col relative z-10">
+        {/* Logo */}
+        <div className="p-6 border-b border-border">
+          <Link href="/prehled" className="no-underline">
             <Brand />
           </Link>
         </div>
+
         {/* Organization Switcher */}
-        <div className="px-4 py-3 border-b-2 border-white">
+        <div className="px-4 py-3 border-b border-border">
           <OrganizationSwitcher />
         </div>
+
         {/* Navigation */}
         {currentOrganization && <SidebarMenu />}
+
         {/* User Section */}
-        <div className="p-4 border-t-2 border-white">
+        <div className="p-4 border-t border-border mt-auto">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="h-8 w-8 bg-white border-2 border-white flex items-center justify-center text-black text-sm font-medium">
+              <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary text-sm font-semibold">
                 {user.name.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-white truncate">{user.name}</p>
-                <p className="text-xs text-white truncate">{user.email}</p>
+                <p className="text-sm font-medium text-foreground truncate">{user.name}</p>
+                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
               </div>
             </div>
             <Button
               variant="ghost"
               size="icon"
               onClick={handleLogout}
-              className="flex-shrink-0 text-white"
+              className="flex-shrink-0 text-muted-foreground hover:text-foreground hover:bg-destructive/10"
             >
               <LogOut className="h-4 w-4" />
             </Button>
@@ -88,18 +98,19 @@ export default function AppLayout({
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         {/* Top Bar */}
-        <header className="h-16 border-b-2 border-black bg-white flex items-center px-6">
+        <header className="h-16 border-b border-border bg-card/80 backdrop-blur-xl flex items-center px-6 gap-4">
           <div className="flex-1">
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<div className="h-10 w-64 glass-skeleton rounded-xl" />}>
               <GlobalSearch />
             </Suspense>
           </div>
+          <ThemeSwitcher />
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6 bg-white">{children}</main>
+        <main className="flex-1 overflow-y-auto p-6 bg-background/50">{children}</main>
       </div>
     </div>
   )
